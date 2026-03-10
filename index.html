@@ -1,0 +1,709 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Dashboard Meta Ads - Rita Machado</title>
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js"></script>
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body { font-family: 'Segoe UI', system-ui, -apple-system, sans-serif; background: #0f1117; color: #e1e4e8; }
+
+  .header { background: linear-gradient(135deg, #1a1d29, #252a3a); padding: 28px 40px; border-bottom: 1px solid #2d3348; }
+  .header h1 { font-size: 26px; font-weight: 700; color: #fff; }
+  .header .subtitle { color: #8b92a5; font-size: 14px; margin-top: 4px; }
+
+  .container { max-width: 1440px; margin: 0 auto; padding: 24px 40px; }
+
+  /* KPI Cards */
+  .kpi-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 16px; margin-bottom: 32px; }
+  .kpi-card { background: #1a1d29; border: 1px solid #2d3348; border-radius: 12px; padding: 20px; }
+  .kpi-card .label { font-size: 12px; color: #8b92a5; text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 8px; }
+  .kpi-card .value { font-size: 28px; font-weight: 700; color: #fff; }
+  .kpi-card .value.green { color: #4ade80; }
+  .kpi-card .value.red { color: #f87171; }
+  .kpi-card .value.blue { color: #60a5fa; }
+  .kpi-card .value.yellow { color: #fbbf24; }
+  .kpi-card .value.purple { color: #c084fc; }
+  .kpi-card .detail { font-size: 12px; color: #6b7280; margin-top: 4px; }
+
+  /* Section */
+  .section { margin-bottom: 36px; }
+  .section-title { font-size: 20px; font-weight: 600; margin-bottom: 16px; color: #fff; padding-bottom: 8px; border-bottom: 2px solid #2d3348; }
+
+  /* Charts */
+  .chart-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; margin-bottom: 32px; }
+  .chart-card { background: #1a1d29; border: 1px solid #2d3348; border-radius: 12px; padding: 24px; }
+  .chart-card h3 { font-size: 16px; font-weight: 600; margin-bottom: 16px; color: #e1e4e8; }
+  .chart-card.full { grid-column: 1 / -1; }
+
+  /* Table */
+  .table-wrapper { overflow-x: auto; background: #1a1d29; border: 1px solid #2d3348; border-radius: 12px; }
+  table { width: 100%; border-collapse: collapse; font-size: 13px; }
+  thead th { background: #252a3a; padding: 12px 14px; text-align: left; font-weight: 600; color: #8b92a5; text-transform: uppercase; font-size: 11px; letter-spacing: 0.5px; position: sticky; top: 0; cursor: pointer; white-space: nowrap; }
+  thead th:hover { color: #60a5fa; }
+  tbody td { padding: 10px 14px; border-top: 1px solid #1f2333; white-space: nowrap; }
+  tbody tr:hover { background: #252a3a; }
+  .roas-good { color: #4ade80; font-weight: 600; }
+  .roas-ok { color: #fbbf24; font-weight: 600; }
+  .roas-bad { color: #f87171; font-weight: 600; }
+  .status-active { color: #4ade80; background: rgba(74,222,128,0.1); padding: 2px 8px; border-radius: 4px; font-size: 11px; }
+  .status-inactive { color: #6b7280; background: rgba(107,114,128,0.1); padding: 2px 8px; border-radius: 4px; font-size: 11px; }
+
+  /* Report */
+  .report { background: #1a1d29; border: 1px solid #2d3348; border-radius: 12px; padding: 32px; line-height: 1.7; }
+  .report h3 { color: #60a5fa; font-size: 18px; margin: 24px 0 12px; }
+  .report h3:first-child { margin-top: 0; }
+  .report ul { padding-left: 20px; margin: 8px 0; }
+  .report li { margin: 6px 0; }
+  .report .good { color: #4ade80; }
+  .report .bad { color: #f87171; }
+  .report .warn { color: #fbbf24; }
+  .report .highlight { background: rgba(96,165,250,0.1); padding: 12px 16px; border-radius: 8px; border-left: 3px solid #60a5fa; margin: 12px 0; }
+  .report .highlight-green { background: rgba(74,222,128,0.1); padding: 12px 16px; border-radius: 8px; border-left: 3px solid #4ade80; margin: 12px 0; }
+  .report .highlight-red { background: rgba(248,113,113,0.1); padding: 12px 16px; border-radius: 8px; border-left: 3px solid #f87171; margin: 12px 0; }
+
+  /* Tabs */
+  .tabs { display: flex; gap: 4px; margin-bottom: 20px; background: #252a3a; border-radius: 8px; padding: 4px; width: fit-content; }
+  .tab { padding: 8px 20px; border-radius: 6px; cursor: pointer; font-size: 13px; font-weight: 500; color: #8b92a5; transition: all 0.2s; }
+  .tab.active { background: #60a5fa; color: #fff; }
+  .tab:hover:not(.active) { color: #fff; }
+  .tab-content { display: none; }
+  .tab-content.active { display: block; }
+
+  /* Filters */
+  .filters { display: flex; gap: 12px; margin-bottom: 16px; flex-wrap: wrap; }
+  .filter-btn { padding: 6px 14px; border-radius: 6px; border: 1px solid #2d3348; background: transparent; color: #8b92a5; cursor: pointer; font-size: 12px; transition: all 0.2s; }
+  .filter-btn.active { background: #60a5fa; color: #fff; border-color: #60a5fa; }
+  .filter-btn:hover:not(.active) { border-color: #60a5fa; color: #60a5fa; }
+
+  @media (max-width: 900px) {
+    .chart-grid { grid-template-columns: 1fr; }
+    .kpi-grid { grid-template-columns: repeat(2, 1fr); }
+    .container { padding: 16px; }
+  }
+</style>
+</head>
+<body>
+
+<div class="header">
+  <h1>Meta Ads Analytics - Rita Machado</h1>
+  <div class="subtitle">Periodo: Fevereiro 2023 a Marco 2026 | 78 campanhas analisadas</div>
+</div>
+
+<div class="container">
+  <!-- KPIs -->
+  <div id="kpiGrid" class="kpi-grid"></div>
+
+  <!-- Tabs -->
+  <div class="tabs">
+    <div class="tab active" onclick="switchTab('overview')">Visao Geral</div>
+    <div class="tab" onclick="switchTab('campaigns')">Campanhas</div>
+    <div class="tab" onclick="switchTab('report')">Relatorio</div>
+  </div>
+
+  <!-- Tab: Overview -->
+  <div id="tab-overview" class="tab-content active">
+    <div class="chart-grid">
+      <div class="chart-card">
+        <h3>ROAS por Categoria de Produto</h3>
+        <canvas id="chartRoasCategory"></canvas>
+      </div>
+      <div class="chart-card">
+        <h3>Distribuicao de Investimento</h3>
+        <canvas id="chartSpendDist"></canvas>
+      </div>
+      <div class="chart-card">
+        <h3>Top 10 Campanhas - Melhor ROAS</h3>
+        <canvas id="chartTopRoas"></canvas>
+      </div>
+      <div class="chart-card">
+        <h3>Top 10 Campanhas - Pior ROAS</h3>
+        <canvas id="chartBottomRoas"></canvas>
+      </div>
+      <div class="chart-card full">
+        <h3>Investimento vs Receita por Categoria</h3>
+        <canvas id="chartSpendVsRevenue"></canvas>
+      </div>
+      <div class="chart-card">
+        <h3>Eficiencia: CPM por Categoria</h3>
+        <canvas id="chartCPM"></canvas>
+      </div>
+      <div class="chart-card">
+        <h3>Volume de Compras por Categoria</h3>
+        <canvas id="chartPurchases"></canvas>
+      </div>
+    </div>
+  </div>
+
+  <!-- Tab: Campaigns -->
+  <div id="tab-campaigns" class="tab-content">
+    <div class="filters">
+      <button class="filter-btn active" onclick="filterCampaigns('all', this)">Todas</button>
+      <button class="filter-btn" onclick="filterCampaigns('active', this)">Ativas</button>
+      <button class="filter-btn" onclick="filterCampaigns('profitable', this)">ROAS > 1</button>
+      <button class="filter-btn" onclick="filterCampaigns('unprofitable', this)">ROAS < 1</button>
+      <button class="filter-btn" onclick="filterCampaigns('highspend', this)">Gasto > R$3000</button>
+    </div>
+    <div class="table-wrapper">
+      <table id="campaignTable">
+        <thead>
+          <tr>
+            <th onclick="sortTable(0)">Campanha</th>
+            <th onclick="sortTable(1)">Status</th>
+            <th onclick="sortTable(2)">Investimento</th>
+            <th onclick="sortTable(3)">Receita</th>
+            <th onclick="sortTable(4)">ROAS</th>
+            <th onclick="sortTable(5)">Compras</th>
+            <th onclick="sortTable(6)">CPA</th>
+            <th onclick="sortTable(7)">CPM</th>
+            <th onclick="sortTable(8)">CTR</th>
+            <th onclick="sortTable(9)">Alcance</th>
+            <th onclick="sortTable(10)">Impressoes</th>
+            <th onclick="sortTable(11)">Cliques</th>
+            <th onclick="sortTable(12)">ICs</th>
+          </tr>
+        </thead>
+        <tbody id="campaignBody"></tbody>
+      </table>
+    </div>
+  </div>
+
+  <!-- Tab: Report -->
+  <div id="tab-report" class="tab-content">
+    <div id="reportContent" class="report"></div>
+  </div>
+</div>
+
+<script>
+// ============ RAW DATA ============
+const campaigns = [
+  {name:"VENDA DIRETA TERCOS | Base + Semelhante | CD STORIES TERCOS",status:"inactive",spend:76.55,results:0,resultType:"",cpr:0,cpm:12.69,reach:2950,impressions:6031,ctr:0.895,clicks:54,lpv:30,cplpv:2.55,ic:28,cpic:2.73,revenue:0,costPurchase:0,category:"Tercos"},
+  {name:"Initiate Checkout | RMKT Motion Flyer",status:"inactive",spend:624.08,results:97,resultType:"ic",cpr:6.43,cpm:21.90,reach:5445,impressions:28493,ctr:1.06,clicks:303,lpv:204,cplpv:3.06,ic:97,cpic:6.43,revenue:2344.16,costPurchase:104.01,category:"RMKT"},
+  {name:"Initiate Checkout 20.04.23 | RMKT Motion Flyer",status:"inactive",spend:1650.5,results:212,resultType:"ic",cpr:7.79,cpm:18.23,reach:16974,impressions:90557,ctr:1.35,clicks:1221,lpv:81,cplpv:20.38,ic:212,cpic:7.79,revenue:3406.11,costPurchase:183.39,category:"RMKT"},
+  {name:"Initiate Checkout 22.06.23 | RMKT Motion Flyer",status:"inactive",spend:1522.59,results:142,resultType:"ic",cpr:10.72,cpm:22.39,reach:14276,impressions:67989,ctr:1.04,clicks:704,lpv:40,cplpv:38.06,ic:142,cpic:10.72,revenue:3489.18,costPurchase:190.32,category:"RMKT"},
+  {name:"Initiate Checkout 03-05 0723 | RMKT Motion Flyer",status:"inactive",spend:340.93,results:41,resultType:"ic",cpr:8.32,cpm:14.90,reach:15229,impressions:22878,ctr:1.72,clicks:393,lpv:332,cplpv:1.03,ic:41,cpic:8.32,revenue:894.82,costPurchase:170.47,category:"RMKT"},
+  {name:"TESTE | TD JULHO - VENDA",status:"inactive",spend:1952.7,results:8,resultType:"purchase",cpr:244.09,cpm:15.13,reach:59738,impressions:129079,ctr:0.84,clicks:1078,lpv:688,cplpv:2.84,ic:36,cpic:54.24,revenue:2002.53,costPurchase:244.09,category:"Testes"},
+  {name:"TESTE | TD JULHO - VENDA | LM",status:"inactive",spend:735.47,results:4,resultType:"purchase",cpr:183.87,cpm:17.02,reach:11929,impressions:43201,ctr:0.59,clicks:256,lpv:192,cplpv:3.83,ic:26,cpic:28.29,revenue:1047.21,costPurchase:183.87,category:"Testes"},
+  {name:"Advantage+ 12/7/2023",status:"inactive",spend:994.51,results:0,resultType:"",cpr:0,cpm:17.11,reach:32988,impressions:58109,ctr:0.81,clicks:470,lpv:353,cplpv:2.82,ic:27,cpic:36.83,revenue:0,costPurchase:0,category:"Testes"},
+  {name:"TESTE | TD JULHO - VENDA - Copia",status:"inactive",spend:410.04,results:8,resultType:"ic",cpr:51.26,cpm:13.86,reach:14848,impressions:29588,ctr:1.35,clicks:399,lpv:329,cplpv:1.25,ic:8,cpic:51.26,revenue:0,costPurchase:0,category:"Testes"},
+  {name:"3_TERCOS-0825_VENDAS-Base-semelhante",status:"inactive",spend:19507.58,results:181,resultType:"purchase",cpr:107.78,cpm:15.27,reach:265581,impressions:1277499,ctr:1.53,clicks:19589,lpv:15989,cplpv:1.22,ic:1099,cpic:17.75,revenue:26167.41,costPurchase:107.78,category:"Tercos"},
+  {name:"Initiate Checkout 22.09.23 | RMKT Motion Flyer",status:"inactive",spend:2828.12,results:164,resultType:"ic",cpr:17.24,cpm:24.39,reach:18590,impressions:115943,ctr:0.87,clicks:1004,lpv:729,cplpv:3.88,ic:164,cpic:17.24,revenue:2633.23,costPurchase:353.52,category:"RMKT"},
+  {name:"VENDA TERCOS 1023 | Base + Semelhante",status:"inactive",spend:884.13,results:3,resultType:"purchase",cpr:294.71,cpm:17.80,reach:17073,impressions:49668,ctr:1.63,clicks:809,lpv:677,cplpv:1.31,ic:51,cpic:17.34,revenue:796.65,costPurchase:294.71,category:"Tercos"},
+  {name:"VENDA DIRETA CSS NATAL | Base + Semelhante",status:"inactive",spend:779.73,results:0,resultType:"",cpr:0,cpm:15.61,reach:23326,impressions:49953,ctr:1.16,clicks:578,lpv:472,cplpv:1.65,ic:18,cpic:43.32,revenue:0,costPurchase:0,category:"CSS Natal"},
+  {name:"VENDA DIRETA CSS NATAL - Copia",status:"inactive",spend:844.22,results:1,resultType:"purchase",cpr:844.22,cpm:15.76,reach:21461,impressions:53571,ctr:0.96,clicks:516,lpv:421,cplpv:2.01,ic:46,cpic:18.35,revenue:222.16,costPurchase:844.22,category:"CSS Natal"},
+  {name:"VENDA DIRETA OSCAS | Base + Semelhante",status:"inactive",spend:1884.21,results:7,resultType:"purchase",cpr:269.17,cpm:10.78,reach:49431,impressions:174762,ctr:0.75,clicks:1309,lpv:1062,cplpv:1.77,ic:44,cpic:42.82,revenue:1960.57,costPurchase:269.17,category:"OSCAS"},
+  {name:"Initiate Checkout 20.02.24 | RMKT Motion Flyer",status:"inactive",spend:1610.79,results:193,resultType:"ic",cpr:8.35,cpm:20.43,reach:18556,impressions:78832,ctr:1.64,clicks:1291,lpv:973,cplpv:1.66,ic:193,cpic:8.35,revenue:8041.02,costPurchase:73.22,category:"RMKT"},
+  {name:"Venda 20.02.24 | RMKT Motion Flyer",status:"inactive",spend:279.05,results:3,resultType:"purchase",cpr:93.02,cpm:23.83,reach:6221,impressions:11711,ctr:0.66,clicks:77,lpv:61,cplpv:4.57,ic:12,cpic:23.25,revenue:1026.88,costPurchase:93.02,category:"RMKT"},
+  {name:"Venda 20.02.24 | IG 365D - Exclusao",status:"inactive",spend:166.51,results:0,resultType:"",cpr:0,cpm:11.92,reach:8561,impressions:13965,ctr:0.54,clicks:75,lpv:55,cplpv:3.03,ic:5,cpic:33.30,revenue:0,costPurchase:0,category:"RMKT"},
+  {name:"Initiate Checkout 20.04.24 | RMKT Motion Flyer",status:"inactive",spend:2056,results:275,resultType:"ic",cpr:7.48,cpm:23.48,reach:20920,impressions:87550,ctr:1.34,clicks:1173,lpv:892,cplpv:2.30,ic:275,cpic:7.48,revenue:2085.25,costPurchase:293.71,category:"RMKT"},
+  {name:"Initiate Checkout 26.06.24 | RMKT Motion Flyer",status:"inactive",spend:1516.45,results:244,resultType:"ic",cpr:6.21,cpm:17.39,reach:18072,impressions:87227,ctr:1.02,clicks:894,lpv:685,cplpv:2.21,ic:244,cpic:6.21,revenue:890.83,costPurchase:379.11,category:"RMKT"},
+  {name:"3_OSCAS-0825_VENDAS_IC-BASE",status:"inactive",spend:3767.03,results:395,resultType:"ic",cpr:9.54,cpm:16.37,reach:52489,impressions:230113,ctr:1.52,clicks:3506,lpv:2561,cplpv:1.47,ic:395,cpic:9.54,revenue:1828.83,costPurchase:269.07,category:"OSCAS"},
+  {name:"Initiate Checkout 25.09.24 | RMKT Motion Flyer",status:"inactive",spend:1380.6,results:289,resultType:"ic",cpr:4.78,cpm:21.03,reach:12027,impressions:65657,ctr:1.17,clicks:768,lpv:572,cplpv:2.41,ic:289,cpic:4.78,revenue:1695.55,costPurchase:230.10,category:"RMKT"},
+  {name:"Initiate Checkout 06.11.24 | Black RMKT",status:"inactive",spend:1297.99,results:948,resultType:"ic",cpr:1.37,cpm:24.64,reach:11573,impressions:52676,ctr:1.66,clicks:875,lpv:98,cplpv:13.24,ic:948,cpic:1.37,revenue:3162.34,costPurchase:216.33,category:"RMKT"},
+  {name:"Initiate Checkout 25.01.25 | RMKT Motion Flyer",status:"inactive",spend:1374.03,results:246,resultType:"ic",cpr:5.59,cpm:23.59,reach:10645,impressions:58235,ctr:1.53,clicks:889,lpv:648,cplpv:2.12,ic:246,cpic:5.59,revenue:3380.28,costPurchase:68.70,category:"RMKT"},
+  {name:"Initiate Checkout 26.03.25 | RMKT Motion Flyer",status:"inactive",spend:2608.84,results:296,resultType:"ic",cpr:8.81,cpm:25.24,reach:31983,impressions:103344,ctr:1.51,clicks:1562,lpv:1078,cplpv:2.42,ic:296,cpic:8.81,revenue:6852.68,costPurchase:124.23,category:"RMKT"},
+  {name:"IC OSCAS 0525 | MIX DA BASE | CD Original",status:"inactive",spend:1953.04,results:76,resultType:"ic",cpr:25.70,cpm:24.45,reach:27438,impressions:79867,ctr:2.30,clicks:1833,lpv:1336,cplpv:1.46,ic:76,cpic:25.70,revenue:964.44,costPurchase:244.13,category:"OSCAS"},
+  {name:"IC OSCAS 0525 | MIX DA BASE | CD Estaticos",status:"inactive",spend:1954.42,results:114,resultType:"ic",cpr:17.14,cpm:16.69,reach:36066,impressions:117101,ctr:1.22,clicks:1427,lpv:1029,cplpv:1.90,ic:114,cpic:17.14,revenue:548.32,costPurchase:195.44,category:"OSCAS"},
+  {name:"VENDA DIRETA TERCOS 0525 | Base + Semelhante",status:"inactive",spend:2722.72,results:5,resultType:"purchase",cpr:544.54,cpm:21.22,reach:36335,impressions:128293,ctr:1.45,clicks:1855,lpv:1295,cplpv:2.10,ic:42,cpic:64.83,revenue:955.1,costPurchase:544.54,category:"Tercos"},
+  {name:"[RMKT] IC 25.06.25 | RMKT Motion Flyer",status:"inactive",spend:1613.76,results:247,resultType:"ic",cpr:6.53,cpm:30.00,reach:8976,impressions:53791,ctr:1.55,clicks:834,lpv:566,cplpv:2.85,ic:247,cpic:6.53,revenue:2830.03,costPurchase:89.65,category:"RMKT"},
+  {name:"3_SAGRADAFAMILIA_VENDAS_TESTE (sem resultado)",status:"inactive",spend:9961.32,results:0,resultType:"",cpr:0,cpm:23.94,reach:67994,impressions:416134,ctr:2.33,clicks:9706,lpv:4718,cplpv:2.11,ic:0,cpic:0,revenue:0,costPurchase:0,category:"Sagrada Familia"},
+  {name:"3_SAGRADAFAMILIA_VENDAS_Advantage",status:"inactive",spend:23138.64,results:629,resultType:"purchase",cpr:36.79,cpm:23.91,reach:159191,impressions:967941,ctr:1.96,clicks:19015,lpv:8502,cplpv:2.72,ic:11248,cpic:2.06,revenue:22346.5,costPurchase:36.79,category:"Sagrada Familia"},
+  {name:"3_SANTARITA_VENDAS_TESTE (110 purchases)",status:"inactive",spend:3996.19,results:110,resultType:"purchase",cpr:36.33,cpm:20.91,reach:38682,impressions:191084,ctr:1.84,clicks:3512,lpv:1532,cplpv:2.61,ic:1986,cpic:2.01,revenue:2663.86,costPurchase:36.33,category:"Santa Rita"},
+  {name:"3_SAGRADAFAMILIA_Advantage (archived)",status:"archived",spend:119.46,results:0,resultType:"",cpr:0,cpm:43.85,reach:1910,impressions:2724,ctr:1.76,clicks:48,lpv:18,cplpv:6.64,ic:20,cpic:5.97,revenue:0,costPurchase:0,category:"Sagrada Familia"},
+  {name:"3_SANTARITA_VENDAS_TESTE (39 purchases)",status:"inactive",spend:3995.7,results:39,resultType:"purchase",cpr:102.45,cpm:16.30,reach:106905,impressions:245147,ctr:1.18,clicks:2896,lpv:987,cplpv:4.05,ic:1163,cpic:3.44,revenue:7166.53,costPurchase:102.45,category:"Santa Rita"},
+  {name:"1_workshop-degrade-vendas-adv",status:"inactive",spend:1411.23,results:13,resultType:"purchase",cpr:108.56,cpm:31.72,reach:9429,impressions:44488,ctr:1.81,clicks:807,lpv:30,cplpv:47.04,ic:218,cpic:6.47,revenue:257.62,costPurchase:108.56,category:"Workshop Degrade"},
+  {name:"1_workshop-degrade-vendas-adv-checkout",status:"inactive",spend:2163.78,results:23,resultType:"purchase",cpr:94.08,cpm:28.55,reach:17829,impressions:75786,ctr:2.14,clicks:1624,lpv:925,cplpv:2.34,ic:1107,cpic:1.95,revenue:1961.6,costPurchase:94.08,category:"Workshop Degrade"},
+  {name:"1_workshop-degrade-vendas-adv_97",status:"inactive",spend:351.19,results:1,resultType:"purchase",cpr:351.19,cpm:42.42,reach:3140,impressions:8279,ctr:1.22,clicks:101,lpv:3,cplpv:117.06,ic:29,cpic:12.11,revenue:39.89,costPurchase:351.19,category:"Workshop Degrade"},
+  {name:"3_worshop-degrade-vendas-vitalicio",status:"inactive",spend:1876.3,results:1,resultType:"purchase",cpr:1876.30,cpm:33.97,reach:22481,impressions:55239,ctr:2.05,clicks:1130,lpv:2,cplpv:938.15,ic:19,cpic:98.75,revenue:41.07,costPurchase:1876.30,category:"Workshop Degrade"},
+  {name:"3_SAGRADAFAMILIA_PINCELSECO_ADV (R$97)",status:"inactive",spend:5255.72,results:54,resultType:"purchase",cpr:97.33,cpm:26.33,reach:48392,impressions:199581,ctr:2.13,clicks:4253,lpv:2458,cplpv:2.14,ic:2568,cpic:2.05,revenue:17773.34,costPurchase:97.33,category:"Pincel Seco"},
+  {name:"3_SAGRADAFAMILIA_PINCELSECO_ADV (R$197)",status:"inactive",spend:1273.02,results:5,resultType:"purchase",cpr:254.60,cpm:44.09,reach:19635,impressions:28870,ctr:2.38,clicks:688,lpv:417,cplpv:3.05,ic:424,cpic:3.00,revenue:1620.84,costPurchase:254.60,category:"Pincel Seco"},
+  {name:"3_BlackFriday-Reabertura-vendas_28-11",status:"inactive",spend:946.88,results:25,resultType:"purchase",cpr:37.88,cpm:58.55,reach:5354,impressions:16173,ctr:2.59,clicks:419,lpv:0,cplpv:0,ic:42,cpic:22.54,revenue:15367,costPurchase:37.88,category:"Black Friday"},
+  {name:"3_BlackFriday-Reabertura-vendas_boleto",status:"completed",spend:937.97,results:16,resultType:"purchase",cpr:58.62,cpm:37.77,reach:8415,impressions:24834,ctr:2.43,clicks:604,lpv:88,cplpv:10.66,ic:129,cpic:7.27,revenue:8682,costPurchase:58.62,category:"Black Friday"},
+  {name:"DEN | PINSEL SECO | 97 | PURCHASE",status:"inactive",spend:2236.1,results:28,resultType:"purchase",cpr:79.86,cpm:27.70,reach:18261,impressions:80723,ctr:2.45,clicks:1979,lpv:1271,cplpv:1.76,ic:1521,cpic:1.47,revenue:4572.02,costPurchase:79.86,category:"Pincel Seco"},
+  {name:"DEN | SF VERONESE | 97 | PURCHASE",status:"inactive",spend:2238.52,results:36,resultType:"purchase",cpr:62.18,cpm:23.82,reach:22165,impressions:93984,ctr:1.91,clicks:1796,lpv:1065,cplpv:2.10,ic:1293,cpic:1.73,revenue:4003.17,costPurchase:62.18,category:"Pincel Seco"},
+  {name:"CRISTAL | PURCHASE | PRECIOSIDADES",status:"inactive",spend:3578.38,results:33,resultType:"purchase",cpr:108.44,cpm:31.66,reach:43811,impressions:113019,ctr:2.22,clicks:2511,lpv:1768,cplpv:2.02,ic:319,cpic:11.22,revenue:3477.88,costPurchase:108.44,category:"Preciosidades"},
+  {name:"CRISTAL | PURCHASE | CUSTOMIZE",status:"inactive",spend:532.49,results:5,resultType:"purchase",cpr:106.50,cpm:27.43,reach:12619,impressions:19412,ctr:1.70,clicks:330,lpv:219,cplpv:2.43,ic:27,cpic:19.72,revenue:868.46,costPurchase:106.50,category:"Customize"},
+  {name:"CURSO AO VIVO | GUADALUPE | IMG",status:"inactive",spend:717.41,results:3,resultType:"purchase",cpr:239.14,cpm:22.37,reach:20917,impressions:32071,ctr:1.69,clicks:541,lpv:376,cplpv:1.91,ic:59,cpic:12.16,revenue:207.01,costPurchase:239.14,category:"Guadalupe"},
+  {name:"CURSO AO VIVO | GUADALUPE | Purchase VDP",status:"inactive",spend:1234.44,results:5,resultType:"purchase",cpr:246.89,cpm:22.32,reach:34442,impressions:55297,ctr:1.08,clicks:597,lpv:383,cplpv:3.22,ic:57,cpic:21.66,revenue:311.24,costPurchase:246.89,category:"Guadalupe"},
+  {name:"CURSO AO VIVO | GUADALUPE | 8SEG",status:"inactive",spend:1176.05,results:3,resultType:"purchase",cpr:392.02,cpm:19.23,reach:43699,impressions:61163,ctr:1.42,clicks:866,lpv:625,cplpv:1.88,ic:51,cpic:23.06,revenue:131.79,costPurchase:392.02,category:"Guadalupe"},
+  {name:"CURSO AO VIVO | GUADALUPE | 8 SEG | LC40",status:"inactive",spend:539.94,results:6,resultType:"purchase",cpr:89.99,cpm:25.26,reach:9826,impressions:21379,ctr:1.83,clicks:392,lpv:275,cplpv:1.96,ic:50,cpic:10.80,revenue:534.23,costPurchase:89.99,category:"Guadalupe"},
+  {name:"CURSO AO VIVO | GUADALUPE | 8SEG | ROAS",status:"inactive",spend:410.83,results:3,resultType:"purchase",cpr:136.94,cpm:22.87,reach:14444,impressions:17961,ctr:0.85,clicks:152,lpv:99,cplpv:4.15,ic:11,cpic:37.35,revenue:279.93,costPurchase:136.94,category:"Guadalupe"},
+  {name:"GUADALUPE | 8SEG - Copia - Copia",status:"inactive",spend:1578.36,results:4,resultType:"purchase",cpr:394.59,cpm:32.00,reach:30560,impressions:49318,ctr:1.31,clicks:646,lpv:509,cplpv:3.10,ic:68,cpic:23.21,revenue:328.79,costPurchase:394.59,category:"Guadalupe"},
+  {name:"GUADALUPE | Purchase VDP - Copia",status:"inactive",spend:607.53,results:2,resultType:"purchase",cpr:303.77,cpm:37.17,reach:11366,impressions:16343,ctr:1.08,clicks:177,lpv:127,cplpv:4.78,ic:26,cpic:23.37,revenue:42.06,costPurchase:303.77,category:"Guadalupe"},
+  {name:"GUADALUPE | Purchase rita real 1",status:"inactive",spend:7369.1,results:68,resultType:"purchase",cpr:108.37,cpm:53.50,reach:40551,impressions:137743,ctr:2.25,clicks:3103,lpv:2541,cplpv:2.90,ic:375,cpic:19.65,revenue:7625,costPurchase:108.37,category:"Guadalupe"},
+  {name:"RITA | PURCHASE | PRECIOSIDADES 1-3",status:"active",spend:8420.9,results:80,resultType:"purchase",cpr:105.26,cpm:30.02,reach:88700,impressions:280523,ctr:1.78,clicks:5006,lpv:3680,cplpv:2.29,ic:194,cpic:43.41,revenue:12568.25,costPurchase:105.26,category:"Preciosidades"},
+  {name:"RITA | PURCHASE | PRECIOSIDADES 4-7",status:"inactive",spend:3514.55,results:30,resultType:"purchase",cpr:117.15,cpm:39.08,reach:31871,impressions:89925,ctr:2.61,clicks:2347,lpv:1741,cplpv:2.02,ic:114,cpic:30.83,revenue:3834.53,costPurchase:117.15,category:"Preciosidades"},
+  {name:"RITA | PRECIOSIDADES | ESCALA 1",status:"active",spend:9311.5,results:57,resultType:"purchase",cpr:163.36,cpm:40.19,reach:95443,impressions:231662,ctr:1.99,clicks:4608,lpv:3308,cplpv:2.81,ic:158,cpic:58.93,revenue:7742.98,costPurchase:163.36,category:"Preciosidades"},
+  {name:"RITA | PURCHASE | COMBO MINI CURSOS",status:"inactive",spend:1172.68,results:7,resultType:"purchase",cpr:167.53,cpm:37.65,reach:11900,impressions:31148,ctr:1.91,clicks:595,lpv:424,cplpv:2.77,ic:17,cpic:68.98,revenue:948.73,costPurchase:167.53,category:"Combo Mini Cursos"},
+  {name:"RITA | COMBO MINI CURSOS - Copia (ativa)",status:"active",spend:4534.77,results:33,resultType:"purchase",cpr:137.42,cpm:40.50,reach:32991,impressions:111961,ctr:1.64,clicks:1840,lpv:1181,cplpv:3.84,ic:63,cpic:71.98,revenue:6916.95,costPurchase:137.42,category:"Combo Mini Cursos"},
+  {name:"RITA | COMBO MINI CURSOS - Copia (6 vendas)",status:"inactive",spend:1066.06,results:6,resultType:"purchase",cpr:177.68,cpm:39.52,reach:12513,impressions:26974,ctr:1.76,clicks:474,lpv:324,cplpv:3.29,ic:15,cpic:71.07,revenue:1016.68,costPurchase:177.68,category:"Combo Mini Cursos"},
+  {name:"RITA | COMBO MINI CURSOS - Copia (2 vendas)",status:"inactive",spend:867.95,results:2,resultType:"purchase",cpr:433.98,cpm:38.46,reach:10990,impressions:22568,ctr:2.00,clicks:452,lpv:305,cplpv:2.85,ic:9,cpic:96.44,revenue:271.04,costPurchase:433.98,category:"Combo Mini Cursos"},
+  {name:"RITA | PRECIOSIDADES | ESCALA 1 - Copia (3 vendas)",status:"inactive",spend:790.72,results:3,resultType:"purchase",cpr:263.57,cpm:38.98,reach:13065,impressions:20286,ctr:1.50,clicks:304,lpv:233,cplpv:3.39,ic:8,cpic:98.84,revenue:416.82,costPurchase:263.57,category:"Preciosidades"},
+  {name:"RITA | PRECIOSIDADES | ESCALA 1 - Copia (ativa)",status:"active",spend:2861.26,results:22,resultType:"purchase",cpr:130.06,cpm:24.11,reach:68853,impressions:118652,ctr:1.25,clicks:1480,lpv:1055,cplpv:2.71,ic:49,cpic:58.39,revenue:4663.39,costPurchase:130.06,category:"Preciosidades"},
+  {name:"RITA | PRECIOSIDADES VIDEOS NOVOS 1-6",status:"inactive",spend:2193.35,results:0,resultType:"",cpr:0,cpm:35.20,reach:33587,impressions:62318,ctr:1.29,clicks:802,lpv:550,cplpv:3.99,ic:0,cpic:0,revenue:0,costPurchase:0,category:"Preciosidades"},
+  {name:"RITA | PRECIOSIDADES VIDEOS NOVOS lp2 marrom",status:"inactive",spend:838.91,results:0,resultType:"",cpr:0,cpm:28.86,reach:21135,impressions:29067,ctr:1.43,clicks:417,lpv:293,cplpv:2.86,ic:0,cpic:0,revenue:0,costPurchase:0,category:"Preciosidades"},
+  {name:"RITA | PRECIOSIDADES VIDEOS NOVOS lp3 vermelha",status:"inactive",spend:783.72,results:0,resultType:"",cpr:0,cpm:30.79,reach:19318,impressions:25456,ctr:1.48,clicks:376,lpv:261,cplpv:3.00,ic:0,cpic:0,revenue:0,costPurchase:0,category:"Preciosidades"},
+  {name:"VIDEO NOVO PRECIOSIDADES",status:"inactive",spend:622.75,results:3,resultType:"purchase",cpr:207.58,cpm:39.25,reach:10664,impressions:15867,ctr:1.70,clicks:270,lpv:165,cplpv:3.77,ic:7,cpic:88.96,revenue:387.65,costPurchase:207.58,category:"Preciosidades"},
+  {name:"Combo Mini Curso c/ Criativos Sagrada Familia",status:"active",spend:1727.69,results:16,resultType:"purchase",cpr:107.98,cpm:23.63,reach:35784,impressions:73121,ctr:1.48,clicks:1081,lpv:581,cplpv:2.97,ic:29,cpic:59.58,revenue:2489.14,costPurchase:107.98,category:"Combo Mini Cursos"},
+];
+
+// ============ CALCULATIONS ============
+function fmt(n) { return n.toLocaleString('pt-BR', {minimumFractionDigits:2, maximumFractionDigits:2}); }
+function fmtInt(n) { return n.toLocaleString('pt-BR'); }
+
+const activeCampaigns = campaigns.filter(c => c.spend > 0);
+const totalSpend = activeCampaigns.reduce((s,c) => s + c.spend, 0);
+const totalRevenue = activeCampaigns.reduce((s,c) => s + c.revenue, 0);
+const totalPurchases = activeCampaigns.filter(c => c.resultType === 'purchase').reduce((s,c) => s + c.results, 0);
+const totalIC = activeCampaigns.reduce((s,c) => s + c.ic, 0);
+const totalClicks = activeCampaigns.reduce((s,c) => s + c.clicks, 0);
+const totalImpressions = activeCampaigns.reduce((s,c) => s + c.impressions, 0);
+const totalReach = activeCampaigns.reduce((s,c) => s + c.reach, 0);
+const overallROAS = totalRevenue / totalSpend;
+const avgCPM = totalSpend / totalImpressions * 1000;
+const avgCPA = totalPurchases > 0 ? totalSpend / totalPurchases : 0;
+const avgCTR = activeCampaigns.filter(c=>c.ctr>0).reduce((s,c)=>s+c.ctr,0) / activeCampaigns.filter(c=>c.ctr>0).length;
+
+// Category aggregation
+const categories = {};
+activeCampaigns.forEach(c => {
+  if (!categories[c.category]) categories[c.category] = {spend:0,revenue:0,purchases:0,impressions:0,reach:0,clicks:0,ic:0,count:0};
+  const cat = categories[c.category];
+  cat.spend += c.spend;
+  cat.revenue += c.revenue;
+  if (c.resultType === 'purchase') cat.purchases += c.results;
+  cat.impressions += c.impressions;
+  cat.reach += c.reach;
+  cat.clicks += c.clicks;
+  cat.ic += c.ic;
+  cat.count++;
+});
+Object.keys(categories).forEach(k => {
+  categories[k].roas = categories[k].spend > 0 ? categories[k].revenue / categories[k].spend : 0;
+  categories[k].cpm = categories[k].impressions > 0 ? categories[k].spend / categories[k].impressions * 1000 : 0;
+  categories[k].cpa = categories[k].purchases > 0 ? categories[k].spend / categories[k].purchases : 0;
+});
+
+// ============ RENDER KPIs ============
+const kpiGrid = document.getElementById('kpiGrid');
+const kpis = [
+  {label:'Investimento Total', value:'R$ '+fmt(totalSpend), cls:'', detail:'78 campanhas'},
+  {label:'Receita Total', value:'R$ '+fmt(totalRevenue), cls:'green', detail:'Conversoes no site'},
+  {label:'ROAS Geral', value:fmt(overallROAS)+'x', cls: overallROAS >= 1 ? 'green' : 'red', detail: overallROAS >= 1 ? 'Positivo' : 'Negativo'},
+  {label:'Total Compras', value:fmtInt(totalPurchases), cls:'blue', detail:'CPA medio: R$ '+fmt(avgCPA)},
+  {label:'CPM Medio', value:'R$ '+fmt(avgCPM), cls:'yellow', detail:'Custo por mil impressoes'},
+  {label:'CTR Medio', value:fmt(avgCTR)+'%', cls:'purple', detail:'Taxa de clique no link'},
+  {label:'Alcance Total', value:fmtInt(totalReach), cls:'blue', detail:fmtInt(totalImpressions)+' impressoes'},
+  {label:'Initiate Checkouts', value:fmtInt(totalIC), cls:'yellow', detail:fmtInt(totalClicks)+' cliques totais'},
+];
+kpis.forEach(k => {
+  kpiGrid.innerHTML += `<div class="kpi-card"><div class="label">${k.label}</div><div class="value ${k.cls}">${k.value}</div><div class="detail">${k.detail}</div></div>`;
+});
+
+// ============ CHARTS ============
+const catNames = Object.keys(categories).sort((a,b) => categories[b].roas - categories[a].roas);
+const catColors = ['#60a5fa','#4ade80','#fbbf24','#f87171','#c084fc','#fb923c','#2dd4bf','#f472b6','#a78bfa','#34d399','#fca5a5','#93c5fd','#fde047'];
+
+// ROAS by Category
+new Chart(document.getElementById('chartRoasCategory'), {
+  type: 'bar',
+  data: {
+    labels: catNames,
+    datasets: [{
+      label: 'ROAS',
+      data: catNames.map(k => +categories[k].roas.toFixed(2)),
+      backgroundColor: catNames.map(k => categories[k].roas >= 1 ? '#4ade80' : '#f87171'),
+      borderRadius: 6
+    }]
+  },
+  options: {
+    indexAxis: 'y',
+    plugins: {
+      legend: {display: false},
+      annotation: {}
+    },
+    scales: {
+      x: {grid:{color:'#2d3348'}, ticks:{color:'#8b92a5'}},
+      y: {grid:{display:false}, ticks:{color:'#e1e4e8', font:{size:11}}}
+    }
+  }
+});
+
+// Spend Distribution
+new Chart(document.getElementById('chartSpendDist'), {
+  type: 'doughnut',
+  data: {
+    labels: catNames,
+    datasets: [{
+      data: catNames.map(k => +categories[k].spend.toFixed(0)),
+      backgroundColor: catColors.slice(0, catNames.length),
+      borderWidth: 0
+    }]
+  },
+  options: {
+    plugins: {
+      legend: {position:'right', labels:{color:'#e1e4e8', font:{size:11}, padding:8}}
+    }
+  }
+});
+
+// Top 10 ROAS
+const purchaseCampaigns = campaigns.filter(c => c.revenue > 0 && c.spend > 0);
+const topRoas = [...purchaseCampaigns].sort((a,b) => (b.revenue/b.spend) - (a.revenue/a.spend)).slice(0,10);
+new Chart(document.getElementById('chartTopRoas'), {
+  type: 'bar',
+  data: {
+    labels: topRoas.map(c => c.name.substring(0,40)),
+    datasets: [{
+      label: 'ROAS',
+      data: topRoas.map(c => +(c.revenue/c.spend).toFixed(2)),
+      backgroundColor: '#4ade80',
+      borderRadius: 6
+    }]
+  },
+  options: {
+    indexAxis: 'y',
+    plugins: {legend:{display:false}},
+    scales: {
+      x: {grid:{color:'#2d3348'}, ticks:{color:'#8b92a5'}},
+      y: {grid:{display:false}, ticks:{color:'#e1e4e8', font:{size:10}}}
+    }
+  }
+});
+
+// Bottom 10 ROAS
+const bottomRoas = [...purchaseCampaigns].sort((a,b) => (a.revenue/a.spend) - (b.revenue/b.spend)).slice(0,10);
+new Chart(document.getElementById('chartBottomRoas'), {
+  type: 'bar',
+  data: {
+    labels: bottomRoas.map(c => c.name.substring(0,40)),
+    datasets: [{
+      label: 'ROAS',
+      data: bottomRoas.map(c => +(c.revenue/c.spend).toFixed(2)),
+      backgroundColor: '#f87171',
+      borderRadius: 6
+    }]
+  },
+  options: {
+    indexAxis: 'y',
+    plugins: {legend:{display:false}},
+    scales: {
+      x: {grid:{color:'#2d3348'}, ticks:{color:'#8b92a5'}},
+      y: {grid:{display:false}, ticks:{color:'#e1e4e8', font:{size:10}}}
+    }
+  }
+});
+
+// Spend vs Revenue
+const catNamesSorted = Object.keys(categories).sort((a,b) => categories[b].spend - categories[a].spend);
+new Chart(document.getElementById('chartSpendVsRevenue'), {
+  type: 'bar',
+  data: {
+    labels: catNamesSorted,
+    datasets: [
+      {label:'Investimento', data: catNamesSorted.map(k => +categories[k].spend.toFixed(0)), backgroundColor:'#f87171', borderRadius:6},
+      {label:'Receita', data: catNamesSorted.map(k => +categories[k].revenue.toFixed(0)), backgroundColor:'#4ade80', borderRadius:6}
+    ]
+  },
+  options: {
+    plugins: {legend:{labels:{color:'#e1e4e8'}}},
+    scales: {
+      x: {grid:{display:false}, ticks:{color:'#e1e4e8', font:{size:11}}},
+      y: {grid:{color:'#2d3348'}, ticks:{color:'#8b92a5', callback: v => 'R$ '+v.toLocaleString('pt-BR')}}
+    }
+  }
+});
+
+// CPM by Category
+new Chart(document.getElementById('chartCPM'), {
+  type: 'bar',
+  data: {
+    labels: catNamesSorted,
+    datasets: [{
+      label: 'CPM (R$)',
+      data: catNamesSorted.map(k => +categories[k].cpm.toFixed(2)),
+      backgroundColor: catColors.slice(0, catNamesSorted.length),
+      borderRadius: 6
+    }]
+  },
+  options: {
+    plugins: {legend:{display:false}},
+    scales: {
+      x: {grid:{display:false}, ticks:{color:'#e1e4e8', font:{size:10}}},
+      y: {grid:{color:'#2d3348'}, ticks:{color:'#8b92a5'}}
+    }
+  }
+});
+
+// Purchases by Category
+const catWithPurchases = catNamesSorted.filter(k => categories[k].purchases > 0);
+new Chart(document.getElementById('chartPurchases'), {
+  type: 'bar',
+  data: {
+    labels: catWithPurchases,
+    datasets: [{
+      label: 'Compras',
+      data: catWithPurchases.map(k => categories[k].purchases),
+      backgroundColor: '#60a5fa',
+      borderRadius: 6
+    }]
+  },
+  options: {
+    plugins: {legend:{display:false}},
+    scales: {
+      x: {grid:{display:false}, ticks:{color:'#e1e4e8', font:{size:10}}},
+      y: {grid:{color:'#2d3348'}, ticks:{color:'#8b92a5'}}
+    }
+  }
+});
+
+// ============ TABLE ============
+let currentFilter = 'all';
+function renderTable(filter) {
+  const tbody = document.getElementById('campaignBody');
+  let filtered = campaigns.filter(c => c.spend > 0);
+  if (filter === 'active') filtered = filtered.filter(c => c.status === 'active');
+  if (filter === 'profitable') filtered = filtered.filter(c => c.revenue > 0 && c.revenue/c.spend >= 1);
+  if (filter === 'unprofitable') filtered = filtered.filter(c => c.revenue > 0 && c.revenue/c.spend < 1);
+  if (filter === 'highspend') filtered = filtered.filter(c => c.spend >= 3000);
+
+  tbody.innerHTML = filtered.map(c => {
+    const roas = c.spend > 0 && c.revenue > 0 ? c.revenue/c.spend : 0;
+    const roasClass = roas >= 2 ? 'roas-good' : roas >= 1 ? 'roas-ok' : 'roas-bad';
+    const statusClass = c.status === 'active' ? 'status-active' : 'status-inactive';
+    return `<tr>
+      <td title="${c.name}">${c.name.substring(0,45)}${c.name.length>45?'...':''}</td>
+      <td><span class="${statusClass}">${c.status}</span></td>
+      <td>R$ ${fmt(c.spend)}</td>
+      <td>R$ ${fmt(c.revenue)}</td>
+      <td class="${roasClass}">${roas > 0 ? fmt(roas)+'x' : '-'}</td>
+      <td>${c.resultType === 'purchase' ? c.results : '-'}</td>
+      <td>${c.costPurchase > 0 ? 'R$ '+fmt(c.costPurchase) : '-'}</td>
+      <td>R$ ${fmt(c.cpm)}</td>
+      <td>${fmt(c.ctr)}%</td>
+      <td>${fmtInt(c.reach)}</td>
+      <td>${fmtInt(c.impressions)}</td>
+      <td>${fmtInt(c.clicks)}</td>
+      <td>${c.ic > 0 ? fmtInt(c.ic) : '-'}</td>
+    </tr>`;
+  }).join('');
+}
+function filterCampaigns(filter, btn) {
+  currentFilter = filter;
+  document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
+  btn.classList.add('active');
+  renderTable(filter);
+}
+renderTable('all');
+
+let sortCol = -1, sortAsc = true;
+function sortTable(col) {
+  if (sortCol === col) sortAsc = !sortAsc;
+  else { sortCol = col; sortAsc = true; }
+  const tbody = document.getElementById('campaignBody');
+  const rows = Array.from(tbody.querySelectorAll('tr'));
+  rows.sort((a,b) => {
+    let va = a.cells[col].textContent.replace(/[R$\s.x%]/g,'').replace(',','.');
+    let vb = b.cells[col].textContent.replace(/[R$\s.x%]/g,'').replace(',','.');
+    const na = parseFloat(va), nb = parseFloat(vb);
+    if (!isNaN(na) && !isNaN(nb)) return sortAsc ? na - nb : nb - na;
+    return sortAsc ? va.localeCompare(vb) : vb.localeCompare(va);
+  });
+  rows.forEach(r => tbody.appendChild(r));
+}
+
+// ============ TABS ============
+function switchTab(tab) {
+  document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+  document.querySelectorAll('.tab-content').forEach(t => t.classList.remove('active'));
+  document.querySelector(`.tab:nth-child(${tab==='overview'?1:tab==='campaigns'?2:3})`).classList.add('active');
+  document.getElementById('tab-'+tab).classList.add('active');
+}
+
+// ============ REPORT ============
+document.getElementById('reportContent').innerHTML = `
+<h3>1. VISAO GERAL DA CONTA</h3>
+<div class="highlight">
+<strong>Periodo:</strong> Fevereiro/2023 a Marco/2026 (3 anos)<br>
+<strong>Investimento total:</strong> R$ ${fmt(totalSpend)}<br>
+<strong>Receita total:</strong> R$ ${fmt(totalRevenue)}<br>
+<strong>ROAS geral:</strong> <span class="${overallROAS >= 1 ? 'good' : 'bad'}">${fmt(overallROAS)}x</span><br>
+<strong>Total de compras:</strong> ${fmtInt(totalPurchases)} vendas<br>
+<strong>CPA medio:</strong> R$ ${fmt(avgCPA)}<br>
+<strong>Lucro bruto estimado:</strong> <span class="${totalRevenue - totalSpend >= 0 ? 'good' : 'bad'}">R$ ${fmt(totalRevenue - totalSpend)}</span>
+</div>
+
+<h3>2. O QUE FOI BOM (Campanhas Lucrativas)</h3>
+
+<div class="highlight-green">
+<strong>Black Friday (ROAS 12.76x)</strong> - Melhor performance absoluta da conta.<br>
+Investimento de apenas R$ 1.884,85 gerou R$ 24.049 em receita. CPA de R$ 37,88 a R$ 58,62. Prova que a base quente converte muito bem em periodos promocionais. A campanha com boleto tambem performou bem (ROAS 9.26x), mostrando que oferecer opcoes de pagamento funciona.
+</div>
+
+<div class="highlight-green">
+<strong>RMKT (Retargeting) - ROAS medio 2.04x</strong><br>
+As campanhas de remarketing com Initiate Checkout foram consistentemente lucrativas ao longo de todo o periodo. Destaques:
+<ul>
+<li>IC 20.02.24: ROAS 4.99x (melhor RMKT)</li>
+<li>IC Motion Flyer original: ROAS 3.76x</li>
+<li>Venda 20.02.24 RMKT: ROAS 3.68x</li>
+<li>IC 26.03.25: ROAS 2.63x</li>
+<li>IC 25.01.25: ROAS 2.46x com CPA de apenas R$ 68,70</li>
+</ul>
+O formato "Motion Flyer" para remarketing e a formula mais consistente da conta.
+</div>
+
+<div class="highlight-green">
+<strong>Pincel Seco (ROAS 2.54x)</strong><br>
+Produto de alto desempenho. A campanha principal (R$97) teve ROAS 3.38x com 54 compras. Os criativos DEN | PINSEL SECO e DEN | SF VERONESE tambem performaram bem (ROAS 2.04x e 1.79x). Este e o produto com melhor margem de escala da conta.
+</div>
+
+<div class="highlight-green">
+<strong>Tercos (ROAS 1.20x)</strong><br>
+A campanha 3_TERCOS-0825 foi a de maior volume: 181 compras com R$ 19.507 investidos e R$ 26.167 de receita (ROAS 1.34x). CPM baixo (R$ 15,27) e CTR acima da media (1.53%). Produto com boa demanda e publico bem definido.
+</div>
+
+<div class="highlight-green">
+<strong>Combo Mini Cursos (ROAS 1.24x)</strong><br>
+A copia ativa esta com ROAS 1.53x e 33 compras. O combo com criativos Sagrada Familia tambem esta positivo (ROAS 1.44x). Agrupar produtos em combo funciona para aumentar ticket medio.
+</div>
+
+<h3>3. O QUE FOI RUIM (Campanhas com Prejuizo)</h3>
+
+<div class="highlight-red">
+<strong>Workshop Degrade (ROAS 0.40x) - PIOR CATEGORIA</strong><br>
+Investimento de R$ 5.802 gerou apenas R$ 2.300 em receita. O pior caso foi "vitalicio" com ROAS 0.02x (R$ 1.876 investidos, R$ 41 de retorno). CPM alto (R$ 31-42), landing pages com baixissimo engajamento (LPV de 2-3 em campanhas com 1.000+ cliques). O produto nao converte via trafego pago.
+</div>
+
+<div class="highlight-red">
+<strong>Guadalupe / Curso ao Vivo (ROAS 0.68x)</strong><br>
+Investimento de R$ 13.881 com receita de apenas R$ 9.460. Das 9 campanhas, apenas 1 teve ROAS acima de 1 (rita real 1, com 1.03x). Foram testadas 8 segmentacoes diferentes e nenhuma encontrou product-market fit via ads. CPM muito alto em "rita real 1" (R$ 53,50). A campanha VDP Copia teve ROAS 0.07x, o pior resultado em toda a conta.
+</div>
+
+<div class="highlight-red">
+<strong>CSS Natal (ROAS 0.14x)</strong><br>
+R$ 1.623 investidos, apenas R$ 222 de receita. 1 unica compra. Produto sazonal que nao teve demanda suficiente via Meta Ads.
+</div>
+
+<div class="highlight-red">
+<strong>Sagrada Familia (ROAS 0.67x no geral)</strong><br>
+Apesar de ser o maior investimento da conta (R$ 33.219), o ROAS geral ficou abaixo de 1. A campanha Advantage teve ROAS 0.97x com 629 compras, mas a campanha de teste queimou R$ 9.961 sem nenhuma venda. O CPA de R$ 36,79 na Advantage e bom, mas o volume de receita nao cobriu o investimento total da categoria.
+</div>
+
+<div class="highlight-red">
+<strong>OSCAS (ROAS 0.55x)</strong><br>
+R$ 9.558 investidos, R$ 5.302 de receita. As campanhas de IC para OSCAS tiveram custo elevado (CPIC de R$ 9-25) e baixa conversao em venda. O CPM ate foi bom (R$ 10-16), mas o funil de conversao esta quebrado.
+</div>
+
+<div class="highlight-red">
+<strong>Preciosidades (ROAS ~1.01x)</strong><br>
+Apesar de nao ser prejuizo, R$ 32.916 investidos para gerar R$ 33.091 representa margem zero. As campanhas de escala nao escalam bem. ESCALA 1 tem ROAS 0.83x. Os testes de novos videos gastaram R$ 3.815 sem nenhuma conversao. A categoria esta no breakeven e precisa de otimizacao urgente.
+</div>
+
+<h3>4. PADROES IDENTIFICADOS</h3>
+
+<div class="highlight">
+<strong>Padrao 1: RMKT e a maquina de dinheiro</strong><br>
+Remarketing com "Motion Flyer" para quem visitou o site nos ultimos 30 dias e a estrategia mais consistente. ROAS medio 2.04x ao longo de 3 anos. Prioridade maxima manter e escalar.
+</div>
+
+<div class="highlight">
+<strong>Padrao 2: Topo de funil e caro e inconsistente</strong><br>
+Campanhas de venda direta para publico frio (base + semelhante) tem CPMs mais baixos mas CPA muito alto. Os tercos funcionam, mas outras categorias nao convertem bem no primeiro toque.
+</div>
+
+<div class="highlight">
+<strong>Padrao 3: CPM alto = sinal de alerta</strong><br>
+Campanhas com CPM acima de R$ 35 quase sempre performaram mal (Workshop Degrade, Guadalupe, Preciosidades ESCALA). CPM alto indica competicao elevada ou publico saturado.
+</div>
+
+<div class="highlight">
+<strong>Padrao 4: Copias de campanhas degradam performance</strong><br>
+Copias de campanhas vencedoras consistentemente performam pior que as originais. "COMBO MINI CURSOS" original: ROAS 0.81x, Copia ativa: 1.53x (excecao), mas as outras copias: 0.95x e 0.31x. "ESCALA 1 Copia": ROAS 0.53x vs original 0.83x.
+</div>
+
+<div class="highlight">
+<strong>Padrao 5: Orçamentos muito altos sem validacao</strong><br>
+Campanhas com orcamento diario acima de R$ 1.000 sem fase de teste tendem a queimar dinheiro (Guadalupe 8SEG com R$ 2.000/dia, workshop vitalicio com R$ 2.000 total).
+</div>
+
+<h3>5. RECOMENDACOES PARA PROXIMAS CAMPANHAS</h3>
+
+<div class="highlight-green">
+<strong>1. Dobrar o investimento em RMKT</strong><br>
+O remarketing e a unica estrategia consistentemente lucrativa. Criar variantes de Motion Flyer (novos criativos, novos angulos), segmentar por tempo de visita (7D, 14D, 30D) e testar RMKT para ICs abandonados. Meta: ROAS 2.5x+ com orcamento de R$ 500-800/dia.
+</div>
+
+<div class="highlight-green">
+<strong>2. Escalar Pincel Seco como produto principal</strong><br>
+ROAS 3.38x com ticket de R$ 97. Criar mais criativos, testar novos angulos, fazer campanha Advantage+ dedicada. Meta: triplicar o investimento de R$ 5.255 para R$ 15.000/mes mantendo ROAS acima de 2x.
+</div>
+
+<div class="highlight-green">
+<strong>3. Implementar evento Black Friday / promocional mensal</strong><br>
+ROAS 12.76x prova que a base converte com oferta forte. Criar um calendario promocional: uma oferta especial por mes para a base. Nao precisa ser desconto, pode ser bonus exclusivo.
+</div>
+
+<div class="highlight-green">
+<strong>4. Otimizar funil Preciosidades</strong><br>
+Parar campanhas de escala que nao atingem ROAS 1.2x em 7 dias. Manter apenas PRECIOSIDADES 1-3 (ROAS 1.49x) e a Copia ativa de ESCALA 1 (ROAS 1.63x). Cortar tudo que esta abaixo de 1x.
+</div>
+
+<div class="highlight">
+<strong>5. Cortar completamente: Workshop Degrade, CSS Natal, OSCAS</strong><br>
+Nenhum destes produtos tem product-market fit via Meta Ads. Workshop Degrade (ROAS 0.40x), CSS Natal (0.14x), OSCAS (0.55x). Se precisar vender estes produtos, usar email marketing ou organico, nao ads pagos.
+</div>
+
+<div class="highlight">
+<strong>6. Guadalupe: so RMKT, nunca topo de funil</strong><br>
+O curso ao vivo teve ROAS 0.68x em topo de funil. Se houver nova edicao, investir APENAS em remarketing para a base existente, nao em publico frio.
+</div>
+
+<div class="highlight">
+<strong>7. Protocolo de teste para novas campanhas</strong><br>
+<ul>
+<li>Fase 1: R$ 50-100/dia por 3-5 dias. Se ROAS < 0.5x, pausar imediatamente.</li>
+<li>Fase 2: R$ 150-300/dia por 7 dias. Se ROAS < 1x, pausar.</li>
+<li>Fase 3: Escalar apenas campanhas com ROAS > 1.5x comprovado.</li>
+<li>Nunca colocar orcamento acima de R$ 500/dia sem pelo menos 2 semanas de dados positivos.</li>
+</ul>
+</div>
+
+<div class="highlight">
+<strong>8. Diversificar criativos antes de escalar</strong><br>
+Os testes de "Videos Novos Preciosidades" gastaram R$ 3.815 sem resultado. Antes de testar novos criativos com orcamento alto, fazer teste A/B com orcamento minimo (R$ 30/dia) e so escalar o que tiver CTR > 2% e IC > 0 nos primeiros 3 dias.
+</div>
+
+<div class="highlight">
+<strong>9. Monitorar CPM como KPI principal</strong><br>
+CPM acima de R$ 30 = sinal de alerta. Campanhas com CPM alto indicam fadiga de publico ou criativo. Quando CPM subir acima de R$ 30, trocar criativos ou pausar a campanha.
+</div>
+
+<div class="highlight-green">
+<strong>10. Estrutura ideal de conta sugerida</strong><br>
+<ul>
+<li><strong>40% do budget em RMKT:</strong> Motion Flyer + variantes para visitantes 7D, 14D, 30D</li>
+<li><strong>30% em Pincel Seco:</strong> Produto campeao, escalar com novos criativos</li>
+<li><strong>15% em Tercos:</strong> Produto validado, manter campanhas vencedoras</li>
+<li><strong>10% em Combo Mini Cursos:</strong> Manter copias vencedoras (ROAS 1.53x)</li>
+<li><strong>5% em testes:</strong> Novos criativos e produtos com orcamento controlado</li>
+</ul>
+</div>
+
+<h3>6. METRICAS DAS CAMPANHAS ATIVAS</h3>
+<div class="highlight">
+As 6 campanhas atualmente ativas totalizam:<br>
+<ul>
+${campaigns.filter(c=>c.status==='active').map(c => {
+  const roas = c.revenue/c.spend;
+  return `<li><strong>${c.name}</strong>: Gasto R$ ${fmt(c.spend)} | Receita R$ ${fmt(c.revenue)} | ROAS <span class="${roas>=1?'good':'bad'}">${fmt(roas)}x</span> | ${c.results} vendas</li>`;
+}).join('')}
+</ul>
+<br>
+<strong>Acao imediata:</strong> Pausar ESCALA 1 (ROAS 0.83x, gastando R$ 360/dia) e realocar o orcamento para PRECIOSIDADES 1-3 (ROAS 1.49x) e COMBO MINI CURSOS Copia ativa (ROAS 1.53x).
+</div>
+`;
+</script>
+</body>
+</html>
