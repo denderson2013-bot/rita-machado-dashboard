@@ -940,6 +940,7 @@ function renderCharts(){
   var dailyRevCurrent = UTMIFY.revenue / 38;
   var dailySalesCurrent = UTMIFY.sales / 38;
   var ticketMedio = UTMIFY.revenue / UTMIFY.sales;
+  var weeklyConversions = Math.round(UTMIFY.sales / 38 * 7);
 
   // META: R$200k em 20 dias, ROAS 2.5x
   var META_REV = 200000;
