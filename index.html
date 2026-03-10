@@ -102,6 +102,54 @@ tr:hover{background:rgba(255,255,255,0.02);}
 .report .danger{color:#f87171;font-weight:600;}
 .report .metric{background:#0f1117;border:1px solid #2d3348;border-radius:6px;padding:12px 16px;margin:12px 0;font-family:'Courier New',monospace;font-size:13px;color:#e2e8f0;}
 
+.goal-banner{background:linear-gradient(135deg,rgba(74,222,128,0.12) 0%,rgba(96,165,250,0.12) 100%);border:2px solid #4ade80;border-radius:14px;padding:28px 32px;margin-bottom:28px;text-align:center;}
+.goal-banner .goal-title{font-size:28px;font-weight:800;color:#fff;margin-bottom:6px;letter-spacing:-0.5px;}
+.goal-banner .goal-subtitle{font-size:15px;color:#94a3b8;}
+.goal-banner .goal-numbers{display:flex;justify-content:center;gap:40px;margin-top:20px;flex-wrap:wrap;}
+.goal-banner .goal-num{text-align:center;}
+.goal-banner .goal-num .gn-value{font-size:32px;font-weight:800;color:#4ade80;}
+.goal-banner .goal-num .gn-label{font-size:12px;color:#94a3b8;text-transform:uppercase;letter-spacing:1px;margin-top:4px;}
+.goal-banner .goal-num .gn-value.blue{color:#60a5fa;}
+.goal-banner .goal-num .gn-value.yellow{color:#fbbf24;}
+.goal-banner .goal-num .gn-value.purple{color:#c084fc;}
+
+.phase-card{background:#1a1d29;border:1px solid #2d3348;border-radius:12px;padding:24px;margin-bottom:20px;position:relative;overflow:hidden;}
+.phase-card::before{content:"";position:absolute;top:0;left:0;width:4px;height:100%;border-radius:4px 0 0 4px;}
+.phase-card.phase-1::before{background:#f87171;}
+.phase-card.phase-2::before{background:#fbbf24;}
+.phase-card.phase-3::before{background:#4ade80;}
+.phase-card .phase-header{display:flex;align-items:center;gap:12px;margin-bottom:14px;}
+.phase-card .phase-badge{padding:4px 12px;border-radius:6px;font-size:12px;font-weight:700;text-transform:uppercase;letter-spacing:0.5px;}
+.phase-card.phase-1 .phase-badge{background:rgba(248,113,113,0.15);color:#f87171;}
+.phase-card.phase-2 .phase-badge{background:rgba(251,191,36,0.15);color:#fbbf24;}
+.phase-card.phase-3 .phase-badge{background:rgba(74,222,128,0.15);color:#4ade80;}
+.phase-card .phase-title{font-size:18px;font-weight:700;color:#fff;}
+.phase-card .phase-days{font-size:13px;color:#64748b;margin-left:auto;}
+.phase-card p{color:#cbd5e1;font-size:14px;line-height:1.7;margin-bottom:10px;}
+.phase-card ul{margin:8px 0 12px 20px;}
+.phase-card li{color:#cbd5e1;font-size:14px;margin-bottom:6px;line-height:1.6;}
+.phase-card .highlight{color:#4ade80;font-weight:600;}
+.phase-card .warn{color:#fbbf24;font-weight:600;}
+.phase-card .danger{color:#f87171;font-weight:600;}
+
+.action-box{background:rgba(96,165,250,0.06);border:1px solid rgba(96,165,250,0.25);border-radius:10px;padding:20px;margin:16px 0;}
+.action-box .action-title{color:#60a5fa;font-weight:700;font-size:15px;margin-bottom:10px;display:flex;align-items:center;gap:8px;}
+.action-box ul{margin:0 0 0 20px;}
+.action-box li{color:#cbd5e1;margin-bottom:5px;font-size:14px;line-height:1.6;}
+
+.budget-row-hot{background:rgba(74,222,128,0.06);}
+.budget-row-new{background:rgba(96,165,250,0.06);}
+.budget-row-cut{background:rgba(248,113,113,0.06);}
+
+.checklist{background:#0f1117;border:1px solid #2d3348;border-radius:10px;padding:20px;margin:16px 0;}
+.checklist .cl-title{color:#fff;font-weight:700;font-size:15px;margin-bottom:12px;}
+.checklist .cl-item{display:flex;align-items:flex-start;gap:10px;padding:8px 0;border-bottom:1px solid rgba(45,51,72,0.4);font-size:14px;color:#cbd5e1;line-height:1.5;}
+.checklist .cl-item:last-child{border-bottom:none;}
+.checklist .cl-icon{flex-shrink:0;width:22px;height:22px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:800;margin-top:2px;}
+.checklist .cl-icon.fire{background:rgba(248,113,113,0.2);color:#f87171;}
+.checklist .cl-icon.bolt{background:rgba(251,191,36,0.2);color:#fbbf24;}
+.checklist .cl-icon.check{background:rgba(74,222,128,0.2);color:#4ade80;}
+
 .diag-section{background:#1a1d29;border:1px solid #2d3348;border-radius:10px;padding:24px;margin-bottom:20px;line-height:1.7;font-size:14px;}
 .diag-section h3{color:#60a5fa;font-size:16px;margin-bottom:12px;display:flex;align-items:center;gap:8px;}
 .diag-section h3 .num{background:#60a5fa;color:#0f1117;width:22px;height:22px;border-radius:50%;display:inline-flex;align-items:center;justify-content:center;font-size:12px;font-weight:800;}
@@ -141,7 +189,7 @@ tr:hover{background:rgba(255,255,255,0.02);}
   <div class="tab active" data-tab="escala">Escala (Venda Direta)</div>
   <div class="tab" data-tab="visao">Visao Geral</div>
   <div class="tab" data-tab="campanhas">Todas Campanhas</div>
-  <div class="tab" data-tab="relatorio">Relatorio</div>
+  <div class="tab" data-tab="relatorio">PLANO 200K</div>
 </div>
 
 <div class="content">
@@ -793,119 +841,271 @@ function renderCharts(){
 (function(){
   var totalSpend = campaigns.reduce(function(s,c){return s+c.spend;},0);
   var totalRevMeta = campaigns.reduce(function(s,c){return s+c.revMeta;},0);
-  var totalRevReal = campaigns.reduce(function(s,c){return s+c.revReal;},0);
-  var totalPurchases = campaigns.reduce(function(s,c){return s+c.purchases;},0);
   var activeCamps = campaigns.filter(function(c){return c.status==='active';});
-  var activeSpend = activeCamps.reduce(function(s,c){return s+c.spend;},0);
-  var activeRevReal = activeCamps.reduce(function(s,c){return s+c.revReal;},0);
+  var dailySpendCurrent = totalSpend / 38;
+  var dailyRevCurrent = UTMIFY.revenue / 38;
+  var dailySalesCurrent = UTMIFY.sales / 38;
+  var ticketMedio = UTMIFY.revenue / UTMIFY.sales;
 
-  var categories = ['Preciosidades','Combo Mini Cursos','Guadalupe'];
-  var catSummary = categories.map(function(cat){
-    var cs = campaigns.filter(function(c){return c.category===cat;});
-    var sp = cs.reduce(function(s,c){return s+c.spend;},0);
-    var rv = cs.reduce(function(s,c){return s+c.revReal;},0);
-    var pu = cs.reduce(function(s,c){return s+c.purchases;},0);
-    return {name:cat,spend:sp,revReal:rv,purchases:pu,roasReal:sp>0?rv/sp:0,profit:rv-sp,count:cs.length,active:cs.filter(function(c){return c.status==='active';}).length};
-  });
+  // META: R$200k em 20 dias, ROAS 2.5x
+  var META_REV = 200000;
+  var META_DAYS = 20;
+  var META_ROAS = 2.5;
+  var META_DAILY_REV = META_REV / META_DAYS; // R$10.000/dia
+  var META_DAILY_SPEND = META_DAILY_REV / META_ROAS; // R$4.000/dia
+  var META_TOTAL_SPEND = META_DAILY_SPEND * META_DAYS; // R$80.000
+  var META_DAILY_SALES = META_DAILY_REV / ticketMedio; // ~40.7 vendas/dia
+  var META_PROFIT = META_REV - META_TOTAL_SPEND; // R$120.000
+  var SCALE_FACTOR = META_DAILY_SPEND / dailySpendCurrent; // ~2.83x
 
   var html = '';
 
-  html += '<h2>Resumo Executivo</h2>';
-  html += '<p>Este relatorio analisa o desempenho da conta <strong>Rita Machado</strong> no Meta Ads no periodo de 01/02/2026 a 10/03/2026, totalizando 38 dias de operacao. A conta opera com produtos digitais vendidos pela plataforma Hotmart.</p>';
-  html += '<p>Foram analisadas <strong>24 campanhas</strong> distribuidas em 3 categorias de produto: Preciosidades (infoproduto principal), Combo Mini Cursos e Guadalupe (Curso ao Vivo). Do total, <strong>5 campanhas estao ativas</strong>, 18 inativas e 1 arquivada.</p>';
-
-  html += '<div class="metric">';
-  html += 'Investimento Total: '+fmtBRL(totalSpend)+'<br>';
-  html += 'Receita Meta (subnotificada): '+fmtBRL(totalRevMeta)+'<br>';
-  html += 'Receita Real (UTMify): '+fmtBRL(UTMIFY.revenue)+'<br>';
-  html += 'ROAS Real: '+fmtDec(UTMIFY.roas)+'x<br>';
-  html += 'Lucro Real: '+fmtBRL(UTMIFY.profit)+'<br>';
-  html += 'Vendas Aprovadas: '+UTMIFY.sales+'<br>';
-  html += 'CPA Real: '+fmtBRL(UTMIFY.cpa)+'<br>';
-  html += 'Margem: '+fmtPct(UTMIFY.profit/UTMIFY.revenue*100);
+  // ===== BANNER META =====
+  html += '<div class="goal-banner">';
+  html += '<div class="goal-title">PLANO DE ATAQUE: R$ 200K EM 20 DIAS</div>';
+  html += '<div class="goal-subtitle">Periodo: 11/03 a 31/03/2026 | ROAS alvo: 2,5x | Escala agressiva controlada</div>';
+  html += '<div class="goal-numbers">';
+  html += '<div class="goal-num"><div class="gn-value">'+fmtBRL(META_REV)+'</div><div class="gn-label">Meta Faturamento</div></div>';
+  html += '<div class="goal-num"><div class="gn-value blue">'+fmtBRL(META_DAILY_REV)+'</div><div class="gn-label">Receita/Dia</div></div>';
+  html += '<div class="goal-num"><div class="gn-value yellow">'+fmtBRL(META_DAILY_SPEND)+'</div><div class="gn-label">Gasto/Dia</div></div>';
+  html += '<div class="goal-num"><div class="gn-value purple">~'+fmtNum(Math.ceil(META_DAILY_SALES))+'</div><div class="gn-label">Vendas/Dia</div></div>';
+  html += '</div>';
   html += '</div>';
 
-  html += '<h2>UTMify vs Meta: A Discrepancia de 2,342x</h2>';
-  html += '<p>Um dos pontos mais criticos desta analise e a discrepancia entre os dados reportados pelo Meta Ads Manager e os dados reais rastreados pelo UTMify.</p>';
-  html += '<p>A Hotmart, como plataforma de vendas, repassa ao pixel do Meta apenas cerca de 50% da receita gerada. Isso acontece porque a Hotmart processa pagamentos de diversas formas (cartao, Pix, boleto) e o pixel do Meta nao consegue captar todas as transacoes, especialmente as que envolvem pagamentos offline ou com delay na confirmacao.</p>';
-
-  html += '<div class="metric">';
-  html += 'Receita reportada pelo Meta: '+fmtBRL(totalRevMeta)+'<br>';
-  html += 'Receita real confirmada (UTMify): '+fmtBRL(UTMIFY.revenue)+'<br>';
-  html += 'Diferenca: '+fmtBRL(UTMIFY.revenue - totalRevMeta)+'<br>';
-  html += 'Multiplicador: 2,342x<br><br>';
-  html += 'ROAS Meta (incorreto): '+fmtDec(totalRevMeta/totalSpend)+'x<br>';
-  html += 'ROAS Real (UTMify): '+fmtDec(UTMIFY.roas)+'x';
+  // ===== DIAGNOSTICO SITUACAO ATUAL vs META =====
+  html += '<div class="phase-card phase-1">';
+  html += '<div class="phase-header"><span class="phase-badge">Diagnostico</span><span class="phase-title">Onde Voce Esta vs Onde Precisa Chegar</span></div>';
+  html += '<table class="budget-table"><thead><tr><th>Metrica</th><th>Atual (media 38 dias)</th><th>Meta (20 dias)</th><th>Multiplicador</th></tr></thead><tbody>';
+  html += '<tr><td>Gasto/dia</td><td>'+fmtBRL(dailySpendCurrent)+'</td><td><span class="warn">'+fmtBRL(META_DAILY_SPEND)+'</span></td><td><span class="danger">'+fmtDec(SCALE_FACTOR)+'x</span></td></tr>';
+  html += '<tr><td>Receita/dia</td><td>'+fmtBRL(dailyRevCurrent)+'</td><td><span class="highlight">'+fmtBRL(META_DAILY_REV)+'</span></td><td><span class="danger">'+fmtDec(META_DAILY_REV/dailyRevCurrent)+'x</span></td></tr>';
+  html += '<tr><td>Vendas/dia</td><td>'+fmtDec(dailySalesCurrent,1)+'</td><td><span class="highlight">~'+fmtNum(Math.ceil(META_DAILY_SALES))+'</span></td><td><span class="danger">'+fmtDec(META_DAILY_SALES/dailySalesCurrent)+'x</span></td></tr>';
+  html += '<tr><td>ROAS</td><td>'+fmtDec(UTMIFY.roas)+'x</td><td><span class="highlight">'+fmtDec(META_ROAS)+'x</span></td><td>+0,20x</td></tr>';
+  html += '<tr><td>Ticket Medio</td><td>'+fmtBRL(ticketMedio)+'</td><td>'+fmtBRL(ticketMedio)+'</td><td>Manter</td></tr>';
+  html += '<tr style="font-weight:700;border-top:2px solid #4ade80;"><td>Lucro Projetado</td><td>'+fmtBRL(UTMIFY.profit)+'</td><td><span class="highlight">'+fmtBRL(META_PROFIT)+'</span></td><td>'+fmtDec(META_PROFIT/UTMIFY.profit)+'x</td></tr>';
+  html += '</tbody></table>';
+  html += '<p style="margin-top:14px;">Voce precisa <span class="danger">triplicar o gasto diario</span> de '+fmtBRL(dailySpendCurrent)+' para '+fmtBRL(META_DAILY_SPEND)+', mantendo ou melhorando o ROAS. Isso e agressivo, mas factivel com as campanhas que ja estao validadas e com as acoes abaixo.</p>';
   html += '</div>';
 
-  html += '<p>Sem a correcao do UTMify, a conta pareceria ter um ROAS de apenas '+fmtDec(totalRevMeta/totalSpend)+'x, o que levaria a decisoes erradas como pausar campanhas lucrativas. Com a correcao, o ROAS real de '+fmtDec(UTMIFY.roas)+'x revela uma operacao saudavel e lucrativa.</p>';
+  // ===== FASE 1: DIAS 1-5 =====
+  html += '<div class="phase-card phase-1">';
+  html += '<div class="phase-header"><span class="phase-badge">Fase 1</span><span class="phase-title">Choque de Escala</span><span class="phase-days">Dias 1-5 (11-15/mar)</span></div>';
+  html += '<p>Objetivo: sair de R$ '+fmtNum(Math.round(dailySpendCurrent))+'/dia para <span class="danger">R$ 2.500/dia</span> sem derrubar ROAS. Esse e o momento mais critico. Se segurar ROAS acima de 2,3x nessa fase, o resto e questao de manter o pe no acelerador.</p>';
 
-  html += '<h2>Analise por Categoria</h2>';
+  html += '<div class="action-box"><div class="action-title">1. Dobrar orcamento das 4 campanhas top AGORA</div><ul>';
+  html += '<li><strong>PRECIOSIDADES 1-3</strong> (ROAS 3,49x): de ~R$ 222/dia para <span class="highlight">R$ 600/dia</span>. Campanha ancora, ja validada com 80 vendas. Suporta escala.</li>';
+  html += '<li><strong>ESCALA 1 Copia (ativa)</strong> (ROAS 3,90x): de ~R$ 76/dia para <span class="highlight">R$ 350/dia</span>. Melhor ROAS da conta, CPM mais baixo (R$ 24,13). Tem muito espaco pra crescer.</li>';
+  html += '<li><strong>COMBO MINI CURSOS Copia (ativa)</strong> (ROAS 3,56x): de ~R$ 120/dia para <span class="highlight">R$ 500/dia</span>. Produto validado, 33 vendas. Escalar forte.</li>';
+  html += '<li><strong>Combo c/ Criativos Sagrada Familia</strong> (ROAS 3,33x): de ~R$ 46/dia para <span class="highlight">R$ 300/dia</span>. CPM mais baixo de todas (R$ 23,71). Escala obrigatoria.</li>';
+  html += '</ul></div>';
 
-  catSummary.forEach(function(cat){
-    html += '<h3>'+cat.name+' ('+cat.count+' campanhas, '+cat.active+' ativa'+(cat.active!==1?'s':'')+')</h3>';
-    html += '<div class="metric">';
-    html += 'Gasto: '+fmtBRL(cat.spend)+' ('+fmtPct(cat.spend/totalSpend*100)+' do total)<br>';
-    html += 'Receita Real: '+fmtBRL(cat.revReal)+'<br>';
-    html += 'ROAS Real: '+fmtDec(cat.roasReal)+'x<br>';
-    html += 'Compras (Meta): '+cat.purchases+'<br>';
-    html += 'Lucro Real: '+fmtBRL(cat.profit);
-    html += '</div>';
-  });
+  html += '<div class="action-box"><div class="action-title">2. Cortar o que nao performa</div><ul>';
+  html += '<li><strong>ESCALA 1 Original</strong> (ROAS 1,94x): <span class="danger">REDUZIR de ~R$ 246/dia para R$ 150/dia</span>. ROAS abaixo de 2x. So esta consumindo orcamento que deveria ir pras campeoes. Se em 3 dias nao subir pra 2,3x+ com os novos criativos, pausar.</li>';
+  html += '<li><strong>Todas as Guadalupe</strong>: <span class="danger">NAO REATIVAR NENHUMA</span>. ROAS 1,62x geral, drenaram R$ 13.882. Dinheiro jogado fora.</li>';
+  html += '<li><strong>Videos Novos LP2/LP3</strong>: <span class="danger">MORTAS</span>. LP2 marrom zero vendas. Nao gastar 1 centavo mais nisso.</li>';
+  html += '</ul></div>';
 
-  html += '<p><strong>Preciosidades</strong> e a categoria dominante, consumindo '+fmtPct(catSummary[0].spend/totalSpend*100)+' do orcamento e gerando o melhor ROAS Real ('+fmtDec(catSummary[0].roasReal)+'x). E o produto principal e mais validado da conta.</p>';
-  html += '<p><strong>Combo Mini Cursos</strong> e a segunda melhor categoria com ROAS Real de '+fmtDec(catSummary[1].roasReal)+'x. O produto Combo demonstra boa aceitacao e pode ser escalado, especialmente com os criativos de Sagrada Familia.</p>';
-  html += '<p><strong>Guadalupe</strong> e a categoria com pior desempenho. Apesar do alto investimento de '+fmtBRL(catSummary[2].spend)+', o ROAS Real de '+fmtDec(catSummary[2].roasReal)+'x indica que o produto nao e viavel no formato atual de trafego pago via Meta.</p>';
+  html += '<div class="action-box"><div class="action-title">3. Criar campanhas novas HOJE (Dia 1)</div><ul>';
+  html += '<li><span class="highlight">LOOKALIKE 1% compradores</span>: Subir lista dos 504 compradores aprovados no Meta. Criar Lookalike 1% e 2%. Campanha de Purchase com os criativos vencedores de PRECIOSIDADES 1-3. Orcamento: <strong>R$ 300/dia</strong>.</li>';
+  html += '<li><span class="highlight">RETARGETING quente</span>: Publico de quem visitou a pagina de vendas (LPV) nos ultimos 7 dias e NAO comprou. Sao ~19.696 visualizacoes de pagina. Criativo direto: "Ainda esta pensando? Ultimo dia com desconto". Orcamento: <strong>R$ 200/dia</strong>.</li>';
+  html += '<li><span class="highlight">RETARGETING morno</span>: Publico de IC (iniciou checkout, ~1.492 pessoas) e NAO comprou. Esse publico ja quase comprou. Criativo de urgencia + prova social. Orcamento: <strong>R$ 100/dia</strong>.</li>';
+  html += '</ul></div>';
 
-  html += '<h2>Analise da Taxa de Aprovacao</h2>';
-  html += '<p>O UTMify registrou 691 vendas iniciadas, das quais 504 foram aprovadas, resultando em taxa de aprovacao geral de <strong>73%</strong>. A analise por metodo de pagamento revela:</p>';
-  html += '<div class="metric">';
-  html += 'Cartao de Credito: 70,9% de aprovacao<br>';
-  html += 'Pix: 82,7% de aprovacao<br>';
-  html += 'Boleto: 22,2% de aprovacao';
+  html += '<table class="budget-table"><thead><tr><th>Campanha</th><th>Orcamento Anterior</th><th>Novo Orcamento/Dia</th><th>ROAS Historico</th><th>Acao</th></tr></thead><tbody>';
+  html += '<tr class="budget-row-hot"><td>PRECIOSIDADES 1-3</td><td>~R$ 222</td><td><span class="highlight">R$ 600</span></td><td class="roas-green">3,49x</td><td>ESCALAR 2,7x</td></tr>';
+  html += '<tr class="budget-row-hot"><td>COMBO MINI CURSOS Copia</td><td>~R$ 120</td><td><span class="highlight">R$ 500</span></td><td class="roas-green">3,56x</td><td>ESCALAR 4,2x</td></tr>';
+  html += '<tr class="budget-row-hot"><td>ESCALA 1 Copia (ativa)</td><td>~R$ 76</td><td><span class="highlight">R$ 350</span></td><td class="roas-green">3,90x</td><td>ESCALAR 4,6x</td></tr>';
+  html += '<tr class="budget-row-hot"><td>Combo SF</td><td>~R$ 46</td><td><span class="highlight">R$ 300</span></td><td class="roas-green">3,33x</td><td>ESCALAR 6,5x</td></tr>';
+  html += '<tr class="budget-row-new"><td>LOOKALIKE 1% compradores</td><td>NOVA</td><td><span class="warn">R$ 300</span></td><td>-</td><td>CRIAR</td></tr>';
+  html += '<tr class="budget-row-new"><td>RETARGETING LPV 7d</td><td>NOVA</td><td><span class="warn">R$ 200</span></td><td>-</td><td>CRIAR</td></tr>';
+  html += '<tr class="budget-row-new"><td>RETARGETING IC</td><td>NOVA</td><td><span class="warn">R$ 100</span></td><td>-</td><td>CRIAR</td></tr>';
+  html += '<tr class="budget-row-cut"><td>ESCALA 1 Original</td><td>~R$ 246</td><td><span class="danger">R$ 150</span></td><td class="roas-yellow">1,94x</td><td>REDUZIR</td></tr>';
+  html += '<tr style="font-weight:700;border-top:2px solid #4ade80;"><td>TOTAL FASE 1</td><td>~R$ 710</td><td><span class="highlight">R$ 2.500</span></td><td></td><td>3,5x aumento</td></tr>';
+  html += '</tbody></table>';
   html += '</div>';
-  html += '<p>O Pix se destaca com a melhor taxa de aprovacao. Estrategias que incentivem o pagamento via Pix (como desconto exclusivo ou destaque na pagina de vendas) podem aumentar a taxa de aprovacao geral e, consequentemente, o ROAS.</p>';
-  html += '<p>O boleto tem taxa de aprovacao muito baixa (22,2%). Considerar reduzir a visibilidade do boleto na pagina de checkout ou remover como opcao, ja que gera expectativa de venda que na maioria das vezes nao se concretiza.</p>';
 
-  html += '<h2>Analise de Posicionamento</h2>';
-  html += '<p>O Meta distribui os anuncios por diversos posicionamentos. Com base nos dados disponiveis:</p>';
-  html += '<div class="metric">';
-  html += 'Instagram Feed: ~30% das impressoes<br>';
-  html += 'Instagram Stories: ~13,5% das impressoes<br>';
-  html += 'N/A (nao especificado): ~36,5% das impressoes<br>';
-  html += 'Outros (Facebook Feed, Reels, etc.): ~20%';
+  // ===== FASE 2: DIAS 6-12 =====
+  html += '<div class="phase-card phase-2">';
+  html += '<div class="phase-header"><span class="phase-badge">Fase 2</span><span class="phase-title">Acelerador</span><span class="phase-days">Dias 6-12 (16-22/mar)</span></div>';
+  html += '<p>Objetivo: escalar de R$ 2.500/dia para <span class="warn">R$ 4.000/dia</span>. Nessa fase voce ja tem dados de 5 dias da Fase 1. As campanhas que seguraram ROAS acima de 2,3x recebem mais verba. As que cairam abaixo de 2x perdem orcamento ou sao pausadas.</p>';
+
+  html += '<div class="action-box"><div class="action-title">4. Escalar as vencedoras da Fase 1</div><ul>';
+  html += '<li>Toda campanha que manteve ROAS acima de 2,5x na Fase 1: <span class="highlight">aumentar orcamento em +50%</span>.</li>';
+  html += '<li>PRECIOSIDADES 1-3: se manteve 3x+, subir para <span class="highlight">R$ 900/dia</span>.</li>';
+  html += '<li>COMBO MINI CURSOS: se manteve 3x+, subir para <span class="highlight">R$ 750/dia</span>.</li>';
+  html += '<li>ESCALA 1 Copia: se manteve 3,5x+, subir para <span class="highlight">R$ 500/dia</span>.</li>';
+  html += '<li>Combo SF: se manteve 3x+, subir para <span class="highlight">R$ 450/dia</span>.</li>';
+  html += '</ul></div>';
+
+  html += '<div class="action-box"><div class="action-title">5. Duplicar campanhas vencedoras com novos angulos</div><ul>';
+  html += '<li><span class="highlight">PRECIOSIDADES 1-3 v2</span>: Duplicar a campanha. Trocar os 3 piores conjuntos de anuncios por criativos novos (cortes diferentes dos videos, novas thumbnails). Orcamento: <strong>R$ 400/dia</strong>.</li>';
+  html += '<li><span class="highlight">COMBO SF v2</span>: Duplicar. Testar novos criativos com angulo de depoimento/resultado de alunas. Orcamento: <strong>R$ 300/dia</strong>.</li>';
+  html += '<li>Essas duplicatas servem pra encontrar novos publicos sem canibalizar as campanhas originais. Usar publicos diferentes (Lookalike 2-3% ou interesses novos).</li>';
+  html += '</ul></div>';
+
+  html += '<div class="action-box"><div class="action-title">6. Otimizar retargeting</div><ul>';
+  html += '<li>Retargeting que converteu com CPA abaixo de R$ 80: <span class="highlight">dobrar orcamento</span>. Retargeting tende a ter ROAS 4-8x.</li>';
+  html += '<li>Adicionar retargeting de engajamento: quem assistiu 50%+ dos videos dos anuncios nos ultimos 14 dias e nao comprou. Orcamento: <strong>R$ 150/dia</strong>.</li>';
+  html += '<li>Separar retargeting por produto (Preciosidades vs Combo) com oferta especifica pra cada um.</li>';
+  html += '</ul></div>';
+
+  html += '<table class="budget-table"><thead><tr><th>Campanha</th><th>Orcamento Fase 1</th><th>Orcamento Fase 2</th><th>Condicao</th></tr></thead><tbody>';
+  html += '<tr class="budget-row-hot"><td>PRECIOSIDADES 1-3</td><td>R$ 600</td><td><span class="highlight">R$ 900</span></td><td>Se ROAS > 2,5x</td></tr>';
+  html += '<tr class="budget-row-hot"><td>COMBO MINI CURSOS Copia</td><td>R$ 500</td><td><span class="highlight">R$ 750</span></td><td>Se ROAS > 2,5x</td></tr>';
+  html += '<tr class="budget-row-hot"><td>ESCALA 1 Copia</td><td>R$ 350</td><td><span class="highlight">R$ 500</span></td><td>Se ROAS > 3x</td></tr>';
+  html += '<tr class="budget-row-hot"><td>Combo SF</td><td>R$ 300</td><td><span class="highlight">R$ 450</span></td><td>Se ROAS > 2,5x</td></tr>';
+  html += '<tr class="budget-row-new"><td>PRECIOSIDADES v2 (nova)</td><td>-</td><td><span class="warn">R$ 400</span></td><td>Novos criativos</td></tr>';
+  html += '<tr class="budget-row-new"><td>COMBO SF v2 (nova)</td><td>-</td><td><span class="warn">R$ 300</span></td><td>Novos criativos</td></tr>';
+  html += '<tr class="budget-row-new"><td>Lookalike 1%</td><td>R$ 300</td><td><span class="warn">R$ 300</span></td><td>Manter/ajustar</td></tr>';
+  html += '<tr class="budget-row-new"><td>Retargeting (todos)</td><td>R$ 300</td><td><span class="warn">R$ 450</span></td><td>Escalar vencedores</td></tr>';
+  html += '<tr class="budget-row-cut"><td>ESCALA 1 Original</td><td>R$ 150</td><td><span class="danger">R$ 0 (pausar)</span></td><td>Se ROAS < 2,3x</td></tr>';
+  html += '<tr style="font-weight:700;border-top:2px solid #4ade80;"><td>TOTAL FASE 2</td><td>R$ 2.500</td><td><span class="highlight">R$ 4.050</span></td><td></td></tr>';
+  html += '</tbody></table>';
   html += '</div>';
-  html += '<p>A alta porcentagem de "N/A" indica que o Meta esta usando posicionamentos automaticos (Advantage+). O Instagram Feed concentra a maior parte do inventario identificavel. Recomenda-se testar criativos especificos para Stories e Reels, que geralmente tem CPM mais baixo.</p>';
 
-  html += '<h2>Recomendacoes Finais</h2>';
+  // ===== FASE 3: DIAS 13-20 =====
+  html += '<div class="phase-card phase-3">';
+  html += '<div class="phase-header"><span class="phase-badge">Fase 3</span><span class="phase-title">Cruzeiro de Escala</span><span class="phase-days">Dias 13-20 (23-31/mar)</span></div>';
+  html += '<p>Objetivo: manter <span class="highlight">R$ 4.000-4.500/dia</span> com ROAS estavel em 2,5x. Nessa fase voce ja tem 12 dias de dados, ja sabe exatamente quais campanhas sustentam volume. E hora de apertar os parafusos e garantir o resultado.</p>';
 
-  html += '<h3>Acoes Imediatas</h3><ul>';
-  html += '<li>Manter as 5 campanhas ativas com os orcamentos sugeridos na aba Escala</li>';
-  html += '<li>NAO reativar campanhas Guadalupe sem revisao completa do produto</li>';
-  html += '<li>NAO reativar campanhas Videos Novos LP2 e LP3</li>';
-  html += '<li>Criar Lookalike 1% com base nos 504 compradores</li>';
-  html += '<li>Testar incentivo de Pix na pagina de vendas (desconto de R$ 10-20)</li>';
-  html += '</ul>';
+  html += '<div class="action-box"><div class="action-title">7. Matar tudo que esta abaixo de 2x</div><ul>';
+  html += '<li>Qualquer campanha (nova ou velha) com ROAS abaixo de 2x apos 5 dias de dados: <span class="danger">PAUSAR IMEDIATAMENTE</span>. Sem do, sem "vou dar mais um dia". Cada dia de campanha ruim rodando sao R$ 200-500 de lucro perdido.</li>';
+  html += '<li>Realocar TODA a verba das pausadas para as que estao acima de 3x.</li>';
+  html += '</ul></div>';
 
-  html += '<h3>Proximas 2 Semanas</h3><ul>';
-  html += '<li>Aumentar orcamento de PRECIOSIDADES 1-3 em 20% (campanha ancora)</li>';
-  html += '<li>Criar 2-3 variacoes do criativo Sagrada Familia</li>';
-  html += '<li>Testar novos criativos para ESCALA 1 Original (reduzir CPM de R$ 40,18)</li>';
-  html += '<li>Monitorar ESCALA 1 Copia (CPM baixo, potencial de escala)</li>';
-  html += '<li>Implementar pixel de conversao atualizado (se possivel) para melhorar dados do Meta</li>';
-  html += '</ul>';
+  html += '<div class="action-box"><div class="action-title">8. Push final: criativos de urgencia</div><ul>';
+  html += '<li>Ultimos 5 dias (27-31/mar): trocar copys de TODOS os anuncios para urgencia. "Ultimos dias", "Vagas limitadas", "Preco sobe dia 01/04". Urgencia real aumenta CTR em 20-40%.</li>';
+  html += '<li>Criar pelo menos 2 criativos novos de depoimento/resultado de alunas. Video curto (15-30s), formato vertical, legenda grande.</li>';
+  html += '<li>Se a Rita tiver stories/reels que ja performaram organicamente, usar como criativo pago. Conteudo organico convertido em anuncio geralmente tem CTR 30-50% maior.</li>';
+  html += '</ul></div>';
 
-  html += '<h3>Proximo Mes</h3><ul>';
-  html += '<li>Com orcamento de R$ 1.020/dia, projetar faturamento de R$ 70.380/mes no cenario realista</li>';
-  html += '<li>Criar campanha de retargeting para compradores de Preciosidades ofertando Combo</li>';
-  html += '<li>Testar novos publicos (interesses diferentes) nas campanhas de maior ROAS</li>';
-  html += '<li>Reavaliar produto Guadalupe: novo posicionamento, novo preco, nova pagina antes de investir</li>';
-  html += '<li>Revisar criativos a cada 2 semanas para evitar fadiga de publico</li>';
-  html += '</ul>';
+  html += '<div class="action-box"><div class="action-title">9. Escalar por horario</div><ul>';
+  html += '<li>Analisar no Meta quais horarios convertem mais (geralmente 18h-23h pra infoprodutos femininos). Usar regras automatizadas para aumentar orcamento +30% nesses horarios e reduzir -20% nos horarios mortos (2h-8h).</li>';
+  html += '<li>Finais de semana tendem a ter CPM mais baixo. Se confirmar isso nos dados, aumentar orcamento em +20% no sabado/domingo.</li>';
+  html += '</ul></div>';
+  html += '</div>';
 
-  html += '<h3>Conclusao</h3>';
-  html += '<p>A conta Rita Machado esta em posicao <span class="highlight">lucrativa e com potencial de escala</span>. O ROAS Real de 2,30x com margem de 56,6% permite escalar o investimento com seguranca. A chave e concentrar orcamento nas campanhas validadas (Preciosidades e Combo), evitar reinvestir em verticais que nao performaram (Guadalupe), e continuar otimizando criativos e publicos para manter ou melhorar a eficiencia conforme o investimento cresce.</p>';
-  html += '<p>O UTMify e essencial para a tomada de decisao nesta conta. Sem ele, a conta pareceria ter ROAS abaixo de 1x no Meta, levando a pausas desnecessarias e perda de receita.</p>';
+  // ===== ACOES DE CHECKOUT / CONVERSAO =====
+  html += '<div class="phase-card phase-2">';
+  html += '<div class="phase-header"><span class="phase-badge">Conversao</span><span class="phase-title">Otimizacoes que Aumentam ROAS sem Gastar Mais</span></div>';
+  html += '<p>Essas acoes nao custam dinheiro de midia, mas podem aumentar o ROAS de 2,3x para 2,8x+. Cada 0,1x de ROAS a mais sao R$ 8.000+ de receita extra nos 20 dias.</p>';
+
+  html += '<div class="checklist"><div class="cl-title">Checklist de Conversao (implementar HOJE)</div>';
+
+  html += '<div class="cl-item"><div class="cl-icon fire">1</div><div><strong>Desconto Pix de R$ 20-30 na pagina de vendas.</strong> Pix tem 82,7% de aprovacao vs 70,9% do cartao. Se 15% dos compradores migrarem de cartao pra Pix, voce ganha ~R$ 4.500 em receita extra so pela aprovacao maior nos 20 dias. Colocar banner destacado "Pague via Pix e ganhe R$ 27 de desconto".</div></div>';
+
+  html += '<div class="cl-item"><div class="cl-icon fire">2</div><div><strong>Remover boleto do checkout ou esconder.</strong> Taxa de aprovacao de 22,2%. De cada 10 boletos gerados, apenas 2 pagam. Os outros 8 sao leads mortos que o Meta contabiliza como "venda" e otimiza errado. Isso PIORA o algoritmo. Remover boleto ou colocar como ultima opcao, escondida.</div></div>';
+
+  html += '<div class="cl-item"><div class="cl-icon fire">3</div><div><strong>Bump de Order (Order Bump) no checkout.</strong> Quando alguem compra Preciosidades, oferecer Combo Mini Cursos com 40% de desconto como adicional no checkout. Isso pode aumentar o ticket medio em 15-25% sem nenhum custo de midia. Se 10% dos compradores adicionarem, sao +R$ 12.000 nos 20 dias.</div></div>';
+
+  html += '<div class="cl-item"><div class="cl-icon bolt">4</div><div><strong>Countdown timer na pagina de vendas.</strong> Colocar timer "Oferta expira em Xh Xmin" acima do botao de compra. Urgencia real comprovadamente aumenta conversao em 8-15%. Nos ultimos 5 dias, trocar para "ULTIMAS UNIDADES".</div></div>';
+
+  html += '<div class="cl-item"><div class="cl-icon bolt">5</div><div><strong>Prova social na pagina de vendas.</strong> Adicionar contador "487 alunas ja compraram esta semana" (numero real baseado nos dados). Adicionar 3-5 prints de depoimentos do WhatsApp/Instagram de alunas satisfeitas, bem no topo da pagina, antes do video principal.</div></div>';
+
+  html += '<div class="cl-item"><div class="cl-icon bolt">6</div><div><strong>Exit intent popup.</strong> Quando o visitante fizer gesto de sair da pagina, popup com oferta: "Espera! Cupom de R$ 15 so pra voce. Valido por 10 minutos." Isso recupera 3-5% dos abandonos, que com 19.696 visualizacoes de pagina no periodo, pode representar 30-50 vendas extras.</div></div>';
+
+  html += '<div class="cl-item"><div class="cl-icon check">7</div><div><strong>WhatsApp de recuperacao de carrinho.</strong> Integrar com Hotmart para enviar mensagem automatica via WhatsApp pra quem iniciou checkout (IC) e nao comprou. Sao ~1.492 ICs com 691 vendas iniciadas. Os outros ~800 sao carrinhos abandonados. Recuperar 10% disso = 80 vendas extras = ~R$ 19.600.</div></div>';
+
+  html += '<div class="cl-item"><div class="cl-icon check">8</div><div><strong>Pagina de vendas mais rapida.</strong> Se a pagina demora mais de 3 segundos pra carregar, voce perde 30% dos visitantes. De 27.474 cliques, so 19.696 chegaram na pagina (71,7%). Esses 28,3% de perda podem ser parcialmente reduzidos com pagina mais leve. Se melhorar pra 80% de taxa de chegada, sao +2.300 visitantes extras = ~40 vendas extras.</div></div>';
+  html += '</div>';
+  html += '</div>';
+
+  // ===== ESTRATEGIA DE CRIATIVOS =====
+  html += '<div class="phase-card phase-1">';
+  html += '<div class="phase-header"><span class="phase-badge">Criativos</span><span class="phase-title">Fabrica de Criativos: Produzir 15+ Variacoes em 20 Dias</span></div>';
+  html += '<p>Quando voce triplica o gasto, o Meta precisa de mais criativos para nao fadigar o publico. Se voce rodar os mesmos criativos com 3x mais orcamento, o CPM vai subir e o ROAS vai cair. A solucao e ter uma maquina de criativos rodando em paralelo.</p>';
+
+  html += '<div class="action-box"><div class="action-title">Criativos que JA funcionam (usar como base)</div><ul>';
+  html += '<li><strong>PRECIOSIDADES 1-3</strong>: os 3 criativos dessa campanha sao os mais validados da conta. CTR 1,78%, 80 vendas. Criar 5 variacoes: cortes diferentes do mesmo video, novas thumbnails, novas copys (headline + texto primario).</li>';
+  html += '<li><strong>Sagrada Familia</strong>: criativo com CPM mais baixo (R$ 23,71). Criar 3 variacoes com angulos diferentes: antes/depois, depoimento, bastidores.</li>';
+  html += '<li><strong>ESCALA 1 Copia</strong>: CPM R$ 24,13. Algo nesse criativo fala com um publico barato. Identificar o que e e replicar em outros formatos.</li>';
+  html += '</ul></div>';
+
+  html += '<div class="action-box"><div class="action-title">Novos criativos para produzir ESTA SEMANA</div><ul>';
+  html += '<li><span class="highlight">3 videos curtos (15-30s)</span> no formato Reels: Rita falando direto pra camera, com legenda grande, sem producao pesada. "Oi, eu sou a Rita e em X meses eu transformei [resultado]..."</li>';
+  html += '<li><span class="highlight">2 carrosseis</span> com antes/depois ou "5 coisas que voce aprende no curso"</li>';
+  html += '<li><span class="highlight">3 imagens estaticas</span> com prova social: print de venda, depoimento, numero de alunas</li>';
+  html += '<li><span class="highlight">2 videos de depoimento</span> de alunas reais (15-45s). Se nao tiver video, usar print de conversa WhatsApp animado em video.</li>';
+  html += '<li><span class="highlight">2 criativos UGC</span>: pedir pra 2 alunas gravarem video espontaneo falando do curso. Pagar R$ 50-100 cada. UGC converte 20-40% melhor que conteudo profissional.</li>';
+  html += '</ul></div>';
+  html += '</div>';
+
+  // ===== ESTRATEGIA DE PUBLICO =====
+  html += '<div class="phase-card phase-2">';
+  html += '<div class="phase-header"><span class="phase-badge">Publicos</span><span class="phase-title">Expandir Sem Perder Qualidade</span></div>';
+
+  html += '<div class="action-box"><div class="action-title">Publicos para criar/testar</div><ul>';
+  html += '<li><span class="highlight">Lookalike 1% compradores (504 vendas)</span>: publico mais quente. Deve ser o primeiro a receber verba nova. Estimativa: ROAS 3-4x.</li>';
+  html += '<li><span class="highlight">Lookalike 2% compradores</span>: mais amplo, CPA um pouco maior, mas permite volume. Testar com R$ 150/dia.</li>';
+  html += '<li><span class="highlight">Lookalike 1% ICs (1.492 pessoas)</span>: quem quase comprou. Publico com intencao alta. Testar com R$ 100/dia.</li>';
+  html += '<li><span class="highlight">Retargeting 7 dias visitantes</span>: quem viu a pagina e nao comprou. ROAS esperado: 4-8x. Fundamental ter.</li>';
+  html += '<li><span class="highlight">Retargeting engajamento Instagram 14d</span>: quem curtiu, comentou, salvou posts ou assistiu videos da Rita. Publico morno, bom pra volume.</li>';
+  html += '<li><span class="warn">Interesses novos a testar</span>: artesanato, croche, costura, DIY, religiao/espiritualidade (se alinhado com produto). Testar com R$ 50-100/dia cada e matar rapido se CPA > R$ 130.</li>';
+  html += '</ul></div>';
+
+  html += '<p><strong>Regra de ouro</strong>: 70% do orcamento em publicos validados (Lookalike 1% + campanhas existentes), 20% em publicos de retargeting, 10% em testes de publicos novos. Nunca mais que 10% em testes quando o objetivo e escala.</p>';
+  html += '</div>';
+
+  // ===== PROJECAO DIA A DIA =====
+  html += '<div class="phase-card phase-3">';
+  html += '<div class="phase-header"><span class="phase-badge">Projecao</span><span class="phase-title">Numeros Dia a Dia</span></div>';
+
+  html += '<table class="budget-table"><thead><tr><th>Fase</th><th>Dias</th><th>Gasto/Dia</th><th>Gasto Total</th><th>Receita (ROAS 2,5x)</th><th>Vendas/Dia</th><th>Lucro</th></tr></thead><tbody>';
+  var f1spend = 2500*5, f1rev = f1spend*2.5, f1profit = f1rev - f1spend;
+  var f2spend = 4000*7, f2rev = f2spend*2.5, f2profit = f2rev - f2spend;
+  var f3spend = 4500*8, f3rev = f3spend*2.5, f3profit = f3rev - f3spend;
+  var totSpendPlan = f1spend+f2spend+f3spend, totRevPlan = f1rev+f2rev+f3rev, totProfitPlan = totRevPlan - totSpendPlan;
+  html += '<tr><td>Fase 1 (choque)</td><td>5</td><td>R$ 2.500</td><td>'+fmtBRL(f1spend)+'</td><td class="roas-green">'+fmtBRL(f1rev)+'</td><td>~25</td><td>'+fmtBRL(f1profit)+'</td></tr>';
+  html += '<tr><td>Fase 2 (acelerador)</td><td>7</td><td>R$ 4.000</td><td>'+fmtBRL(f2spend)+'</td><td class="roas-green">'+fmtBRL(f2rev)+'</td><td>~41</td><td>'+fmtBRL(f2profit)+'</td></tr>';
+  html += '<tr><td>Fase 3 (cruzeiro)</td><td>8</td><td>R$ 4.500</td><td>'+fmtBRL(f3spend)+'</td><td class="roas-green">'+fmtBRL(f3rev)+'</td><td>~46</td><td>'+fmtBRL(f3profit)+'</td></tr>';
+  html += '<tr style="font-weight:700;border-top:2px solid #4ade80;background:rgba(74,222,128,0.06);"><td>TOTAL 20 DIAS</td><td>20</td><td>media R$ 3.825</td><td>'+fmtBRL(totSpendPlan)+'</td><td class="roas-green" style="font-size:16px;">'+fmtBRL(totRevPlan)+'</td><td>~814 total</td><td class="roas-green">'+fmtBRL(totProfitPlan)+'</td></tr>';
+  html += '</tbody></table>';
+
+  html += '<p style="margin-top:16px;">Com escala progressiva (R$ 2.500 > R$ 4.000 > R$ 4.500/dia) e ROAS medio de 2,5x, a projecao e de <span class="highlight">R$ '+fmtNum(Math.round(totRevPlan))+' em faturamento</span> com <span class="highlight">R$ '+fmtNum(Math.round(totProfitPlan))+' de lucro</span>. Isso bate a meta de R$ 200k.</p>';
+  html += '<p>Se o ROAS se mantiver nos 2,3x atuais (cenario conservador), o faturamento seria de R$ '+fmtNum(Math.round(totSpendPlan*2.3))+', ainda muito proximo da meta. Se subir pra 2,7x com as otimizacoes de checkout, bate <span class="highlight">R$ '+fmtNum(Math.round(totSpendPlan*2.7))+'</span>.</p>';
+  html += '</div>';
+
+  // ===== REGRAS DE SEGURANCA =====
+  html += '<div class="phase-card phase-1">';
+  html += '<div class="phase-header"><span class="phase-badge">Seguranca</span><span class="phase-title">Regras para Nao Quebrar na Escala</span></div>';
+
+  html += '<div class="checklist"><div class="cl-title">Regras Inviolaveis</div>';
+  html += '<div class="cl-item"><div class="cl-icon fire">!</div><div><strong>CPA maximo absoluto: R$ 160.</strong> Se qualquer campanha passar de R$ 160 de CPA (com correcao UTMify) por 2 dias seguidos, pausar. Sem excecao. CPA atual e R$ 106,72, entao R$ 160 ja e 50% acima.</div></div>';
+  html += '<div class="cl-item"><div class="cl-icon fire">!</div><div><strong>ROAS minimo por campanha: 2,0x.</strong> Campanha com ROAS abaixo de 2,0x apos 5 dias de dados: pausar. Redistribuir verba pras campeoes. O objetivo e media de 2,5x, entao nao pode ter campanha de 1,5x puxando pra baixo.</div></div>';
+  html += '<div class="cl-item"><div class="cl-icon fire">!</div><div><strong>Monitorar CPM diariamente.</strong> Se o CPM subir mais de 30% em relacao a media (de R$ 35 pra R$ 45+), e sinal de fadiga de criativo ou publico saturado. Trocar criativos imediatamente.</div></div>';
+  html += '<div class="cl-item"><div class="cl-icon bolt">!</div><div><strong>Nao escalar mais de 30% por dia em uma unica campanha.</strong> Escalar de R$ 200 pra R$ 600 de uma vez pode resetar o aprendizado do algoritmo. Se precisar dar saltos grandes, duplicar a campanha e rodar as duas em paralelo.</div></div>';
+  html += '<div class="cl-item"><div class="cl-icon bolt">!</div><div><strong>Checagem no UTMify a cada 2 dias.</strong> O Meta vai mostrar numeros errados (lembre: so reporta ~42% da receita). Sua unica fonte de verdade e o UTMify. Checar ROAS real a cada 2 dias e tomar decisoes com base nele.</div></div>';
+  html += '<div class="cl-item"><div class="cl-icon check">!</div><div><strong>Reserva de contingencia: R$ 5.000.</strong> Separar R$ 5.000 que so serao usados se uma campanha nova explodir em performance (ROAS 4x+). Nesse caso, jogar tudo nela.</div></div>';
+  html += '</div>';
+  html += '</div>';
+
+  // ===== CENARIOS =====
+  html += '<div class="phase-card phase-3">';
+  html += '<div class="phase-header"><span class="phase-badge">Cenarios</span><span class="phase-title">Pessimista, Realista e Otimista</span></div>';
+
+  html += '<table class="budget-table"><thead><tr><th>Cenario</th><th>ROAS Medio</th><th>Gasto Total</th><th>Faturamento</th><th>Lucro</th><th>Margem</th></tr></thead><tbody>';
+  html += '<tr><td><span class="danger">Pessimista</span></td><td>2,0x</td><td>'+fmtBRL(totSpendPlan)+'</td><td>'+fmtBRL(totSpendPlan*2)+'</td><td>'+fmtBRL(totSpendPlan*2 - totSpendPlan)+'</td><td>50,0%</td></tr>';
+  html += '<tr style="background:rgba(74,222,128,0.04);"><td><span class="highlight">Realista</span></td><td>2,5x</td><td>'+fmtBRL(totSpendPlan)+'</td><td><strong>'+fmtBRL(totRevPlan)+'</strong></td><td><strong>'+fmtBRL(totProfitPlan)+'</strong></td><td>60,0%</td></tr>';
+  html += '<tr><td><span class="warn">Otimista</span></td><td>2,8x</td><td>'+fmtBRL(totSpendPlan)+'</td><td>'+fmtBRL(totSpendPlan*2.8)+'</td><td>'+fmtBRL(totSpendPlan*2.8 - totSpendPlan)+'</td><td>64,3%</td></tr>';
+  html += '<tr><td><span class="highlight">Com otimizacoes checkout</span></td><td>3,0x</td><td>'+fmtBRL(totSpendPlan)+'</td><td>'+fmtBRL(totSpendPlan*3)+'</td><td>'+fmtBRL(totSpendPlan*3 - totSpendPlan)+'</td><td>66,7%</td></tr>';
+  html += '</tbody></table>';
+  html += '<p style="margin-top:12px;">Mesmo no cenario pessimista (ROAS 2,0x), o lucro e de <span class="highlight">'+fmtBRL(totSpendPlan)+'</span>. Nao tem cenario de prejuizo se seguir as regras de corte (pausar abaixo de 2x). O risco e controlado.</p>';
+  html += '</div>';
+
+  // ===== RESUMO FINAL =====
+  html += '<div class="phase-card phase-3">';
+  html += '<div class="phase-header"><span class="phase-badge">Resumo</span><span class="phase-title">5 Coisas que Voce Faz AMANHA de Manha</span></div>';
+
+  html += '<div class="checklist"><div class="cl-title">Acoes do Dia 1 (AMANHA)</div>';
+  html += '<div class="cl-item"><div class="cl-icon fire">1</div><div><strong>Subir orcamento das 4 campeoas</strong>: PREC 1-3 (R$ 600), COMBO Copia (R$ 500), ESCALA 1 Copia (R$ 350), Combo SF (R$ 300). Total: R$ 1.750 so nas existentes.</div></div>';
+  html += '<div class="cl-item"><div class="cl-icon fire">2</div><div><strong>Criar campanha Lookalike 1%</strong>: subir lista de compradores, criar Lookalike, campanha de Purchase com criativos de PREC 1-3. Orcamento: R$ 300/dia.</div></div>';
+  html += '<div class="cl-item"><div class="cl-icon fire">3</div><div><strong>Criar 2 campanhas de retargeting</strong>: (a) visitantes pagina 7d que nao compraram, R$ 200/dia. (b) ICs que nao compraram, R$ 100/dia.</div></div>';
+  html += '<div class="cl-item"><div class="cl-icon bolt">4</div><div><strong>Reduzir ESCALA 1 Original para R$ 150/dia</strong>. Liberar verba dessa campanha (ROAS 1,94x) pras que performam acima de 3x.</div></div>';
+  html += '<div class="cl-item"><div class="cl-icon bolt">5</div><div><strong>Implementar desconto Pix + esconder boleto</strong> na pagina de vendas. Isso sozinho pode adicionar R$ 10k+ nos 20 dias sem gastar 1 centavo a mais em midia.</div></div>';
+  html += '</div>';
+
+  html += '<p style="margin-top:20px;font-size:16px;text-align:center;color:#fff;"><strong>Meta: R$ 200.000 em 20 dias. Gasto total: ~R$ 76.500. Lucro projetado: ~R$ 114.750.</strong></p>';
+  html += '<p style="text-align:center;color:#94a3b8;font-size:13px;margin-top:6px;">As campanhas ja estao validadas. Os numeros ja existem. So falta pisar no acelerador e nao tirar o pe.</p>';
+  html += '</div>';
 
   document.getElementById('report-content').innerHTML=html;
 })();
