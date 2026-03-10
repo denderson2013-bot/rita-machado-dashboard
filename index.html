@@ -150,6 +150,53 @@ tr:hover{background:rgba(255,255,255,0.02);}
 .checklist .cl-icon.bolt{background:rgba(251,191,36,0.2);color:#fbbf24;}
 .checklist .cl-icon.check{background:rgba(74,222,128,0.2);color:#4ade80;}
 
+.andro-banner{background:linear-gradient(135deg,rgba(139,92,246,0.15) 0%,rgba(96,165,250,0.10) 50%,rgba(74,222,128,0.08) 100%);border:2px solid #8b5cf6;border-radius:14px;padding:28px 32px;margin-bottom:28px;}
+.andro-banner .andro-title{font-size:26px;font-weight:800;color:#fff;margin-bottom:4px;letter-spacing:-0.5px;}
+.andro-banner .andro-sub{font-size:14px;color:#a78bfa;margin-bottom:16px;}
+.andro-banner p{color:#cbd5e1;font-size:14px;line-height:1.7;margin-bottom:0;}
+
+.vs-grid{display:grid;grid-template-columns:1fr auto 1fr;gap:0;margin:20px 0;align-items:stretch;}
+.vs-card{background:#1a1d29;border:1px solid #2d3348;border-radius:10px;padding:20px;}
+.vs-card h4{font-size:15px;font-weight:700;margin-bottom:12px;}
+.vs-card.bad{border-color:rgba(248,113,113,0.3);}
+.vs-card.bad h4{color:#f87171;}
+.vs-card.good{border-color:rgba(74,222,128,0.3);}
+.vs-card.good h4{color:#4ade80;}
+.vs-divider{display:flex;align-items:center;justify-content:center;font-size:24px;font-weight:800;color:#64748b;padding:0 16px;}
+.vs-card ul{margin:0 0 0 16px;}
+.vs-card li{color:#cbd5e1;font-size:13px;margin-bottom:5px;line-height:1.5;}
+
+.struct-box{background:#0f1117;border:2px solid #8b5cf6;border-radius:12px;padding:24px;margin:20px 0;text-align:center;}
+.struct-box .struct-title{color:#8b5cf6;font-size:13px;font-weight:700;text-transform:uppercase;letter-spacing:1px;margin-bottom:16px;}
+.struct-flow{display:flex;align-items:center;justify-content:center;gap:12px;flex-wrap:wrap;}
+.struct-node{background:#1a1d29;border:1px solid #2d3348;border-radius:8px;padding:12px 18px;text-align:center;min-width:120px;}
+.struct-node .sn-label{font-size:10px;color:#94a3b8;text-transform:uppercase;letter-spacing:0.5px;}
+.struct-node .sn-value{font-size:16px;font-weight:700;margin-top:4px;}
+.struct-node.purple .sn-value{color:#c084fc;}
+.struct-node.blue .sn-value{color:#60a5fa;}
+.struct-node.green .sn-value{color:#4ade80;}
+.struct-node.yellow .sn-value{color:#fbbf24;}
+.struct-arrow{color:#64748b;font-size:20px;flex-shrink:0;}
+
+.entity-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:12px;margin:16px 0;}
+.entity-card{background:#1a1d29;border:1px solid #2d3348;border-radius:8px;padding:14px;text-align:center;}
+.entity-card .ec-icon{font-size:24px;margin-bottom:6px;}
+.entity-card .ec-title{font-size:13px;font-weight:700;color:#fff;margin-bottom:4px;}
+.entity-card .ec-desc{font-size:12px;color:#94a3b8;line-height:1.4;}
+
+.problem-box{background:rgba(248,113,113,0.06);border:1px solid rgba(248,113,113,0.25);border-radius:10px;padding:20px;margin:16px 0;}
+.problem-box .problem-title{color:#f87171;font-weight:700;font-size:15px;margin-bottom:10px;}
+.problem-box p{color:#cbd5e1;font-size:14px;line-height:1.7;margin-bottom:8px;}
+.problem-box ul{margin:8px 0 0 20px;}
+.problem-box li{color:#cbd5e1;font-size:14px;margin-bottom:5px;line-height:1.6;}
+
+@media(max-width:768px){
+  .vs-grid{grid-template-columns:1fr;gap:12px;}
+  .vs-divider{padding:8px 0;transform:rotate(90deg);}
+  .struct-flow{flex-direction:column;}
+  .struct-arrow{transform:rotate(90deg);}
+}
+
 .diag-section{background:#1a1d29;border:1px solid #2d3348;border-radius:10px;padding:24px;margin-bottom:20px;line-height:1.7;font-size:14px;}
 .diag-section h3{color:#60a5fa;font-size:16px;margin-bottom:12px;display:flex;align-items:center;gap:8px;}
 .diag-section h3 .num{background:#60a5fa;color:#0f1117;width:22px;height:22px;border-radius:50%;display:inline-flex;align-items:center;justify-content:center;font-size:12px;font-weight:800;}
@@ -190,6 +237,7 @@ tr:hover{background:rgba(255,255,255,0.02);}
   <div class="tab" data-tab="visao">Visao Geral</div>
   <div class="tab" data-tab="campanhas">Todas Campanhas</div>
   <div class="tab" data-tab="relatorio">PLANO 200K</div>
+  <div class="tab" data-tab="andromeda">ANDROMEDA</div>
 </div>
 
 <div class="content">
@@ -245,6 +293,11 @@ tr:hover{background:rgba(255,255,255,0.02);}
 <!-- TAB 4: RELATORIO -->
 <div class="tab-content" id="tab-relatorio">
   <div class="report" id="report-content"></div>
+</div>
+
+<!-- TAB 5: ANDROMEDA -->
+<div class="tab-content" id="tab-andromeda">
+  <div class="report" id="andromeda-content"></div>
 </div>
 
 </div>
@@ -1108,6 +1161,286 @@ function renderCharts(){
   html += '</div>';
 
   document.getElementById('report-content').innerHTML=html;
+})();
+
+
+// ==================== TAB 5: ANDROMEDA ====================
+
+(function(){
+  var totalCampaigns = campaigns.length;
+  var activeCamps = campaigns.filter(function(c){return c.status==='active';});
+  var activeAdSets = activeCamps.length;
+  var weeklyConversions = Math.round(UTMIFY.sales / 38 * 7); // vendas por semana
+  var cpaAlvo = 107;
+  var minDailyBudget = Math.round((cpaAlvo * 50) / 7);
+
+  var html = '';
+
+  // ===== BANNER ANDROMEDA =====
+  html += '<div class="andro-banner">';
+  html += '<div class="andro-title">META ANDROMEDA: A Nova Regra do Jogo</div>';
+  html += '<div class="andro-sub">Sistema de IA de entrega de anuncios lancado em 2024, rollout global concluido em outubro/2025</div>';
+  html += '<p>O Andromeda e o motor de machine learning da Meta que mudou completamente como anuncios sao entregues. Antes, a segmentacao de publico era o fator principal. Agora, <strong>o criativo E o targeting</strong>. O sistema analisa elementos visuais, temas, linguagem e hooks para decidir pra quem mostrar seu anuncio, independente dos interesses que voce selecionou. Isso tem uma implicacao direta na sua conta: a forma como voce estrutura campanhas precisa mudar.</p>';
+  html += '</div>';
+
+  // ===== COMO FUNCIONA =====
+  html += '<div class="phase-card phase-2">';
+  html += '<div class="phase-header"><span class="phase-badge">Sistema</span><span class="phase-title">Como o Andromeda Funciona (e Por Que Importa)</span></div>';
+
+  html += '<p>Quando alguem abre o Instagram ou Facebook, o Andromeda faz o trabalho em 2 estagios:</p>';
+
+  html += '<div class="struct-box"><div class="struct-title">Pipeline de Entrega do Andromeda</div>';
+  html += '<div class="struct-flow">';
+  html += '<div class="struct-node purple"><div class="sn-label">Pool Total</div><div class="sn-value">Milhoes de anuncios</div></div>';
+  html += '<div class="struct-arrow">&#9654;</div>';
+  html += '<div class="struct-node blue"><div class="sn-label">Estagio 1: Retrieval</div><div class="sn-value">~1.000 anuncios</div></div>';
+  html += '<div class="struct-arrow">&#9654;</div>';
+  html += '<div class="struct-node yellow"><div class="sn-label">Estagio 2: Leilao</div><div class="sn-value">Ranking por eCPM</div></div>';
+  html += '<div class="struct-arrow">&#9654;</div>';
+  html += '<div class="struct-node green"><div class="sn-label">Resultado</div><div class="sn-value">1 anuncio exibido</div></div>';
+  html += '</div>';
+  html += '</div>';
+
+  html += '<p><strong>Estagio 1 (Retrieval):</strong> De milhoes de anuncios candidatos, o Andromeda filtra para ~1.000 usando redes neurais que comparam seu criativo com o perfil do usuario. Se seu anuncio nao passa dessa fase, <span class="danger">ele NUNCA entra no leilao, independente do seu orcamento</span>. Voce pode colocar R$ 10.000/dia, mas se o Andromeda decidir que seu criativo nao e relevante, ele simplesmente nao existe.</p>';
+
+  html += '<p><strong>Estagio 2 (Leilao):</strong> Somente os ~1.000 anuncios que passaram pelo retrieval competem no leilao tradicional. Aqui sim, lance e relevancia determinam quem aparece.</p>';
+
+  html += '<p style="margin-top:12px;"><strong>Resultado pratico:</strong> O Andromeda aumentou em +6% o recall (encontrar anuncios relevantes) e +8% a qualidade dos anuncios entregues. Junto com o GEM (Generative Ads Model), gerou +5% em conversoes no Instagram e +3% no Facebook Feed.</p>';
+  html += '</div>';
+
+  // ===== POR QUE SEU CPA SOBE AO ESCALAR =====
+  html += '<div class="phase-card phase-1">';
+  html += '<div class="phase-header"><span class="phase-badge">Problema</span><span class="phase-title">Por Que Seu CPA Sobe Quando Voce Escala Orcamento</span></div>';
+
+  html += '<p>Voce relatou que sempre que escala o orcamento, o CPA aumenta. Isso acontece por 4 motivos especificos, todos relacionados ao Andromeda:</p>';
+
+  html += '<div class="problem-box"><div class="problem-title">1. Reset da Learning Phase</div>';
+  html += '<p>Quando voce aumenta o orcamento abruptamente (ex: de R$ 200 pra R$ 600 de uma vez), o Meta <strong>reinicia a fase de aprendizado</strong>. O algoritmo precisa recalibrar os modelos preditivos pro novo volume, e durante esse periodo (5-7 dias), a entrega e ineficiente. CPA dispara.</p>';
+  html += '<p><span class="highlight">Solucao:</span> Aumentar no maximo 20-25% a cada 48-72 horas. De R$ 200 pra R$ 250, esperar 3 dias, depois R$ 310, esperar 3 dias, e assim por diante.</p>';
+  html += '</div>';
+
+  html += '<div class="problem-box"><div class="problem-title">2. Fadiga Criativa (o maior problema da sua conta)</div>';
+  html += '<p>Ao escalar, a frequencia aumenta: os mesmos criativos sao mostrados mais vezes pro mesmo publico. O CTR cai, o CPM sobe, o CPA explode. Na sua conta, as 5 campanhas ativas usam um numero limitado de criativos. Quando voce dobra o orcamento, o Meta precisa mostrar esses mesmos criativos pra audiencias maiores e menos qualificadas.</p>';
+  html += '<p><span class="highlight">Solucao:</span> Antes de escalar, ter 10-20 criativos genuinamente diferentes (Entity IDs unicos, explicado abaixo). Escalar orcamento SEM escalar criativos e receita de CPA alto.</p>';
+  html += '</div>';
+
+  html += '<div class="problem-box"><div class="problem-title">3. Competicao Interna (Audience Overlap)</div>';
+  html += '<p>Voce tem 5 campanhas ativas disputando o mesmo publico. PRECIOSIDADES 1-3, ESCALA 1, ESCALA 1 Copia, e ate as de Combo competem entre si. O Meta gasta energia (e seu dinheiro) decidindo qual das SUAS campanhas exibir pro mesmo usuario. Isso inflaciona o CPM e desperica orcamento.</p>';
+  html += '<p><span class="highlight">Solucao:</span> Consolidar campanhas. Menos campanhas, mais criativos por campanha. O Andromeda funciona melhor com dados concentrados.</p>';
+  html += '</div>';
+
+  html += '<div class="problem-box"><div class="problem-title">4. Dados Diluidos (Data Density baixa)</div>';
+  html += '<p>Com 24 campanhas (5 ativas + 19 que rodaram parte do periodo), os dados de conversao ficam diluidos. Cada campanha recebe poucas vendas por semana. O Andromeda precisa de <strong>no minimo 50 conversoes por semana por ad set</strong> pra otimizar bem. Suas campanhas individuais geram muito menos que isso.</p>';
+  html += '<p>Conta rapida: '+UTMIFY.sales+' vendas em 38 dias = ~'+weeklyConversions+' vendas/semana. Divididas entre 5 campanhas ativas = ~'+Math.round(weeklyConversions/5)+' vendas/semana/campanha. Isso e <span class="danger">muito abaixo do minimo de 50</span>.</p>';
+  html += '<p><span class="highlight">Solucao:</span> Consolidar tudo em 1-2 campanhas para que cada uma receba 50+ conversoes/semana.</p>';
+  html += '</div>';
+  html += '</div>';
+
+  // ===== ANTES vs DEPOIS =====
+  html += '<div class="phase-card phase-3">';
+  html += '<div class="phase-header"><span class="phase-badge">Estrutura</span><span class="phase-title">Sua Conta Atual vs Estrutura Andromeda</span></div>';
+
+  html += '<div class="vs-grid">';
+  html += '<div class="vs-card bad"><h4>SUA CONTA HOJE (Fragmentada)</h4><ul>';
+  html += '<li>24 campanhas criadas no periodo</li>';
+  html += '<li>5 campanhas ativas simultaneamente</li>';
+  html += '<li>Cada campanha = 1 ad set com poucos criativos</li>';
+  html += '<li>PRECIOSIDADES fragmentada em 7 campanhas separadas</li>';
+  html += '<li>COMBO fragmentado em 5 campanhas separadas</li>';
+  html += '<li>~'+Math.round(weeklyConversions/5)+' conversoes/semana/campanha (precisa de 50+)</li>';
+  html += '<li>Campanhas competindo entre si pelo mesmo publico</li>';
+  html += '<li>Escalar = aumentar orcamento da campanha individual = CPA sobe</li>';
+  html += '</ul></div>';
+  html += '<div class="vs-divider">VS</div>';
+  html += '<div class="vs-card good"><h4>ESTRUTURA ANDROMEDA (Consolidada)</h4><ul>';
+  html += '<li>2-3 campanhas no total (Escala + Teste + Retargeting)</li>';
+  html += '<li>1 ad set broad por campanha (CBO)</li>';
+  html += '<li>10-20 criativos genuinamente unicos por campanha</li>';
+  html += '<li>TODOS os criativos de Preciosidades em 1 campanha</li>';
+  html += '<li>TODOS os criativos de Combo em 1 campanha</li>';
+  html += '<li>~'+weeklyConversions+'+ conversoes/semana concentradas (saida rapida da learning phase)</li>';
+  html += '<li>Zero competicao interna</li>';
+  html += '<li>Escalar = mais criativos + orcamento gradual = CPA estavel</li>';
+  html += '</ul></div>';
+  html += '</div>';
+
+  html += '<p style="margin-top:16px;">Teste interno da Meta: 1 ad set com 25 criativos gerou <span class="highlight">17% mais conversoes a 16% menos custo</span> comparado com 5 ad sets com 5 criativos cada. Anunciantes que adotaram a estrutura consolidada reportam 20-35% mais ROAS.</p>';
+  html += '</div>';
+
+  // ===== NOVA ESTRUTURA PROPOSTA =====
+  html += '<div class="phase-card phase-2">';
+  html += '<div class="phase-header"><span class="phase-badge">Proposta</span><span class="phase-title">Nova Estrutura de Campanhas (Aplicada a Rita Machado)</span></div>';
+
+  html += '<div class="struct-box"><div class="struct-title">Estrutura Learn & Earn</div>';
+  html += '<div class="struct-flow">';
+  html += '<div class="struct-node yellow"><div class="sn-label">Campanha 1 (ABO)</div><div class="sn-value">TESTE</div></div>';
+  html += '<div class="struct-arrow">&#9654;</div>';
+  html += '<div class="struct-node green"><div class="sn-label">Campanha 2 (CBO)</div><div class="sn-value">ESCALA</div></div>';
+  html += '<div class="struct-arrow">&#9654;</div>';
+  html += '<div class="struct-node purple"><div class="sn-label">Campanha 3 (CBO)</div><div class="sn-value">RETARGETING</div></div>';
+  html += '</div>';
+  html += '</div>';
+
+  html += '<table class="budget-table"><thead><tr><th>Campanha</th><th>Tipo</th><th>Objetivo</th><th>Ad Sets</th><th>Criativos</th><th>Orcamento</th><th>Publico</th></tr></thead><tbody>';
+
+  html += '<tr class="budget-row-new"><td><strong>LEARN (Teste)</strong></td><td>ABO</td><td>Testar criativos novos</td><td>3-5 (1 criativo cada)</td><td>3-5 conceitos novos</td><td>R$ 50-80/ad set</td><td>Broad (sem interesses)</td></tr>';
+
+  html += '<tr class="budget-row-hot"><td><strong>EARN (Escala Preciosidades)</strong></td><td>CBO</td><td>Escalar vencedores validados</td><td>1 (broad)</td><td>10-15 criativos vencedores</td><td>R$ 2.000-3.000/dia</td><td>Broad ou Lookalike 1%</td></tr>';
+
+  html += '<tr class="budget-row-hot"><td><strong>EARN (Escala Combo)</strong></td><td>CBO</td><td>Escalar vencedores validados</td><td>1 (broad)</td><td>8-12 criativos vencedores</td><td>R$ 800-1.500/dia</td><td>Broad ou Lookalike 1%</td></tr>';
+
+  html += '<tr class="budget-row-new"><td><strong>RETARGETING</strong></td><td>CBO</td><td>Converter quem ja visitou</td><td>2-3 (por temp. de engajamento)</td><td>5-8 criativos de urgencia</td><td>R$ 300-500/dia</td><td>Visitantes LP 7d, IC 14d, Engajamento 30d</td></tr>';
+
+  html += '<tr style="font-weight:700;border-top:2px solid #8b5cf6;"><td>TOTAL</td><td></td><td></td><td>7-10 ad sets</td><td>26-40 criativos</td><td>R$ 3.400-5.300/dia</td><td></td></tr>';
+  html += '</tbody></table>';
+
+  html += '<div class="action-box"><div class="action-title">Como funciona o fluxo Learn & Earn</div><ul>';
+  html += '<li><strong>LEARN (ABO):</strong> Voce testa criativos novos com orcamento igual por ad set (R$ 50-80 cada). Cada ad set tem 1 criativo. Quando um criativo gera 10+ conversoes no CPA/ROAS alvo, ele esta VALIDADO.</li>';
+  html += '<li><strong>EARN (CBO):</strong> Move o criativo validado para a campanha de escala usando <span class="highlight">duplicacao de Post ID</span> (preserva curtidas e comentarios). O algoritmo da CBO distribui orcamento automaticamente pros melhores performers.</li>';
+  html += '<li><strong>Ciclo continuo:</strong> A cada semana, testar 3-5 criativos novos na LEARN. Os que passam vao pra EARN. Os que nao passam, morrem. Sempre alimentando a maquina.</li>';
+  html += '</ul></div>';
+  html += '</div>';
+
+  // ===== MIGRACAO DA CONTA =====
+  html += '<div class="phase-card phase-1">';
+  html += '<div class="phase-header"><span class="phase-badge">Migracao</span><span class="phase-title">Passo a Passo: Migrar Sua Conta Atual para Estrutura Andromeda</span></div>';
+
+  html += '<p><span class="danger">ATENCAO:</span> Nao pause todas as campanhas de uma vez. A migracao deve ser gradual para nao perder o aprendizado acumulado.</p>';
+
+  html += '<div class="checklist"><div class="cl-title">Semana 1: Preparacao</div>';
+  html += '<div class="cl-item"><div class="cl-icon fire">1</div><div><strong>Criar campanha EARN PRECIOSIDADES (CBO).</strong> Orcamento: R$ 2.000/dia. 1 ad set, targeting broad (18-65, feminino, Brasil). Adicionar TODOS os criativos que ja performaram: os de PREC 1-3, ESCALA 1, ESCALA 1 Copia, Videos Novos 1-6. Use Post ID pra preservar social proof. Comece com 10-12 criativos.</div></div>';
+  html += '<div class="cl-item"><div class="cl-icon fire">2</div><div><strong>Criar campanha EARN COMBO (CBO).</strong> Orcamento: R$ 1.000/dia. 1 ad set, targeting broad. Adicionar criativos de COMBO Copia (ativa), Combo SF, COMBO original. 8-10 criativos.</div></div>';
+  html += '<div class="cl-item"><div class="cl-icon bolt">3</div><div><strong>Manter campanhas antigas rodando em paralelo.</strong> NAO pausar ainda. Deixar as EARN novas e as antigas rodando simultaneamente por 5-7 dias para comparar.</div></div>';
+  html += '<div class="cl-item"><div class="cl-icon bolt">4</div><div><strong>Criar campanha RETARGETING (CBO).</strong> Orcamento: R$ 300/dia. 2 ad sets: visitantes LP 7d + ICs 14d. Criativos de urgencia e prova social.</div></div>';
+  html += '</div>';
+
+  html += '<div class="checklist"><div class="cl-title">Semana 2: Transicao</div>';
+  html += '<div class="cl-item"><div class="cl-icon fire">1</div><div><strong>Comparar resultados.</strong> Se EARN Preciosidades esta com ROAS >= 2,3x e CPA <= R$ 130: PAUSAR todas as campanhas antigas de Preciosidades (PREC 1-3, ESCALA 1, ESCALA 1 Copia, Videos Novos). Redirecionar toda verba pra EARN.</div></div>';
+  html += '<div class="cl-item"><div class="cl-icon fire">2</div><div><strong>Criar campanha LEARN (ABO).</strong> 3-5 ad sets com criativos 100% novos. R$ 60/dia cada. Testar novos angulos, formatos, hooks. Tudo que bater CPA abaixo de R$ 120 com 10+ conversoes vai pra EARN.</div></div>';
+  html += '<div class="cl-item"><div class="cl-icon bolt">3</div><div><strong>Escalar EARN.</strong> Se ROAS se manteve, subir orcamento da EARN Preciosidades em 20% (de R$ 2.000 pra R$ 2.400). Mesma logica pra EARN Combo.</div></div>';
+  html += '</div>';
+
+  html += '<div class="checklist"><div class="cl-title">Semana 3+: Cruzeiro Consolidado</div>';
+  html += '<div class="cl-item"><div class="cl-icon check">1</div><div><strong>Conta limpa:</strong> Apenas 3-4 campanhas rodando (EARN Prec, EARN Combo, RETARGETING, LEARN). Todas as 19 campanhas antigas pausadas ou arquivadas.</div></div>';
+  html += '<div class="cl-item"><div class="cl-icon check">2</div><div><strong>Ciclo semanal:</strong> Testar 3-5 criativos novos na LEARN. Promover vencedores pra EARN. Remover criativos com frequencia > 3 e CTR em queda da EARN.</div></div>';
+  html += '<div class="cl-item"><div class="cl-icon check">3</div><div><strong>Escalar orcamento da EARN em 20-25% a cada 3-4 dias</strong> enquanto ROAS se mantiver acima de 2,3x.</div></div>';
+  html += '</div>';
+  html += '</div>';
+
+  // ===== ENTITY IDs =====
+  html += '<div class="phase-card phase-3">';
+  html += '<div class="phase-header"><span class="phase-badge">Entity ID</span><span class="phase-title">O Conceito Mais Importante do Andromeda</span></div>';
+
+  html += '<p>O Andromeda usa computer vision, NLP e analise de audio pra dar um <strong>Entity ID</strong> a cada criativo. Se dois anuncios sao mais de 60% parecidos, eles recebem o MESMO Entity ID, ou seja, competem por 1 unico lugar no leilao. Ter 50 variacoes do mesmo criativo e a mesma coisa que ter 1.</p>';
+
+  html += '<p><strong>O que gera um novo Entity ID (criativo realmente unico):</strong> voce precisa variar pelo menos 2 das 4 dimensoes abaixo.</p>';
+
+  html += '<div class="entity-grid">';
+  html += '<div class="entity-card"><div class="ec-icon">&#127916;</div><div class="ec-title">Formato</div><div class="ec-desc">Video, imagem estatica, carrossel, stories, Reels, UGC</div></div>';
+  html += '<div class="entity-card"><div class="ec-icon">&#128100;</div><div class="ec-title">Persona/Angulo</div><div class="ec-desc">Dona de casa, artesa, mae, religiosa, empreendedora</div></div>';
+  html += '<div class="entity-card"><div class="ec-icon">&#127968;</div><div class="ec-title">Ambiente/Cenario</div><div class="ec-desc">Casa, atelier, igreja, estudio, ar livre, tela do celular</div></div>';
+  html += '<div class="entity-card"><div class="ec-icon">&#127775;</div><div class="ec-title">Beneficio/Hook</div><div class="ec-desc">Renda extra, terapia, presente, habilidade, comunidade</div></div>';
+  html += '</div>';
+
+  html += '<div class="action-box"><div class="action-title">O que NAO gera novo Entity ID (nao adianta fazer isso)</div><ul>';
+  html += '<li>Trocar cor de botao ou fundo da thumbnail</li>';
+  html += '<li>Mudar uma palavra no headline ("Aprenda" vs "Descubra")</li>';
+  html += '<li>Cortes levemente diferentes do mesmo video</li>';
+  html += '<li>Trocar musica de fundo mantendo o mesmo visual</li>';
+  html += '<li>Espelhar a imagem horizontalmente</li>';
+  html += '</ul></div>';
+
+  html += '<div class="action-box"><div class="action-title">Aplicacao pratica: 12 Entity IDs unicos para Rita Machado</div><ul>';
+  html += '<li><span class="highlight">Entity 1:</span> Video Rita falando pra camera + beneficio renda extra (formato vertical/Reels)</li>';
+  html += '<li><span class="highlight">Entity 2:</span> Carrossel antes/depois de pecas + beneficio habilidade</li>';
+  html += '<li><span class="highlight">Entity 3:</span> Video UGC aluna mostrando resultado + beneficio comunidade</li>';
+  html += '<li><span class="highlight">Entity 4:</span> Imagem estatica com prova social (prints vendas) + beneficio renda</li>';
+  html += '<li><span class="highlight">Entity 5:</span> Video processo de criacao (bastidores/atelier) + beneficio terapia/relaxamento</li>';
+  html += '<li><span class="highlight">Entity 6:</span> Carrossel depoimentos de alunas + beneficio transformacao</li>';
+  html += '<li><span class="highlight">Entity 7:</span> Video tematica religiosa/Sagrada Familia + beneficio fe/espiritualidade</li>';
+  html += '<li><span class="highlight">Entity 8:</span> Imagem comparativo preco (curso vs presencial) + beneficio economia</li>';
+  html += '<li><span class="highlight">Entity 9:</span> Video rapido 15s estilo TikTok com resultado final + beneficio surpresa</li>';
+  html += '<li><span class="highlight">Entity 10:</span> Carrossel "5 coisas que aprendi" + beneficio educacao</li>';
+  html += '<li><span class="highlight">Entity 11:</span> Video testemunho emocional (choro, gratidao) + beneficio comunidade</li>';
+  html += '<li><span class="highlight">Entity 12:</span> Imagem produto final com timer urgencia + beneficio oferta limitada</li>';
+  html += '</ul></div>';
+  html += '</div>';
+
+  // ===== CBO vs ABO =====
+  html += '<div class="phase-card phase-2">';
+  html += '<div class="phase-header"><span class="phase-badge">CBO vs ABO</span><span class="phase-title">Quando Usar Cada Um na Era Andromeda</span></div>';
+
+  html += '<table class="budget-table"><thead><tr><th>Fator</th><th>ABO (Ad Set Budget)</th><th>CBO (Campaign Budget)</th></tr></thead><tbody>';
+  html += '<tr><td>Nivel do orcamento</td><td>Ad set</td><td>Campanha</td></tr>';
+  html += '<tr><td>Distribuicao de gasto</td><td>Igual entre ad sets</td><td>Automatica (80/20 geralmente)</td></tr>';
+  html += '<tr><td>Controle</td><td>Manual, total</td><td>Algoritmo decide</td></tr>';
+  html += '<tr><td>Gerenciamento</td><td>Alto (monitorar diariamente)</td><td>Baixo (checagem semanal)</td></tr>';
+  html += '<tr><td><strong>Melhor para</strong></td><td class="roas-yellow"><strong>TESTAR criativos novos</strong></td><td class="roas-green"><strong>ESCALAR vencedores</strong></td></tr>';
+  html += '<tr><td>Quando usar</td><td>Cada criativo novo precisa de budget igual pra teste justo</td><td>Criativos ja validados, deixar o Meta otimizar</td></tr>';
+  html += '</tbody></table>';
+
+  html += '<p style="margin-top:16px;"><strong>Na sua conta hoje:</strong> Voce esta usando ABO para tudo (cada campanha e basicamente 1 ad set com orcamento fixo). Isso e ideal pra teste, mas pessimo pra escala. Quando voce aumenta o orcamento de um ABO, esta forcando o Meta a gastar mais num unico ad set, o que satura o publico e sobe CPA.</p>';
+
+  html += '<p><strong>O que deveria fazer:</strong> Usar ABO so na campanha LEARN (teste). Todas as campanhas de escala (EARN) devem ser CBO, com 10-20 criativos no mesmo ad set. Quando voce escala uma CBO, o Meta distribui a verba extra pros criativos que estao performando melhor, sem saturar nenhum publico especifico.</p>';
+  html += '</div>';
+
+  // ===== RESPOSTA DIRETA =====
+  html += '<div class="phase-card phase-3">';
+  html += '<div class="phase-header"><span class="phase-badge">Resposta</span><span class="phase-title">Menos Campanhas com Mais Orcamento OU Mais Campanhas com Menos?</span></div>';
+
+  html += '<div class="struct-box" style="border-color:#4ade80;"><div class="struct-title" style="color:#4ade80;">Resposta definitiva baseada no Andromeda</div>';
+  html += '<div style="text-align:left;padding:0 12px;">';
+  html += '<p style="font-size:16px;color:#fff;font-weight:700;margin-bottom:12px;">MENOS campanhas. MAIS criativos. MAIS orcamento concentrado.</p>';
+  html += '<p style="color:#cbd5e1;font-size:14px;line-height:1.7;margin-bottom:12px;">O Andromeda precisa de <strong>Data Density</strong> (densidade de dados). Vinte compras diarias fluindo por 1 campanha geram otimizacao muito melhor do que 6 campanhas com 3-4 compras cada. O algoritmo simplesmente nao tem dados suficientes pra otimizar quando voce fragmenta.</p>';
+  html += '<p style="color:#cbd5e1;font-size:14px;line-height:1.7;margin-bottom:12px;">O orcamento minimo pra sair da learning phase (com CPA de ~R$ 107): <strong>R$ '+fmtNum(minDailyBudget)+'/dia por campanha</strong> (formula: CPA x 50 conversoes / 7 dias). Campanhas com menos que isso nunca otimizam de verdade.</p>';
+  html += '<p style="color:#cbd5e1;font-size:14px;line-height:1.7;margin-bottom:0;">A escala nao vem de criar mais campanhas. A escala vem de <strong>alimentar a campanha vencedora com mais criativos unicos</strong> (Entity IDs diferentes) e aumentar orcamento gradualmente (20% a cada 48-72h). Cada criativo novo e como abrir uma porta pra um publico novo que o Andromeda vai encontrar automaticamente.</p>';
+  html += '</div>';
+  html += '</div>';
+  html += '</div>';
+
+  // ===== REGRAS DE ESCALA =====
+  html += '<div class="phase-card phase-1">';
+  html += '<div class="phase-header"><span class="phase-badge">Regras</span><span class="phase-title">7 Regras de Escala Andromeda para Nao Subir CPA</span></div>';
+
+  html += '<div class="checklist"><div class="cl-title">Protocolo de Escala</div>';
+
+  html += '<div class="cl-item"><div class="cl-icon fire">1</div><div><strong>Nunca aumentar orcamento mais de 20-25% por vez.</strong> Esperar 48-72h entre cada aumento. De R$ 2.000 pra R$ 2.500, depois R$ 3.000. Saltos bruscos resetam a learning phase e explodem CPA.</div></div>';
+
+  html += '<div class="cl-item"><div class="cl-icon fire">2</div><div><strong>Escalar com criativos, nao so com dinheiro.</strong> Antes de cada aumento de orcamento, adicionar 2-3 criativos novos (Entity IDs diferentes). Isso da ao Andromeda novas "portas" pra encontrar publico, evitando saturacao.</div></div>';
+
+  html += '<div class="cl-item"><div class="cl-icon fire">3</div><div><strong>Se precisar salto grande, DUPLICAR a campanha.</strong> Em vez de ir de R$ 2.000 pra R$ 4.000 em uma campanha, criar uma SEGUNDA campanha CBO com os mesmos criativos + 3-4 criativos novos. Rodar as duas em paralelo.</div></div>';
+
+  html += '<div class="cl-item"><div class="cl-icon bolt">4</div><div><strong>Monitorar CPM como alarme de fadiga.</strong> Se CPM subir 30%+ em relacao a media dos ultimos 7 dias, o publico esta saturado. Trocar criativos imediatamente, nao esperar o ROAS cair.</div></div>';
+
+  html += '<div class="cl-item"><div class="cl-icon bolt">5</div><div><strong>Usar Cost Cap como guardrail.</strong> Definir CPA alvo (ex: R$ 130) como Cost Cap. O Meta vai tentar ficar dentro desse limite. Se nao conseguir entregar no CPA, reduz o gasto automaticamente em vez de estourar.</div></div>';
+
+  html += '<div class="cl-item"><div class="cl-icon bolt">6</div><div><strong>Regra 60/40 de criativos.</strong> 60% dos criativos devem ser conceitos NOVOS (angulos, formatos, hooks diferentes). 40% podem ser variacoes de criativos que ja funcionam. Isso garante diversidade de Entity IDs sem perder o que ja funciona.</div></div>';
+
+  html += '<div class="cl-item"><div class="cl-icon check">7</div><div><strong>Renovar criativos a cada 1-3 semanas.</strong> Nao esperar a performance cair pra trocar. Ter um pipeline de criativos sendo produzidos continuamente (3-5 novos por semana). Criativos sao o combustivel do Andromeda.</div></div>';
+
+  html += '</div>';
+  html += '</div>';
+
+  // ===== RESUMO FINAL =====
+  html += '<div class="phase-card phase-3">';
+  html += '<div class="phase-header"><span class="phase-badge">Acao</span><span class="phase-title">Resumo: O Que Muda HOJE na Conta da Rita</span></div>';
+
+  html += '<table class="budget-table"><thead><tr><th>Aspecto</th><th>Como Esta Hoje</th><th>Como Deveria Ser (Andromeda)</th></tr></thead><tbody>';
+  html += '<tr><td>Campanhas ativas</td><td class="roas-red">5 campanhas separadas</td><td class="roas-green">2 campanhas EARN + 1 LEARN + 1 RETARGETING</td></tr>';
+  html += '<tr><td>Estrutura</td><td class="roas-red">1 ad set por campanha, poucos criativos</td><td class="roas-green">1 ad set broad, 10-20 criativos cada</td></tr>';
+  html += '<tr><td>Budget type</td><td class="roas-red">ABO (tudo)</td><td class="roas-green">CBO (escala) + ABO (teste)</td></tr>';
+  html += '<tr><td>Targeting</td><td class="roas-yellow">Misto (interesses + broad)</td><td class="roas-green">Broad (Andromeda decide via criativos)</td></tr>';
+  html += '<tr><td>Criativos por campanha</td><td class="roas-red">3-5</td><td class="roas-green">10-20 (Entity IDs unicos)</td></tr>';
+  html += '<tr><td>Conversoes/semana/campanha</td><td class="roas-red">~'+Math.round(weeklyConversions/5)+'</td><td class="roas-green">'+weeklyConversions+'+ (consolidado)</td></tr>';
+  html += '<tr><td>Forma de escalar</td><td class="roas-red">Aumentar orcamento bruto</td><td class="roas-green">Mais criativos + orcamento gradual (20%/48h)</td></tr>';
+  html += '<tr><td>Teste de criativos</td><td class="roas-red">Criar campanha nova pra cada teste</td><td class="roas-green">Campanha LEARN dedicada (ABO, R$ 60/ad set)</td></tr>';
+  html += '<tr><td>Competicao interna</td><td class="roas-red">Alta (5 campanhas mesmo publico)</td><td class="roas-green">Zero (1 campanha por produto)</td></tr>';
+  html += '</tbody></table>';
+
+  html += '<p style="margin-top:20px;font-size:15px;color:#fff;text-align:center;"><strong>O criativo e o novo targeting. Alimente o Andromeda com diversidade criativa e ele encontra o publico pra voce. A escala vem dos criativos, nao do orcamento bruto.</strong></p>';
+  html += '</div>';
+
+  document.getElementById('andromeda-content').innerHTML=html;
 })();
 
 </script>
