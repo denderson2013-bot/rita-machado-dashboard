@@ -939,101 +939,114 @@ function renderCharts(){
   html += '<p style="margin-top:14px;">Voce precisa <span class="danger">triplicar o gasto diario</span> de '+fmtBRL(dailySpendCurrent)+' para '+fmtBRL(META_DAILY_SPEND)+', mantendo ou melhorando o ROAS. Isso e agressivo, mas factivel com as campanhas que ja estao validadas e com as acoes abaixo.</p>';
   html += '</div>';
 
-  // ===== FASE 1: DIAS 1-5 =====
+  // ===== FASE 1: DIAS 1-5 (ANDROMEDA) =====
   html += '<div class="phase-card phase-1">';
-  html += '<div class="phase-header"><span class="phase-badge">Fase 1</span><span class="phase-title">Choque de Escala</span><span class="phase-days">Dias 1-5 (11-15/mar)</span></div>';
-  html += '<p>Objetivo: sair de R$ '+fmtNum(Math.round(dailySpendCurrent))+'/dia para <span class="danger">R$ 2.500/dia</span> sem derrubar ROAS. Esse e o momento mais critico. Se segurar ROAS acima de 2,3x nessa fase, o resto e questao de manter o pe no acelerador.</p>';
+  html += '<div class="phase-header"><span class="phase-badge">Fase 1</span><span class="phase-title">Consolidacao + Montagem (Metodo Andromeda)</span><span class="phase-days">Dias 1-5 (11-15/mar)</span></div>';
+  html += '<p>Objetivo: sair da estrutura fragmentada (5 campanhas separadas competindo entre si) para a <span class="danger">estrutura consolidada Andromeda</span>. Montar 4 campanhas definitivas que vao carregar todo o volume ate o dia 31. Meta de gasto: <span class="danger">R$ 2.500/dia</span>.</p>';
 
-  html += '<div class="action-box"><div class="action-title">1. Dobrar orcamento das 4 campanhas top AGORA</div><ul>';
-  html += '<li><strong>PRECIOSIDADES 1-3</strong> (ROAS 3,49x): de ~R$ 222/dia para <span class="highlight">R$ 600/dia</span>. Campanha ancora, ja validada com 80 vendas. Suporta escala.</li>';
-  html += '<li><strong>ESCALA 1 Copia (ativa)</strong> (ROAS 3,90x): de ~R$ 76/dia para <span class="highlight">R$ 350/dia</span>. Melhor ROAS da conta, CPM mais baixo (R$ 24,13). Tem muito espaco pra crescer.</li>';
-  html += '<li><strong>COMBO MINI CURSOS Copia (ativa)</strong> (ROAS 3,56x): de ~R$ 120/dia para <span class="highlight">R$ 500/dia</span>. Produto validado, 33 vendas. Escalar forte.</li>';
-  html += '<li><strong>Combo c/ Criativos Sagrada Familia</strong> (ROAS 3,33x): de ~R$ 46/dia para <span class="highlight">R$ 300/dia</span>. CPM mais baixo de todas (R$ 23,71). Escala obrigatoria.</li>';
+  html += '<div class="action-box"><div class="action-title">1. CRIAR: Campanha EARN PRECIOSIDADES (CBO, R$ 1.500/dia)</div><ul>';
+  html += '<li>Tipo: <span class="highlight">CBO (Advantage Campaign Budget)</span>. O algoritmo distribui orcamento pros melhores criativos automaticamente.</li>';
+  html += '<li>1 unico Ad Set, targeting <span class="highlight">BROAD</span> (18-65, feminino, Brasil). Sem interesses. O Andromeda decide o publico pelos criativos.</li>';
+  html += '<li>Adicionar <span class="highlight">10-12 criativos</span> usando Post ID (preserva social proof) dos melhores anuncios de: PREC 1-3, ESCALA 1 Copia, ESCALA 1 Original, Videos Novos 1-6. Cada um e um Entity ID diferente.</li>';
+  html += '<li>Otimizacao: Purchase. Cost Cap: R$ 130.</li>';
+  html += '<li><strong>Por que funciona:</strong> Em vez de 4 campanhas de Preciosidades disputando o mesmo publico (PREC 1-3, ESCALA 1, ESCALA 1 Copia, Videos Novos), TODOS os criativos ficam em 1 lugar. O algoritmo concentra ~'+Math.round(weeklyConversions * 0.6)+' conversoes/semana nessa campanha, saindo da learning phase em 3-4 dias.</li>';
   html += '</ul></div>';
 
-  html += '<div class="action-box"><div class="action-title">2. Cortar o que nao performa</div><ul>';
-  html += '<li><strong>ESCALA 1 Original</strong> (ROAS 1,94x): <span class="danger">REDUZIR de ~R$ 246/dia para R$ 150/dia</span>. ROAS abaixo de 2x. So esta consumindo orcamento que deveria ir pras campeoes. Se em 3 dias nao subir pra 2,3x+ com os novos criativos, pausar.</li>';
-  html += '<li><strong>Todas as Guadalupe</strong>: <span class="danger">NAO REATIVAR NENHUMA</span>. ROAS 1,62x geral, drenaram R$ 13.882. Dinheiro jogado fora.</li>';
-  html += '<li><strong>Videos Novos LP2/LP3</strong>: <span class="danger">MORTAS</span>. LP2 marrom zero vendas. Nao gastar 1 centavo mais nisso.</li>';
+  html += '<div class="action-box"><div class="action-title">2. CRIAR: Campanha EARN COMBO (CBO, R$ 600/dia)</div><ul>';
+  html += '<li>Mesma logica: CBO, 1 Ad Set broad, otimizacao Purchase.</li>';
+  html += '<li>Adicionar <span class="highlight">8-10 criativos</span> via Post ID: COMBO Copia (ativa), Combo SF, COMBO original, COMBO 6 vendas. Todos juntos.</li>';
+  html += '<li>Cost Cap: R$ 120.</li>';
+  html += '<li>Concentra TODAS as vendas de Combo num unico ponto. Mata a competicao interna entre as 4 campanhas de Combo que existiam.</li>';
   html += '</ul></div>';
 
-  html += '<div class="action-box"><div class="action-title">3. Criar campanhas novas HOJE (Dia 1)</div><ul>';
-  html += '<li><span class="highlight">LOOKALIKE 1% compradores</span>: Subir lista dos 504 compradores aprovados no Meta. Criar Lookalike 1% e 2%. Campanha de Purchase com os criativos vencedores de PRECIOSIDADES 1-3. Orcamento: <strong>R$ 300/dia</strong>.</li>';
-  html += '<li><span class="highlight">RETARGETING quente</span>: Publico de quem visitou a pagina de vendas (LPV) nos ultimos 7 dias e NAO comprou. Sao ~19.696 visualizacoes de pagina. Criativo direto: "Ainda esta pensando? Ultimo dia com desconto". Orcamento: <strong>R$ 200/dia</strong>.</li>';
-  html += '<li><span class="highlight">RETARGETING morno</span>: Publico de IC (iniciou checkout, ~1.492 pessoas) e NAO comprou. Esse publico ja quase comprou. Criativo de urgencia + prova social. Orcamento: <strong>R$ 100/dia</strong>.</li>';
+  html += '<div class="action-box"><div class="action-title">3. CRIAR: Campanha RETARGETING (CBO, R$ 300/dia)</div><ul>';
+  html += '<li>CBO com 3 Ad Sets por temperatura de publico:</li>';
+  html += '<li><span class="danger">Ad Set 1 (quente):</span> ICs que nao compraram (ultimos 14 dias). ~1.492 pessoas. Criativos de urgencia + prova social.</li>';
+  html += '<li><span class="warn">Ad Set 2 (morno):</span> Visitantes LP que nao compraram (ultimos 7 dias). ~19.696 pessoas. Criativo "Ainda pensando?".</li>';
+  html += '<li><span class="highlight">Ad Set 3 (frio):</span> Engajamento Instagram 30 dias (curtiu, comentou, assistiu 50%+ video). Criativo educativo + oferta.</li>';
+  html += '<li>ROAS esperado do retargeting: 4-8x. E dinheiro "facil" porque o publico ja conhece o produto.</li>';
   html += '</ul></div>';
 
-  html += '<table class="budget-table"><thead><tr><th>Campanha</th><th>Orcamento Anterior</th><th>Novo Orcamento/Dia</th><th>ROAS Historico</th><th>Acao</th></tr></thead><tbody>';
-  html += '<tr class="budget-row-hot"><td>PRECIOSIDADES 1-3</td><td>~R$ 222</td><td><span class="highlight">R$ 600</span></td><td class="roas-green">3,49x</td><td>ESCALAR 2,7x</td></tr>';
-  html += '<tr class="budget-row-hot"><td>COMBO MINI CURSOS Copia</td><td>~R$ 120</td><td><span class="highlight">R$ 500</span></td><td class="roas-green">3,56x</td><td>ESCALAR 4,2x</td></tr>';
-  html += '<tr class="budget-row-hot"><td>ESCALA 1 Copia (ativa)</td><td>~R$ 76</td><td><span class="highlight">R$ 350</span></td><td class="roas-green">3,90x</td><td>ESCALAR 4,6x</td></tr>';
-  html += '<tr class="budget-row-hot"><td>Combo SF</td><td>~R$ 46</td><td><span class="highlight">R$ 300</span></td><td class="roas-green">3,33x</td><td>ESCALAR 6,5x</td></tr>';
-  html += '<tr class="budget-row-new"><td>LOOKALIKE 1% compradores</td><td>NOVA</td><td><span class="warn">R$ 300</span></td><td>-</td><td>CRIAR</td></tr>';
-  html += '<tr class="budget-row-new"><td>RETARGETING LPV 7d</td><td>NOVA</td><td><span class="warn">R$ 200</span></td><td>-</td><td>CRIAR</td></tr>';
-  html += '<tr class="budget-row-new"><td>RETARGETING IC</td><td>NOVA</td><td><span class="warn">R$ 100</span></td><td>-</td><td>CRIAR</td></tr>';
-  html += '<tr class="budget-row-cut"><td>ESCALA 1 Original</td><td>~R$ 246</td><td><span class="danger">R$ 150</span></td><td class="roas-yellow">1,94x</td><td>REDUZIR</td></tr>';
-  html += '<tr style="font-weight:700;border-top:2px solid #4ade80;"><td>TOTAL FASE 1</td><td>~R$ 710</td><td><span class="highlight">R$ 2.500</span></td><td></td><td>3,5x aumento</td></tr>';
+  html += '<div class="action-box"><div class="action-title">4. PAUSAR: Todas as campanhas antigas (gradual)</div><ul>';
+  html += '<li><span class="danger">DIA 1:</span> Pausar IMEDIATAMENTE: ESCALA 1 Original (ROAS 1,94x), todas as Guadalupe, Videos Novos LP2/LP3. Zero centavo mais nessas.</li>';
+  html += '<li><span class="warn">DIA 3-4:</span> Quando as EARN novas estiverem rodando e com dados, REDUZIR as campanhas antigas (PREC 1-3, ESCALA 1 Copia, COMBO Copia, Combo SF) para 50% do orcamento.</li>';
+  html += '<li><span class="highlight">DIA 5:</span> Se as EARN novas estiverem com ROAS acima de 2,0x, PAUSAR todas as campanhas antigas. A conta fica limpa: so EARN PREC + EARN COMBO + RETARGETING.</li>';
+  html += '</ul></div>';
+
+  html += '<table class="budget-table"><thead><tr><th>Campanha</th><th>Tipo</th><th>Ad Sets</th><th>Criativos</th><th>Orcamento/Dia</th><th>Publico</th></tr></thead><tbody>';
+  html += '<tr class="budget-row-hot"><td>EARN PRECIOSIDADES</td><td>CBO</td><td>1 (broad)</td><td>10-12 (Post ID)</td><td><span class="highlight">R$ 1.500</span></td><td>Broad 18-65 F</td></tr>';
+  html += '<tr class="budget-row-hot"><td>EARN COMBO</td><td>CBO</td><td>1 (broad)</td><td>8-10 (Post ID)</td><td><span class="highlight">R$ 600</span></td><td>Broad 18-65 F</td></tr>';
+  html += '<tr class="budget-row-new"><td>RETARGETING</td><td>CBO</td><td>3 (por temperatura)</td><td>5-8 urgencia</td><td><span class="warn">R$ 300</span></td><td>IC 14d / LPV 7d / Engaj 30d</td></tr>';
+  html += '<tr class="budget-row-cut"><td>Campanhas antigas (transicao)</td><td>ABO</td><td>5</td><td>Existentes</td><td><span class="danger">R$ 100 (decrescendo)</span></td><td>Manter ate pausar</td></tr>';
+  html += '<tr style="font-weight:700;border-top:2px solid #4ade80;"><td>TOTAL FASE 1</td><td></td><td>10</td><td>23-30</td><td><span class="highlight">R$ 2.500</span></td><td></td></tr>';
   html += '</tbody></table>';
   html += '</div>';
 
-  // ===== FASE 2: DIAS 6-12 =====
+  // ===== FASE 2: DIAS 6-12 (ANDROMEDA) =====
   html += '<div class="phase-card phase-2">';
-  html += '<div class="phase-header"><span class="phase-badge">Fase 2</span><span class="phase-title">Acelerador</span><span class="phase-days">Dias 6-12 (16-22/mar)</span></div>';
-  html += '<p>Objetivo: escalar de R$ 2.500/dia para <span class="warn">R$ 4.000/dia</span>. Nessa fase voce ja tem dados de 5 dias da Fase 1. As campanhas que seguraram ROAS acima de 2,3x recebem mais verba. As que cairam abaixo de 2x perdem orcamento ou sao pausadas.</p>';
+  html += '<div class="phase-header"><span class="phase-badge">Fase 2</span><span class="phase-title">Escala Criativa (mais criativos, nao mais campanhas)</span><span class="phase-days">Dias 6-12 (16-22/mar)</span></div>';
+  html += '<p>Objetivo: escalar de R$ 2.500/dia para <span class="warn">R$ 4.000/dia</span>. Na metodologia Andromeda, a escala nao vem de criar mais campanhas ou aumentar orcamento bruto. <span class="warn">A escala vem de alimentar as campanhas EARN com mais criativos unicos (Entity IDs)</span> e subir orcamento gradualmente (20% a cada 48-72h).</p>';
 
-  html += '<div class="action-box"><div class="action-title">4. Escalar as vencedoras da Fase 1</div><ul>';
-  html += '<li>Toda campanha que manteve ROAS acima de 2,5x na Fase 1: <span class="highlight">aumentar orcamento em +50%</span>.</li>';
-  html += '<li>PRECIOSIDADES 1-3: se manteve 3x+, subir para <span class="highlight">R$ 900/dia</span>.</li>';
-  html += '<li>COMBO MINI CURSOS: se manteve 3x+, subir para <span class="highlight">R$ 750/dia</span>.</li>';
-  html += '<li>ESCALA 1 Copia: se manteve 3,5x+, subir para <span class="highlight">R$ 500/dia</span>.</li>';
-  html += '<li>Combo SF: se manteve 3x+, subir para <span class="highlight">R$ 450/dia</span>.</li>';
+  html += '<div class="action-box"><div class="action-title">5. Alimentar EARN com criativos novos + escalar 20%/48h</div><ul>';
+  html += '<li><strong>EARN PRECIOSIDADES:</strong> Adicionar 4-5 criativos novos (Entity IDs unicos, ver aba Andromeda). Cada criativo novo e uma "porta" pro Andromeda encontrar publico novo sem saturar. Escalar orcamento: R$ 1.500 > R$ 1.800 > R$ 2.200 (3 aumentos de ~20% em 6 dias).</li>';
+  html += '<li><strong>EARN COMBO:</strong> Adicionar 3-4 criativos novos. Escalar: R$ 600 > R$ 720 > R$ 870.</li>';
+  html += '<li><strong>RETARGETING:</strong> Se ROAS acima de 3x (provavel), escalar: R$ 300 > R$ 400 > R$ 500.</li>';
+  html += '<li><span class="highlight">Regra Andromeda:</span> Antes de cada aumento de orcamento, adicionar pelo menos 2 criativos novos. Orcamento sem criativos novos = CPM sobe = CPA sobe. Orcamento COM criativos novos = CPM estavel = CPA estavel.</li>';
   html += '</ul></div>';
 
-  html += '<div class="action-box"><div class="action-title">5. Duplicar campanhas vencedoras com novos angulos</div><ul>';
-  html += '<li><span class="highlight">PRECIOSIDADES 1-3 v2</span>: Duplicar a campanha. Trocar os 3 piores conjuntos de anuncios por criativos novos (cortes diferentes dos videos, novas thumbnails). Orcamento: <strong>R$ 400/dia</strong>.</li>';
-  html += '<li><span class="highlight">COMBO SF v2</span>: Duplicar. Testar novos criativos com angulo de depoimento/resultado de alunas. Orcamento: <strong>R$ 300/dia</strong>.</li>';
-  html += '<li>Essas duplicatas servem pra encontrar novos publicos sem canibalizar as campanhas originais. Usar publicos diferentes (Lookalike 2-3% ou interesses novos).</li>';
+  html += '<div class="action-box"><div class="action-title">6. CRIAR: Campanha LEARN (ABO, R$ 300/dia)</div><ul>';
+  html += '<li>Campanha de TESTE dedicada. Tipo ABO (orcamento por ad set, R$ 60 cada).</li>';
+  html += '<li>5 Ad Sets, cada um com 1 criativo 100% novo (Entity IDs diferentes). Targeting broad.</li>';
+  html += '<li>Objetivo: validar criativos novos. Criativo que gerar 10+ conversoes com CPA abaixo de R$ 120 em 3-5 dias: <span class="highlight">PROMOVER pra campanha EARN via Post ID</span>.</li>';
+  html += '<li>Criativo que nao vender em 3 dias: <span class="danger">pausar ad set e substituir por criativo novo</span>.</li>';
+  html += '<li>Ciclo continuo: testar 5 criativos/semana, promover 2-3 vencedores pra EARN, matar o resto.</li>';
   html += '</ul></div>';
 
-  html += '<div class="action-box"><div class="action-title">6. Otimizar retargeting</div><ul>';
-  html += '<li>Retargeting que converteu com CPA abaixo de R$ 80: <span class="highlight">dobrar orcamento</span>. Retargeting tende a ter ROAS 4-8x.</li>';
-  html += '<li>Adicionar retargeting de engajamento: quem assistiu 50%+ dos videos dos anuncios nos ultimos 14 dias e nao comprou. Orcamento: <strong>R$ 150/dia</strong>.</li>';
-  html += '<li>Separar retargeting por produto (Preciosidades vs Combo) com oferta especifica pra cada um.</li>';
+  html += '<div class="action-box"><div class="action-title">7. Montar pipeline de Entity IDs (produzir ESTA SEMANA)</div><ul>';
+  html += '<li><span class="highlight">Entity A:</span> Video Rita camera direta (Reels 15s) + hook renda extra</li>';
+  html += '<li><span class="highlight">Entity B:</span> Carrossel antes/depois pecas + beneficio habilidade</li>';
+  html += '<li><span class="highlight">Entity C:</span> Video UGC aluna mostrando resultado + comunidade</li>';
+  html += '<li><span class="highlight">Entity D:</span> Imagem estatica prints de vendas + prova social</li>';
+  html += '<li><span class="highlight">Entity E:</span> Video bastidores atelier + beneficio terapia/relaxamento</li>';
+  html += '<li><span class="highlight">Entity F:</span> Carrossel depoimentos alunas + transformacao</li>';
+  html += '<li><span class="highlight">Entity G:</span> Video tematica religiosa (Sagrada Familia v2) + espiritualidade</li>';
+  html += '<li><span class="highlight">Entity H:</span> Video TikTok 15s resultado final + surpresa/impacto</li>';
+  html += '<li>Total: 8 Entity IDs genuinamente unicos. Andromeda trata cada um como anuncio diferente no retrieval. 8 tickets pro leilao em vez de 1.</li>';
   html += '</ul></div>';
 
-  html += '<table class="budget-table"><thead><tr><th>Campanha</th><th>Orcamento Fase 1</th><th>Orcamento Fase 2</th><th>Condicao</th></tr></thead><tbody>';
-  html += '<tr class="budget-row-hot"><td>PRECIOSIDADES 1-3</td><td>R$ 600</td><td><span class="highlight">R$ 900</span></td><td>Se ROAS > 2,5x</td></tr>';
-  html += '<tr class="budget-row-hot"><td>COMBO MINI CURSOS Copia</td><td>R$ 500</td><td><span class="highlight">R$ 750</span></td><td>Se ROAS > 2,5x</td></tr>';
-  html += '<tr class="budget-row-hot"><td>ESCALA 1 Copia</td><td>R$ 350</td><td><span class="highlight">R$ 500</span></td><td>Se ROAS > 3x</td></tr>';
-  html += '<tr class="budget-row-hot"><td>Combo SF</td><td>R$ 300</td><td><span class="highlight">R$ 450</span></td><td>Se ROAS > 2,5x</td></tr>';
-  html += '<tr class="budget-row-new"><td>PRECIOSIDADES v2 (nova)</td><td>-</td><td><span class="warn">R$ 400</span></td><td>Novos criativos</td></tr>';
-  html += '<tr class="budget-row-new"><td>COMBO SF v2 (nova)</td><td>-</td><td><span class="warn">R$ 300</span></td><td>Novos criativos</td></tr>';
-  html += '<tr class="budget-row-new"><td>Lookalike 1%</td><td>R$ 300</td><td><span class="warn">R$ 300</span></td><td>Manter/ajustar</td></tr>';
-  html += '<tr class="budget-row-new"><td>Retargeting (todos)</td><td>R$ 300</td><td><span class="warn">R$ 450</span></td><td>Escalar vencedores</td></tr>';
-  html += '<tr class="budget-row-cut"><td>ESCALA 1 Original</td><td>R$ 150</td><td><span class="danger">R$ 0 (pausar)</span></td><td>Se ROAS < 2,3x</td></tr>';
-  html += '<tr style="font-weight:700;border-top:2px solid #4ade80;"><td>TOTAL FASE 2</td><td>R$ 2.500</td><td><span class="highlight">R$ 4.050</span></td><td></td></tr>';
+  html += '<table class="budget-table"><thead><tr><th>Campanha</th><th>Orcamento Fase 1</th><th>Orcamento Fase 2</th><th>Criativos</th><th>Acao</th></tr></thead><tbody>';
+  html += '<tr class="budget-row-hot"><td>EARN PRECIOSIDADES (CBO)</td><td>R$ 1.500</td><td><span class="highlight">R$ 2.200</span></td><td>14-17</td><td>+20%/48h + 4-5 criativos novos</td></tr>';
+  html += '<tr class="budget-row-hot"><td>EARN COMBO (CBO)</td><td>R$ 600</td><td><span class="highlight">R$ 870</span></td><td>11-14</td><td>+20%/48h + 3-4 criativos novos</td></tr>';
+  html += '<tr class="budget-row-hot"><td>RETARGETING (CBO)</td><td>R$ 300</td><td><span class="highlight">R$ 500</span></td><td>8-10</td><td>Escalar se ROAS > 3x</td></tr>';
+  html += '<tr class="budget-row-new"><td>LEARN (ABO) - NOVA</td><td>-</td><td><span class="warn">R$ 300</span></td><td>5 novos/semana</td><td>Testar, promover vencedores</td></tr>';
+  html += '<tr class="budget-row-cut"><td>Campanhas antigas</td><td>R$ 100</td><td><span class="danger">R$ 0 (todas pausadas)</span></td><td>-</td><td>PAUSAR definitivo</td></tr>';
+  html += '<tr style="font-weight:700;border-top:2px solid #4ade80;"><td>TOTAL FASE 2</td><td>R$ 2.500</td><td><span class="highlight">R$ 3.870 > R$ 4.000</span></td><td>38-46</td><td></td></tr>';
   html += '</tbody></table>';
   html += '</div>';
 
-  // ===== FASE 3: DIAS 13-20 =====
+  // ===== FASE 3: DIAS 13-20 (ANDROMEDA) =====
   html += '<div class="phase-card phase-3">';
-  html += '<div class="phase-header"><span class="phase-badge">Fase 3</span><span class="phase-title">Cruzeiro de Escala</span><span class="phase-days">Dias 13-20 (23-31/mar)</span></div>';
-  html += '<p>Objetivo: manter <span class="highlight">R$ 4.000-4.500/dia</span> com ROAS estavel em 2,5x. Nessa fase voce ja tem 12 dias de dados, ja sabe exatamente quais campanhas sustentam volume. E hora de apertar os parafusos e garantir o resultado.</p>';
+  html += '<div class="phase-header"><span class="phase-badge">Fase 3</span><span class="phase-title">Cruzeiro Andromeda (maquina rodando)</span><span class="phase-days">Dias 13-20 (23-31/mar)</span></div>';
+  html += '<p>Objetivo: manter <span class="highlight">R$ 4.000-4.500/dia</span> com ROAS estavel em 2,5x. Nessa fase a conta esta limpa (4 campanhas no total), o Andromeda ja tem 12 dias de dados consolidados, e voce tem um pipeline de criativos novos entrando toda semana.</p>';
 
-  html += '<div class="action-box"><div class="action-title">7. Matar tudo que esta abaixo de 2x</div><ul>';
-  html += '<li>Qualquer campanha (nova ou velha) com ROAS abaixo de 2x apos 5 dias de dados: <span class="danger">PAUSAR IMEDIATAMENTE</span>. Sem do, sem "vou dar mais um dia". Cada dia de campanha ruim rodando sao R$ 200-500 de lucro perdido.</li>';
-  html += '<li>Realocar TODA a verba das pausadas para as que estao acima de 3x.</li>';
+  html += '<div class="action-box"><div class="action-title">8. Ciclo semanal Learn & Earn</div><ul>';
+  html += '<li><span class="highlight">Segunda:</span> Revisar criativos na EARN. Qualquer criativo com frequencia > 3 e CTR em queda: remover. Qualquer criativo com CPA 50%+ acima da media: remover.</li>';
+  html += '<li><span class="highlight">Terca:</span> Lancar 5 criativos novos na LEARN (ABO, R$ 60/ad set). Todos com Entity IDs unicos.</li>';
+  html += '<li><span class="highlight">Quinta:</span> Checar UTMify. Criativos na LEARN com 10+ conversoes e CPA abaixo de R$ 120: promover pra EARN via Post ID.</li>';
+  html += '<li><span class="highlight">Sexta:</span> Escalar orcamento da EARN em +20% se ROAS se manteve acima de 2,3x nos ultimos 3 dias.</li>';
+  html += '<li>Esse ciclo garante que o Andromeda <strong>sempre tenha combustivel novo</strong> (criativos) e os dados ficam cada vez mais concentrados nas EARN.</li>';
   html += '</ul></div>';
 
-  html += '<div class="action-box"><div class="action-title">8. Push final: criativos de urgencia</div><ul>';
-  html += '<li>Ultimos 5 dias (27-31/mar): trocar copys de TODOS os anuncios para urgencia. "Ultimos dias", "Vagas limitadas", "Preco sobe dia 01/04". Urgencia real aumenta CTR em 20-40%.</li>';
-  html += '<li>Criar pelo menos 2 criativos novos de depoimento/resultado de alunas. Video curto (15-30s), formato vertical, legenda grande.</li>';
-  html += '<li>Se a Rita tiver stories/reels que ja performaram organicamente, usar como criativo pago. Conteudo organico convertido em anuncio geralmente tem CTR 30-50% maior.</li>';
+  html += '<div class="action-box"><div class="action-title">9. Push final: urgencia nos ultimos 5 dias (27-31/mar)</div><ul>';
+  html += '<li>Trocar copys de TODOS os anuncios ativos pra urgencia: "Ultimos dias", "Vagas limitadas", "Preco sobe dia 01/04". Urgencia real aumenta CTR em 20-40%.</li>';
+  html += '<li>Adicionar 2-3 criativos novos de urgencia como Entity IDs adicionais nas EARN (video countdown, imagem "ultimas vagas", carrossel "antes do preco subir").</li>';
+  html += '<li>Se a Rita tiver stories/reels que performaram organicamente, usar como criativo pago via Post ID. UGC organico convertido em ad tem CTR 30-50% maior.</li>';
+  html += '<li>Escalar RETARGETING para R$ 600-700/dia nos ultimos 5 dias. Publico quente + urgencia = conversao maxima.</li>';
   html += '</ul></div>';
 
-  html += '<div class="action-box"><div class="action-title">9. Escalar por horario</div><ul>';
-  html += '<li>Analisar no Meta quais horarios convertem mais (geralmente 18h-23h pra infoprodutos femininos). Usar regras automatizadas para aumentar orcamento +30% nesses horarios e reduzir -20% nos horarios mortos (2h-8h).</li>';
-  html += '<li>Finais de semana tendem a ter CPM mais baixo. Se confirmar isso nos dados, aumentar orcamento em +20% no sabado/domingo.</li>';
+  html += '<div class="action-box"><div class="action-title">10. Escalar por horario (Automated Rules)</div><ul>';
+  html += '<li>Configurar regras automatizadas no Meta: +30% orcamento entre 18h-23h (pico de conversao pra infoprodutos femininos), -20% entre 2h-8h (horario morto).</li>';
+  html += '<li>Finais de semana: se CPM for menor, aumentar +20% no sabado/domingo. O Andromeda ajusta automaticamente, mas as regras ajudam a forcar volume nos momentos certos.</li>';
   html += '</ul></div>';
   html += '</div>';
 
@@ -1062,40 +1075,20 @@ function renderCharts(){
   html += '</div>';
   html += '</div>';
 
-  // ===== ESTRATEGIA DE CRIATIVOS =====
-  html += '<div class="phase-card phase-1">';
-  html += '<div class="phase-header"><span class="phase-badge">Criativos</span><span class="phase-title">Fabrica de Criativos: Produzir 15+ Variacoes em 20 Dias</span></div>';
-  html += '<p>Quando voce triplica o gasto, o Meta precisa de mais criativos para nao fadigar o publico. Se voce rodar os mesmos criativos com 3x mais orcamento, o CPM vai subir e o ROAS vai cair. A solucao e ter uma maquina de criativos rodando em paralelo.</p>';
-
-  html += '<div class="action-box"><div class="action-title">Criativos que JA funcionam (usar como base)</div><ul>';
-  html += '<li><strong>PRECIOSIDADES 1-3</strong>: os 3 criativos dessa campanha sao os mais validados da conta. CTR 1,78%, 80 vendas. Criar 5 variacoes: cortes diferentes do mesmo video, novas thumbnails, novas copys (headline + texto primario).</li>';
-  html += '<li><strong>Sagrada Familia</strong>: criativo com CPM mais baixo (R$ 23,71). Criar 3 variacoes com angulos diferentes: antes/depois, depoimento, bastidores.</li>';
-  html += '<li><strong>ESCALA 1 Copia</strong>: CPM R$ 24,13. Algo nesse criativo fala com um publico barato. Identificar o que e e replicar em outros formatos.</li>';
-  html += '</ul></div>';
-
-  html += '<div class="action-box"><div class="action-title">Novos criativos para produzir ESTA SEMANA</div><ul>';
-  html += '<li><span class="highlight">3 videos curtos (15-30s)</span> no formato Reels: Rita falando direto pra camera, com legenda grande, sem producao pesada. "Oi, eu sou a Rita e em X meses eu transformei [resultado]..."</li>';
-  html += '<li><span class="highlight">2 carrosseis</span> com antes/depois ou "5 coisas que voce aprende no curso"</li>';
-  html += '<li><span class="highlight">3 imagens estaticas</span> com prova social: print de venda, depoimento, numero de alunas</li>';
-  html += '<li><span class="highlight">2 videos de depoimento</span> de alunas reais (15-45s). Se nao tiver video, usar print de conversa WhatsApp animado em video.</li>';
-  html += '<li><span class="highlight">2 criativos UGC</span>: pedir pra 2 alunas gravarem video espontaneo falando do curso. Pagar R$ 50-100 cada. UGC converte 20-40% melhor que conteudo profissional.</li>';
-  html += '</ul></div>';
-  html += '</div>';
-
-  // ===== ESTRATEGIA DE PUBLICO =====
+  // ===== ESTRATEGIA DE PUBLICO (ANDROMEDA) =====
   html += '<div class="phase-card phase-2">';
-  html += '<div class="phase-header"><span class="phase-badge">Publicos</span><span class="phase-title">Expandir Sem Perder Qualidade</span></div>';
+  html += '<div class="phase-header"><span class="phase-badge">Publicos</span><span class="phase-title">Publicos na Era Andromeda: Broad Primeiro, Criativos Segmentam</span></div>';
 
-  html += '<div class="action-box"><div class="action-title">Publicos para criar/testar</div><ul>';
-  html += '<li><span class="highlight">Lookalike 1% compradores (504 vendas)</span>: publico mais quente. Deve ser o primeiro a receber verba nova. Estimativa: ROAS 3-4x.</li>';
-  html += '<li><span class="highlight">Lookalike 2% compradores</span>: mais amplo, CPA um pouco maior, mas permite volume. Testar com R$ 150/dia.</li>';
-  html += '<li><span class="highlight">Lookalike 1% ICs (1.492 pessoas)</span>: quem quase comprou. Publico com intencao alta. Testar com R$ 100/dia.</li>';
-  html += '<li><span class="highlight">Retargeting 7 dias visitantes</span>: quem viu a pagina e nao comprou. ROAS esperado: 4-8x. Fundamental ter.</li>';
-  html += '<li><span class="highlight">Retargeting engajamento Instagram 14d</span>: quem curtiu, comentou, salvou posts ou assistiu videos da Rita. Publico morno, bom pra volume.</li>';
-  html += '<li><span class="warn">Interesses novos a testar</span>: artesanato, croche, costura, DIY, religiao/espiritualidade (se alinhado com produto). Testar com R$ 50-100/dia cada e matar rapido se CPA > R$ 130.</li>';
+  html += '<p><strong>Mudanca fundamental:</strong> No Andromeda, o criativo E o targeting. Diferentes criativos atingem diferentes personas automaticamente. Um video UGC de aluna atrai maes. Um carrossel de tecnica atrai artesas. Um video religioso atrai o publico de fe. Voce nao precisa segmentar por interesse, o Andromeda faz isso pelos criativos.</p>';
+
+  html += '<div class="action-box"><div class="action-title">Estrutura de publicos (simplificada)</div><ul>';
+  html += '<li><span class="highlight">EARN PRECIOSIDADES e EARN COMBO:</span> Targeting <strong>BROAD</strong> (18-65, feminino, Brasil). Zero interesses. O Andromeda usa os 10-20 criativos pra encontrar quem compra. Quanto mais Entity IDs diferentes, mais "portas" ele abre pra publicos novos.</li>';
+  html += '<li><span class="highlight">RETARGETING:</span> 3 pools quentes (IC 14d, LPV 7d, Engajamento Instagram 30d). Esses continuam segmentados porque sao publicos pequenos e especificos.</li>';
+  html += '<li><span class="warn">LEARN:</span> Broad. Testar criativos em broad e a forma mais pura de validar se o Entity ID funciona. Se converte em broad, converte em qualquer publico.</li>';
+  html += '<li><span class="danger">NAO usar:</span> Lookalikes e interesses como ad sets separados. Isso fragmenta dados. Se quiser testar Lookalike 1% (504 compradores), adicionar como publico DENTRO do ad set da EARN (Advantage+ Audience), nao como ad set separado.</li>';
   html += '</ul></div>';
 
-  html += '<p><strong>Regra de ouro</strong>: 70% do orcamento em publicos validados (Lookalike 1% + campanhas existentes), 20% em publicos de retargeting, 10% em testes de publicos novos. Nunca mais que 10% em testes quando o objetivo e escala.</p>';
+  html += '<p><strong>Regra Andromeda:</strong> 85% do orcamento em EARN (broad, CBO). 10% em RETARGETING. 5% em LEARN (teste). Zero em campanhas fragmentadas por interesse/lookalike.</p>';
   html += '</div>';
 
   // ===== PROJECAO DIA A DIA =====
@@ -1125,7 +1118,7 @@ function renderCharts(){
   html += '<div class="cl-item"><div class="cl-icon fire">!</div><div><strong>CPA maximo absoluto: R$ 160.</strong> Se qualquer campanha passar de R$ 160 de CPA (com correcao UTMify) por 2 dias seguidos, pausar. Sem excecao. CPA atual e R$ 106,72, entao R$ 160 ja e 50% acima.</div></div>';
   html += '<div class="cl-item"><div class="cl-icon fire">!</div><div><strong>ROAS minimo por campanha: 2,0x.</strong> Campanha com ROAS abaixo de 2,0x apos 5 dias de dados: pausar. Redistribuir verba pras campeoes. O objetivo e media de 2,5x, entao nao pode ter campanha de 1,5x puxando pra baixo.</div></div>';
   html += '<div class="cl-item"><div class="cl-icon fire">!</div><div><strong>Monitorar CPM diariamente.</strong> Se o CPM subir mais de 30% em relacao a media (de R$ 35 pra R$ 45+), e sinal de fadiga de criativo ou publico saturado. Trocar criativos imediatamente.</div></div>';
-  html += '<div class="cl-item"><div class="cl-icon bolt">!</div><div><strong>Nao escalar mais de 30% por dia em uma unica campanha.</strong> Escalar de R$ 200 pra R$ 600 de uma vez pode resetar o aprendizado do algoritmo. Se precisar dar saltos grandes, duplicar a campanha e rodar as duas em paralelo.</div></div>';
+  html += '<div class="cl-item"><div class="cl-icon bolt">!</div><div><strong>Escalar maximo 20-25% a cada 48-72h (regra Andromeda).</strong> Antes de cada aumento, adicionar 2-3 criativos novos (Entity IDs unicos). Orcamento sem criativos novos = fadiga. Se precisar salto grande, duplicar a campanha CBO em vez de aumentar a existente.</div></div>';
   html += '<div class="cl-item"><div class="cl-icon bolt">!</div><div><strong>Checagem no UTMify a cada 2 dias.</strong> O Meta vai mostrar numeros errados (lembre: so reporta ~42% da receita). Sua unica fonte de verdade e o UTMify. Checar ROAS real a cada 2 dias e tomar decisoes com base nele.</div></div>';
   html += '<div class="cl-item"><div class="cl-icon check">!</div><div><strong>Reserva de contingencia: R$ 5.000.</strong> Separar R$ 5.000 que so serao usados se uma campanha nova explodir em performance (ROAS 4x+). Nesse caso, jogar tudo nela.</div></div>';
   html += '</div>';
@@ -1148,16 +1141,16 @@ function renderCharts(){
   html += '<div class="phase-card phase-3">';
   html += '<div class="phase-header"><span class="phase-badge">Resumo</span><span class="phase-title">5 Coisas que Voce Faz AMANHA de Manha</span></div>';
 
-  html += '<div class="checklist"><div class="cl-title">Acoes do Dia 1 (AMANHA)</div>';
-  html += '<div class="cl-item"><div class="cl-icon fire">1</div><div><strong>Subir orcamento das 4 campeoas</strong>: PREC 1-3 (R$ 600), COMBO Copia (R$ 500), ESCALA 1 Copia (R$ 350), Combo SF (R$ 300). Total: R$ 1.750 so nas existentes.</div></div>';
-  html += '<div class="cl-item"><div class="cl-icon fire">2</div><div><strong>Criar campanha Lookalike 1%</strong>: subir lista de compradores, criar Lookalike, campanha de Purchase com criativos de PREC 1-3. Orcamento: R$ 300/dia.</div></div>';
-  html += '<div class="cl-item"><div class="cl-icon fire">3</div><div><strong>Criar 2 campanhas de retargeting</strong>: (a) visitantes pagina 7d que nao compraram, R$ 200/dia. (b) ICs que nao compraram, R$ 100/dia.</div></div>';
-  html += '<div class="cl-item"><div class="cl-icon bolt">4</div><div><strong>Reduzir ESCALA 1 Original para R$ 150/dia</strong>. Liberar verba dessa campanha (ROAS 1,94x) pras que performam acima de 3x.</div></div>';
-  html += '<div class="cl-item"><div class="cl-icon bolt">5</div><div><strong>Implementar desconto Pix + esconder boleto</strong> na pagina de vendas. Isso sozinho pode adicionar R$ 10k+ nos 20 dias sem gastar 1 centavo a mais em midia.</div></div>';
+  html += '<div class="checklist"><div class="cl-title">Acoes do Dia 1 (AMANHA) - Metodo Andromeda</div>';
+  html += '<div class="cl-item"><div class="cl-icon fire">1</div><div><strong>Criar campanha EARN PRECIOSIDADES (CBO, R$ 1.500/dia).</strong> 1 ad set broad. Adicionar 10-12 criativos via Post ID dos melhores anuncios de PREC 1-3, ESCALA 1, ESCALA 1 Copia. Otimizacao: Purchase. Cost Cap: R$ 130.</div></div>';
+  html += '<div class="cl-item"><div class="cl-icon fire">2</div><div><strong>Criar campanha EARN COMBO (CBO, R$ 600/dia).</strong> 1 ad set broad. Adicionar 8-10 criativos via Post ID de COMBO Copia, Combo SF, COMBO original. Cost Cap: R$ 120.</div></div>';
+  html += '<div class="cl-item"><div class="cl-icon fire">3</div><div><strong>Criar campanha RETARGETING (CBO, R$ 300/dia).</strong> 3 ad sets: IC 14d, LPV 7d, Engajamento Instagram 30d. Criativos de urgencia e prova social.</div></div>';
+  html += '<div class="cl-item"><div class="cl-icon bolt">4</div><div><strong>Pausar ESCALA 1 Original + todas Guadalupe + Videos Novos LP2/LP3.</strong> Liberar verba. Manter as 4 antigas ativas (PREC 1-3, ESCALA 1 Copia, COMBO Copia, Combo SF) com orcamento reduzido por 3-5 dias, depois pausar quando as EARN estabilizarem.</div></div>';
+  html += '<div class="cl-item"><div class="cl-icon bolt">5</div><div><strong>Implementar desconto Pix + esconder boleto + order bump.</strong> Isso sozinho pode adicionar R$ 15-20k nos 20 dias sem gastar 1 centavo a mais em midia.</div></div>';
   html += '</div>';
 
   html += '<p style="margin-top:20px;font-size:16px;text-align:center;color:#fff;"><strong>Meta: R$ 200.000 em 20 dias. Gasto total: ~R$ 76.500. Lucro projetado: ~R$ 114.750.</strong></p>';
-  html += '<p style="text-align:center;color:#94a3b8;font-size:13px;margin-top:6px;">As campanhas ja estao validadas. Os numeros ja existem. So falta pisar no acelerador e nao tirar o pe.</p>';
+  html += '<p style="text-align:center;color:#94a3b8;font-size:13px;margin-top:6px;">Estrutura Andromeda: menos campanhas, mais criativos, dados concentrados. O algoritmo faz o trabalho pesado quando voce alimenta ele certo.</p>';
   html += '</div>';
 
   document.getElementById('report-content').innerHTML=html;
