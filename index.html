@@ -190,6 +190,41 @@ tr:hover{background:rgba(255,255,255,0.02);}
 .problem-box ul{margin:8px 0 0 20px;}
 .problem-box li{color:#cbd5e1;font-size:14px;margin-bottom:5px;line-height:1.6;}
 
+.step-block{background:#1a1d29;border:1px solid #2d3348;border-radius:12px;padding:24px;margin-bottom:16px;position:relative;overflow:hidden;}
+.step-block::before{content:"";position:absolute;top:0;left:0;width:4px;height:100%;background:#60a5fa;border-radius:4px 0 0 4px;}
+.step-block .step-num{display:inline-flex;align-items:center;justify-content:center;width:32px;height:32px;border-radius:50%;background:#60a5fa;color:#0f1117;font-size:15px;font-weight:800;margin-right:12px;flex-shrink:0;}
+.step-block .step-header{display:flex;align-items:center;margin-bottom:14px;}
+.step-block .step-title{font-size:17px;font-weight:700;color:#fff;}
+.step-block p{color:#cbd5e1;font-size:14px;line-height:1.7;margin-bottom:10px;}
+.step-block ul{margin:8px 0 12px 20px;}
+.step-block li{color:#cbd5e1;font-size:14px;margin-bottom:6px;line-height:1.6;}
+.step-block .field-row{display:flex;align-items:center;gap:8px;padding:8px 12px;margin:4px 0;background:#0f1117;border:1px solid #2d3348;border-radius:6px;font-size:13px;}
+.step-block .field-label{color:#94a3b8;min-width:160px;font-weight:600;}
+.step-block .field-value{color:#4ade80;font-weight:700;}
+.step-block .field-value.blue{color:#60a5fa;}
+.step-block .field-value.yellow{color:#fbbf24;}
+.step-block .field-value.red{color:#f87171;}
+.step-block .field-value.purple{color:#c084fc;}
+.step-block .tip{background:rgba(251,191,36,0.08);border:1px solid rgba(251,191,36,0.25);border-radius:8px;padding:12px 16px;margin:12px 0;font-size:13px;color:#fbbf24;line-height:1.6;}
+.step-block .tip strong{color:#fbbf24;}
+.step-block .warn-tip{background:rgba(248,113,113,0.08);border:1px solid rgba(248,113,113,0.25);border-radius:8px;padding:12px 16px;margin:12px 0;font-size:13px;color:#f87171;line-height:1.6;}
+
+.tut-banner{background:linear-gradient(135deg,rgba(96,165,250,0.15) 0%,rgba(74,222,128,0.10) 100%);border:2px solid #60a5fa;border-radius:14px;padding:28px 32px;margin-bottom:28px;text-align:center;}
+.tut-banner .tut-title{font-size:26px;font-weight:800;color:#fff;margin-bottom:6px;}
+.tut-banner .tut-sub{font-size:14px;color:#94a3b8;margin-bottom:0;}
+
+.camp-header{background:linear-gradient(135deg,rgba(74,222,128,0.08) 0%,rgba(96,165,250,0.06) 100%);border:2px solid #4ade80;border-radius:12px;padding:20px 24px;margin:28px 0 16px;text-align:center;}
+.camp-header h2{font-size:22px;font-weight:800;color:#fff;margin-bottom:4px;}
+.camp-header .camp-desc{font-size:13px;color:#94a3b8;}
+
+.camp-header.retarget{border-color:#fbbf24;background:linear-gradient(135deg,rgba(251,191,36,0.08) 0%,rgba(96,165,250,0.06) 100%);}
+.camp-header.learn{border-color:#c084fc;background:linear-gradient(135deg,rgba(192,132,252,0.08) 0%,rgba(96,165,250,0.06) 100%);}
+
+@media(max-width:768px){
+  .step-block .field-row{flex-direction:column;align-items:flex-start;gap:4px;}
+  .step-block .field-label{min-width:auto;}
+}
+
 @media(max-width:768px){
   .vs-grid{grid-template-columns:1fr;gap:12px;}
   .vs-divider{padding:8px 0;transform:rotate(90deg);}
@@ -238,6 +273,7 @@ tr:hover{background:rgba(255,255,255,0.02);}
   <div class="tab" data-tab="campanhas">Todas Campanhas</div>
   <div class="tab" data-tab="relatorio">PLANO 200K</div>
   <div class="tab" data-tab="andromeda">ANDROMEDA</div>
+  <div class="tab" data-tab="tutorial">PASSO A PASSO</div>
 </div>
 
 <div class="content">
@@ -298,6 +334,11 @@ tr:hover{background:rgba(255,255,255,0.02);}
 <!-- TAB 5: ANDROMEDA -->
 <div class="tab-content" id="tab-andromeda">
   <div class="report" id="andromeda-content"></div>
+</div>
+
+<!-- TAB 6: TUTORIAL PASSO A PASSO -->
+<div class="tab-content" id="tab-tutorial">
+  <div class="report" id="tutorial-content"></div>
 </div>
 
 </div>
@@ -1434,6 +1475,381 @@ function renderCharts(){
   html += '</div>';
 
   document.getElementById('andromeda-content').innerHTML=html;
+})();
+
+// ==================== TAB 6: PASSO A PASSO ====================
+
+(function(){
+  var html = '';
+
+  // BANNER
+  html += '<div class="tut-banner">';
+  html += '<div class="tut-title">PASSO A PASSO: CRIAR AS CAMPANHAS</div>';
+  html += '<div class="tut-sub">Guia completo, tela por tela, para criar cada campanha no Gerenciador de Anuncios da Meta. Linguagem simples, sem termos tecnicos desnecessarios.</div>';
+  html += '</div>';
+
+  // ===================================================================
+  // CAMPANHA 1: EARN PRECIOSIDADES
+  // ===================================================================
+  html += '<div class="camp-header"><h2>CAMPANHA 1: EARN PRECIOSIDADES</h2><div class="camp-desc">CBO | R$ 1.500/dia | 1 Ad Set broad | 10-12 criativos | Produto principal</div></div>';
+
+  // Step 1
+  html += '<div class="step-block"><div class="step-header"><span class="step-num">1</span><span class="step-title">Abrir o Gerenciador e criar campanha</span></div>';
+  html += '<p>Acesse <strong>business.facebook.com</strong>, va em <strong>Gerenciador de Anuncios</strong> e clique no botao verde <strong>"+ Criar"</strong> no canto superior esquerdo.</p>';
+  html += '</div>';
+
+  // Step 2
+  html += '<div class="step-block"><div class="step-header"><span class="step-num">2</span><span class="step-title">Escolher objetivo: Vendas</span></div>';
+  html += '<p>Na tela de objetivo, selecione <strong>"Vendas"</strong>. Clique em Continuar.</p>';
+  html += '<div class="tip"><strong>Dica:</strong> Se aparecer a opcao "Campanhas manuais" vs "Campanhas Advantage+", escolha <strong>Campanhas manuais</strong>. Voce quer controle total.</div>';
+  html += '</div>';
+
+  // Step 3
+  html += '<div class="step-block"><div class="step-header"><span class="step-num">3</span><span class="step-title">Configurar nivel Campanha</span></div>';
+  html += '<p>Nesta tela voce configura o nome e o orcamento da campanha. Preencha exatamente assim:</p>';
+  html += '<div class="field-row"><span class="field-label">Nome da campanha</span><span class="field-value blue">EARN PRECIOSIDADES</span></div>';
+  html += '<div class="field-row"><span class="field-label">Orcamento da campanha</span><span class="field-value">ATIVAR (Advantage Campaign Budget)</span></div>';
+  html += '<div class="field-row"><span class="field-label">Tipo de orcamento</span><span class="field-value">Orcamento diario</span></div>';
+  html += '<div class="field-row"><span class="field-label">Valor</span><span class="field-value">R$ 1.500,00</span></div>';
+  html += '<div class="tip"><strong>O que e isso?</strong> "Advantage Campaign Budget" (antigo CBO) significa que a Meta distribui os R$ 1.500 automaticamente entre seus anuncios. Ela coloca mais dinheiro nos anuncios que estao vendendo mais. Voce NAO define orcamento por conjunto de anuncio.</div>';
+  html += '<p>Deixe tudo mais como esta e clique em <strong>Avancar</strong>.</p>';
+  html += '</div>';
+
+  // Step 4
+  html += '<div class="step-block"><div class="step-header"><span class="step-num">4</span><span class="step-title">Configurar nivel Conjunto de Anuncios</span></div>';
+  html += '<p>Voce vai criar <strong>1 unico conjunto de anuncios</strong> (Ad Set). Preencha assim:</p>';
+  html += '<div class="field-row"><span class="field-label">Nome do conjunto</span><span class="field-value blue">BROAD - Feminino 18-65</span></div>';
+  html += '<div class="field-row"><span class="field-label">Evento de conversao</span><span class="field-value">Compra (Purchase)</span></div>';
+  html += '<div class="field-row"><span class="field-label">Pixel</span><span class="field-value">Selecione o pixel da Rita</span></div>';
+  html += '<div class="field-row"><span class="field-label">Estrategia de lance</span><span class="field-value yellow">Cost Cap: R$ 130,00</span></div>';
+  html += '<div class="tip"><strong>O que e Cost Cap?</strong> Voce esta dizendo pra Meta: "tente manter cada venda abaixo de R$ 130". Se o custo subir demais, ela para de gastar em vez de estourar. E uma trava de seguranca.</div>';
+
+  html += '<p style="margin-top:16px;"><strong>Publico (Segmentacao):</strong></p>';
+  html += '<div class="field-row"><span class="field-label">Localizacao</span><span class="field-value">Brasil</span></div>';
+  html += '<div class="field-row"><span class="field-label">Idade</span><span class="field-value">18 a 65+</span></div>';
+  html += '<div class="field-row"><span class="field-label">Genero</span><span class="field-value">Feminino</span></div>';
+  html += '<div class="field-row"><span class="field-label">Interesses</span><span class="field-value red">NENHUM (deixe vazio)</span></div>';
+  html += '<div class="field-row"><span class="field-label">Advantage+ Audience</span><span class="field-value">ATIVAR</span></div>';
+  html += '<div class="warn-tip"><strong>Importante:</strong> NAO adicione interesses. Deixe 100% aberto (broad). O sistema Andromeda da Meta vai usar seus criativos pra encontrar o publico certo automaticamente. Quando voce restringe por interesses, voce limita o Andromeda e reduz o alcance. Os criativos sao o seu targeting agora.</div>';
+
+  html += '<p style="margin-top:16px;"><strong>Posicionamentos:</strong></p>';
+  html += '<div class="field-row"><span class="field-label">Posicionamentos</span><span class="field-value">Advantage+ (automatico)</span></div>';
+  html += '<p>Clique em <strong>Avancar</strong>.</p>';
+  html += '</div>';
+
+  // Step 5
+  html += '<div class="step-block"><div class="step-header"><span class="step-num">5</span><span class="step-title">Adicionar os criativos (nivel Anuncio)</span></div>';
+  html += '<p>Aqui voce vai adicionar <strong>10 a 12 anuncios</strong> dentro desse unico conjunto. Cada anuncio deve ser um criativo diferente.</p>';
+  html += '<p><strong>Como pegar os criativos das campanhas antigas (Post ID):</strong></p>';
+  html += '<ul>';
+  html += '<li>Va no <strong>Gerenciador de Anuncios</strong> e abra a campanha antiga (ex: PREC 1).</li>';
+  html += '<li>Clique no anuncio que voce quer copiar.</li>';
+  html += '<li>Na tela de edicao do anuncio, procure a secao <strong>"Identidade"</strong>.</li>';
+  html += '<li>Em "Usar publicacao existente", clique em <strong>"Inserir ID da publicacao"</strong>.</li>';
+  html += '<li>O numero que aparece la (ex: 123456789012345) e o <strong>Post ID</strong>. Copie esse numero.</li>';
+  html += '</ul>';
+
+  html += '<p><strong>Como usar o Post ID no anuncio novo:</strong></p>';
+  html += '<ul>';
+  html += '<li>Na nova campanha EARN PRECIOSIDADES, no nivel Anuncio, escolha <strong>"Usar publicacao existente"</strong>.</li>';
+  html += '<li>Cole o Post ID que voce copiou.</li>';
+  html += '<li>O anuncio aparece com todas as curtidas, comentarios e compartilhamentos preservados.</li>';
+  html += '</ul>';
+
+  html += '<div class="tip"><strong>Por que Post ID?</strong> Quando voce copia um anuncio pelo Post ID, ele mantem toda a prova social (curtidas, comentarios). Um anuncio com 500 curtidas converte MUITO mais que um identico com 0 curtidas. Nunca crie anuncio do zero se ele ja tem engajamento.</div>';
+
+  html += '<p><strong>Quais criativos adicionar (copiar via Post ID):</strong></p>';
+  html += '<ul>';
+  html += '<li>Os 2-3 melhores anuncios da campanha <strong>PREC 1</strong></li>';
+  html += '<li>Os 2-3 melhores da <strong>PREC 2</strong></li>';
+  html += '<li>Os 2-3 melhores da <strong>PREC 3</strong></li>';
+  html += '<li>Os melhores da <strong>ESCALA 1 Copia</strong> e <strong>ESCALA 1 Original</strong></li>';
+  html += '<li>Os 2-3 melhores da <strong>Videos Novos 1-6</strong></li>';
+  html += '</ul>';
+
+  html += '<div class="field-row"><span class="field-label">Total de anuncios</span><span class="field-value">10 a 12</span></div>';
+  html += '<div class="field-row"><span class="field-label">Pagina do Facebook</span><span class="field-value blue">Pagina da Rita Machado</span></div>';
+  html += '<div class="field-row"><span class="field-label">Conta do Instagram</span><span class="field-value blue">@ritamachado (se tiver)</span></div>';
+  html += '<div class="field-row"><span class="field-label">URL de destino</span><span class="field-value">Link da pagina de vendas Preciosidades</span></div>';
+
+  html += '<div class="warn-tip"><strong>Regra dos Entity IDs:</strong> Cada anuncio precisa ser visualmente DIFERENTE dos outros. Se 2 anuncios forem parecidos demais (mesmo formato, mesma pessoa, mesmo cenario, mesmo beneficio), a Meta trata como 1 so e voce perde um "ticket" no leilao. Varie pelo menos 2 de 4 coisas: formato (video/imagem/carrossel), pessoa (Rita/aluna/sem pessoa), cenario (estudio/rua/casa), beneficio (renda/terapia/habilidade).</div>';
+
+  html += '<p>Depois de adicionar todos os anuncios, clique em <strong>Publicar</strong>.</p>';
+  html += '</div>';
+
+  // Step 6
+  html += '<div class="step-block"><div class="step-header"><span class="step-num">6</span><span class="step-title">Verificar e publicar</span></div>';
+  html += '<p>Antes de publicar, confira:</p>';
+  html += '<ul>';
+  html += '<li>Nome da campanha: EARN PRECIOSIDADES</li>';
+  html += '<li>Orcamento: Advantage Campaign Budget, R$ 1.500/dia</li>';
+  html += '<li>1 conjunto de anuncios, targeting broad feminino</li>';
+  html += '<li>Cost Cap: R$ 130</li>';
+  html += '<li>10-12 anuncios adicionados via Post ID</li>';
+  html += '<li>Evento de conversao: Purchase</li>';
+  html += '</ul>';
+  html += '<p>Se tudo estiver certo, clique em <strong>Publicar</strong>. A campanha vai entrar em revisao (leva 5-30 min) e depois comeca a rodar.</p>';
+  html += '</div>';
+
+  // ===================================================================
+  // CAMPANHA 2: EARN COMBO
+  // ===================================================================
+  html += '<div class="camp-header"><h2>CAMPANHA 2: EARN COMBO</h2><div class="camp-desc">CBO | R$ 600/dia | 1 Ad Set broad | 8-10 criativos | Produto Combo</div></div>';
+
+  // Step 1
+  html += '<div class="step-block"><div class="step-header"><span class="step-num">1</span><span class="step-title">Criar campanha (mesmo processo)</span></div>';
+  html += '<p>Clique em <strong>"+ Criar"</strong> novamente. Objetivo: <strong>Vendas</strong>. Campanhas manuais.</p>';
+  html += '</div>';
+
+  // Step 2
+  html += '<div class="step-block"><div class="step-header"><span class="step-num">2</span><span class="step-title">Configurar nivel Campanha</span></div>';
+  html += '<div class="field-row"><span class="field-label">Nome da campanha</span><span class="field-value blue">EARN COMBO</span></div>';
+  html += '<div class="field-row"><span class="field-label">Advantage Campaign Budget</span><span class="field-value">ATIVAR</span></div>';
+  html += '<div class="field-row"><span class="field-label">Orcamento diario</span><span class="field-value">R$ 600,00</span></div>';
+  html += '<p>Avancar.</p>';
+  html += '</div>';
+
+  // Step 3
+  html += '<div class="step-block"><div class="step-header"><span class="step-num">3</span><span class="step-title">Configurar nivel Conjunto de Anuncios</span></div>';
+  html += '<div class="field-row"><span class="field-label">Nome do conjunto</span><span class="field-value blue">BROAD - Feminino 18-65</span></div>';
+  html += '<div class="field-row"><span class="field-label">Evento de conversao</span><span class="field-value">Compra (Purchase)</span></div>';
+  html += '<div class="field-row"><span class="field-label">Estrategia de lance</span><span class="field-value yellow">Cost Cap: R$ 120,00</span></div>';
+  html += '<div class="field-row"><span class="field-label">Localizacao</span><span class="field-value">Brasil</span></div>';
+  html += '<div class="field-row"><span class="field-label">Idade</span><span class="field-value">18 a 65+</span></div>';
+  html += '<div class="field-row"><span class="field-label">Genero</span><span class="field-value">Feminino</span></div>';
+  html += '<div class="field-row"><span class="field-label">Interesses</span><span class="field-value red">NENHUM (broad)</span></div>';
+  html += '<div class="field-row"><span class="field-label">Posicionamentos</span><span class="field-value">Advantage+ (automatico)</span></div>';
+  html += '<p>Avancar.</p>';
+  html += '</div>';
+
+  // Step 4
+  html += '<div class="step-block"><div class="step-header"><span class="step-num">4</span><span class="step-title">Adicionar criativos via Post ID</span></div>';
+  html += '<p>Copie os Post IDs dos melhores anuncios das campanhas de Combo antigas:</p>';
+  html += '<ul>';
+  html += '<li>Melhores da <strong>COMBO Copia</strong></li>';
+  html += '<li>Melhores da <strong>Combo SF</strong></li>';
+  html += '<li>Melhores da <strong>COMBO original</strong></li>';
+  html += '<li>Melhores da <strong>COMBO 6 vendas</strong></li>';
+  html += '</ul>';
+  html += '<div class="field-row"><span class="field-label">Total de anuncios</span><span class="field-value">8 a 10</span></div>';
+  html += '<div class="field-row"><span class="field-label">URL de destino</span><span class="field-value">Link da pagina de vendas Combo</span></div>';
+  html += '<p>Use "Publicacao existente" e cole cada Post ID. Mesmo processo da campanha anterior. Publicar.</p>';
+  html += '</div>';
+
+  // ===================================================================
+  // CAMPANHA 3: RETARGETING
+  // ===================================================================
+  html += '<div class="camp-header retarget"><h2>CAMPANHA 3: RETARGETING</h2><div class="camp-desc">CBO | R$ 300/dia | 3 Ad Sets por temperatura | Criativos de urgencia</div></div>';
+
+  // Step 1
+  html += '<div class="step-block"><div class="step-header"><span class="step-num">1</span><span class="step-title">Criar campanha</span></div>';
+  html += '<p><strong>"+ Criar"</strong> > Objetivo <strong>Vendas</strong> > Campanhas manuais.</p>';
+  html += '<div class="field-row"><span class="field-label">Nome da campanha</span><span class="field-value blue">RETARGETING</span></div>';
+  html += '<div class="field-row"><span class="field-label">Advantage Campaign Budget</span><span class="field-value">ATIVAR</span></div>';
+  html += '<div class="field-row"><span class="field-label">Orcamento diario</span><span class="field-value">R$ 300,00</span></div>';
+  html += '<p>Avancar.</p>';
+  html += '</div>';
+
+  // Step 2
+  html += '<div class="step-block"><div class="step-header"><span class="step-num">2</span><span class="step-title">Criar Conjunto 1: Publico QUENTE (ICs)</span></div>';
+  html += '<p>Esse conjunto alcanca pessoas que <strong>ja iniciaram o checkout</strong> mas nao compraram. Sao as mais proximas de comprar.</p>';
+  html += '<div class="field-row"><span class="field-label">Nome do conjunto</span><span class="field-value red">QUENTE - IC 14 dias</span></div>';
+  html += '<div class="field-row"><span class="field-label">Evento de conversao</span><span class="field-value">Compra (Purchase)</span></div>';
+
+  html += '<p style="margin-top:12px;"><strong>Como criar o publico personalizado:</strong></p>';
+  html += '<ul>';
+  html += '<li>Em "Publico", clique em <strong>"Criar publico personalizado"</strong>.</li>';
+  html += '<li>Escolha <strong>"Site"</strong> como fonte.</li>';
+  html += '<li>Selecione o pixel da Rita.</li>';
+  html += '<li>Evento: <strong>InitiateCheckout</strong> (Iniciar checkout).</li>';
+  html += '<li>Periodo: <strong>Ultimos 14 dias</strong>.</li>';
+  html += '<li>Clique em <strong>"Excluir pessoas"</strong> e adicione quem ja fez <strong>Purchase</strong> nos ultimos 14 dias.</li>';
+  html += '<li>De um nome: "IC 14d sem compra".</li>';
+  html += '<li>Salvar publico.</li>';
+  html += '</ul>';
+
+  html += '<div class="tip"><strong>Resultado:</strong> Esse publico tem cerca de 800-1.500 pessoas que quase compraram. E o publico com maior taxa de conversao porque ja colocaram o produto no carrinho.</div>';
+
+  html += '<p><strong>Criativos para esse conjunto:</strong></p>';
+  html += '<ul>';
+  html += '<li>Criativo 1: Imagem com texto "Voce esqueceu algo no carrinho" + botao "Finalizar compra"</li>';
+  html += '<li>Criativo 2: Video curto (15s) da Rita falando "Vi que voce ficou interessada, hoje tem condicao especial"</li>';
+  html += '<li>Criativo 3: Carrossel com depoimentos de alunas + "Ultima chance"</li>';
+  html += '</ul>';
+  html += '</div>';
+
+  // Step 3
+  html += '<div class="step-block"><div class="step-header"><span class="step-num">3</span><span class="step-title">Criar Conjunto 2: Publico MORNO (visitantes LP)</span></div>';
+  html += '<p>Pessoas que <strong>visitaram a pagina de vendas</strong> mas NAO iniciaram checkout.</p>';
+  html += '<p>No nivel de campanha, clique no <strong>"+"</strong> para adicionar um novo conjunto de anuncios.</p>';
+  html += '<div class="field-row"><span class="field-label">Nome do conjunto</span><span class="field-value yellow">MORNO - LP Visit 7 dias</span></div>';
+
+  html += '<p style="margin-top:12px;"><strong>Como criar o publico:</strong></p>';
+  html += '<ul>';
+  html += '<li>Publico personalizado > <strong>Site</strong>.</li>';
+  html += '<li>Evento: <strong>ViewContent</strong> (Visualizacao de conteudo) OU <strong>Todos os visitantes do site</strong> com URL contendo a pagina de vendas.</li>';
+  html += '<li>Periodo: <strong>Ultimos 7 dias</strong>.</li>';
+  html += '<li>Excluir: quem fez InitiateCheckout nos ultimos 7 dias (pra nao sobrepor com o conjunto 1).</li>';
+  html += '<li>Nome: "LP Visit 7d sem IC".</li>';
+  html += '</ul>';
+
+  html += '<p><strong>Criativos para esse conjunto:</strong></p>';
+  html += '<ul>';
+  html += '<li>Criativo 1: "Ainda pensando? Veja o que as alunas dizem" + prints de depoimentos</li>';
+  html += '<li>Criativo 2: Video com resultado de aluna (antes/depois de aprender a tecnica)</li>';
+  html += '</ul>';
+  html += '</div>';
+
+  // Step 4
+  html += '<div class="step-block"><div class="step-header"><span class="step-num">4</span><span class="step-title">Criar Conjunto 3: Publico FRIO (engajamento)</span></div>';
+  html += '<p>Pessoas que <strong>interagiram com o Instagram da Rita</strong> (curtiu, comentou, assistiu videos) mas nunca visitaram a pagina de vendas.</p>';
+  html += '<div class="field-row"><span class="field-label">Nome do conjunto</span><span class="field-value">FRIO - Engaj IG 30 dias</span></div>';
+
+  html += '<p style="margin-top:12px;"><strong>Como criar o publico:</strong></p>';
+  html += '<ul>';
+  html += '<li>Publico personalizado > <strong>Conta do Instagram</strong>.</li>';
+  html += '<li>Selecione o perfil da Rita.</li>';
+  html += '<li>Tipo de engajamento: <strong>"Todas as pessoas que interagiram com esta conta profissional"</strong>.</li>';
+  html += '<li>Periodo: <strong>Ultimos 30 dias</strong>.</li>';
+  html += '<li>Excluir: visitantes do site nos ultimos 30 dias (pra nao sobrepor com os conjuntos anteriores).</li>';
+  html += '<li>Nome: "Engaj IG 30d sem visita".</li>';
+  html += '</ul>';
+
+  html += '<p><strong>Criativos para esse conjunto:</strong></p>';
+  html += '<ul>';
+  html += '<li>Criativo 1: Video educativo mostrando uma peca sendo feita + "Quer aprender?"</li>';
+  html += '<li>Criativo 2: Carrossel "3 motivos pra voce comecar" + oferta</li>';
+  html += '</ul>';
+  html += '</div>';
+
+  // Step 5
+  html += '<div class="step-block"><div class="step-header"><span class="step-num">5</span><span class="step-title">Publicar Retargeting</span></div>';
+  html += '<p>Confira antes de publicar:</p>';
+  html += '<ul>';
+  html += '<li>3 conjuntos de anuncios (Quente, Morno, Frio)</li>';
+  html += '<li>Cada um com publico personalizado diferente, sem sobreposicao</li>';
+  html += '<li>CBO R$ 300/dia (a Meta distribui entre os 3 conjuntos automaticamente)</li>';
+  html += '<li>2-3 criativos por conjunto, focados em urgencia e prova social</li>';
+  html += '</ul>';
+  html += '<p>Clique em <strong>Publicar</strong>.</p>';
+  html += '</div>';
+
+  // ===================================================================
+  // CAMPANHA 4: LEARN (FASE 2)
+  // ===================================================================
+  html += '<div class="camp-header learn"><h2>CAMPANHA 4: LEARN (FASE 2, DIA 6 EM DIANTE)</h2><div class="camp-desc">ABO | R$ 300/dia total | 5 Ad Sets x R$ 60 | Teste de criativos novos</div></div>';
+
+  html += '<div class="step-block"><div class="step-header"><span class="step-num">1</span><span class="step-title">Criar campanha de teste</span></div>';
+  html += '<p>Essa campanha so deve ser criada a partir do <strong>dia 6</strong> (quando as EARN ja estiverem rodando). Objetivo: testar criativos novos. Os que funcionarem, voce promove pras campanhas EARN.</p>';
+  html += '<p><strong>"+ Criar"</strong> > Vendas > Campanhas manuais.</p>';
+  html += '<div class="field-row"><span class="field-label">Nome da campanha</span><span class="field-value purple">LEARN - TESTE CRIATIVOS</span></div>';
+  html += '<div class="field-row"><span class="field-label">Advantage Campaign Budget</span><span class="field-value red">DESATIVAR (NAO ligar)</span></div>';
+  html += '<div class="tip"><strong>Importante:</strong> Essa e a UNICA campanha onde voce NAO ativa CBO. Aqui voce usa ABO (orcamento por conjunto). Cada conjunto recebe R$ 60/dia fixo, assim voce garante que todos os criativos recebem verba igual pra testar.</div>';
+  html += '</div>';
+
+  // Step 2
+  html += '<div class="step-block"><div class="step-header"><span class="step-num">2</span><span class="step-title">Criar 5 Conjuntos de Anuncios (1 criativo cada)</span></div>';
+  html += '<p>Crie 5 conjuntos identicos, so mudando o nome e o criativo:</p>';
+  html += '<div class="field-row"><span class="field-label">Conjunto 1</span><span class="field-value blue">LEARN - Criativo A</span></div>';
+  html += '<div class="field-row"><span class="field-label">Conjunto 2</span><span class="field-value blue">LEARN - Criativo B</span></div>';
+  html += '<div class="field-row"><span class="field-label">Conjunto 3</span><span class="field-value blue">LEARN - Criativo C</span></div>';
+  html += '<div class="field-row"><span class="field-label">Conjunto 4</span><span class="field-value blue">LEARN - Criativo D</span></div>';
+  html += '<div class="field-row"><span class="field-label">Conjunto 5</span><span class="field-value blue">LEARN - Criativo E</span></div>';
+
+  html += '<p style="margin-top:12px;">Configuracao de CADA conjunto:</p>';
+  html += '<div class="field-row"><span class="field-label">Orcamento do conjunto</span><span class="field-value">R$ 60,00/dia</span></div>';
+  html += '<div class="field-row"><span class="field-label">Evento de conversao</span><span class="field-value">Compra (Purchase)</span></div>';
+  html += '<div class="field-row"><span class="field-label">Publico</span><span class="field-value">Broad feminino 18-65 Brasil</span></div>';
+  html += '<div class="field-row"><span class="field-label">Interesses</span><span class="field-value red">NENHUM</span></div>';
+  html += '<div class="field-row"><span class="field-label">Posicionamentos</span><span class="field-value">Advantage+</span></div>';
+  html += '<p>Cada conjunto recebe <strong>1 unico criativo novo</strong>. Nao misture criativos no mesmo conjunto pra nao confundir o teste.</p>';
+  html += '</div>';
+
+  // Step 3
+  html += '<div class="step-block"><div class="step-header"><span class="step-num">3</span><span class="step-title">Quais criativos usar na LEARN</span></div>';
+  html += '<p>Cada criativo deve ser <strong>100% novo</strong> (nunca rodou antes). Ideias baseadas em Entity IDs unicos:</p>';
+  html += '<ul>';
+  html += '<li><strong>Criativo A:</strong> Video da Rita, camera direta, estilo Reels 15 segundos, falando sobre renda extra com artesanato</li>';
+  html += '<li><strong>Criativo B:</strong> Carrossel com fotos antes/depois de pecas prontas, texto focado em "aprenda de casa"</li>';
+  html += '<li><strong>Criativo C:</strong> Video de uma aluna mostrando o que aprendeu (UGC, "user generated content")</li>';
+  html += '<li><strong>Criativo D:</strong> Imagem estatica com prints de vendas/depoimentos no WhatsApp, texto "Veja os resultados"</li>';
+  html += '<li><strong>Criativo E:</strong> Video de bastidores, mostrando o atelier/mesa de trabalho, angulo de "terapia e relaxamento"</li>';
+  html += '</ul>';
+  html += '<div class="tip"><strong>Regra:</strong> Cada criativo deve variar pelo menos 2 de 4 dimensoes (formato, pessoa, cenario, beneficio). Isso garante que a Meta trate cada um como um anuncio diferente no leilao.</div>';
+  html += '</div>';
+
+  // Step 4
+  html += '<div class="step-block"><div class="step-header"><span class="step-num">4</span><span class="step-title">Como avaliar os testes (depois de 3-5 dias)</span></div>';
+  html += '<p>Apos 3-5 dias rodando, va no Gerenciador e analise cada conjunto:</p>';
+
+  html += '<div style="margin:16px 0;">';
+  html += '<div class="field-row" style="border-color:#4ade80;"><span class="field-label" style="color:#4ade80;">VENCEDOR (promover)</span><span class="field-value">10+ conversoes E CPA abaixo de R$ 120</span></div>';
+  html += '<div class="field-row" style="border-color:#fbbf24;"><span class="field-label" style="color:#fbbf24;">EM TESTE (esperar)</span><span class="field-value">3-9 conversoes, CPA razoavel, precisa de mais dados</span></div>';
+  html += '<div class="field-row" style="border-color:#f87171;"><span class="field-label" style="color:#f87171;">PERDEDOR (pausar)</span><span class="field-value">0-2 conversoes em 3 dias OU CPA acima de R$ 200</span></div>';
+  html += '</div>';
+
+  html += '<p><strong>Criativo vencedor? Como promover pra EARN:</strong></p>';
+  html += '<ul>';
+  html += '<li>Copie o <strong>Post ID</strong> do criativo vencedor (mesmo processo do passo 5 da EARN PRECIOSIDADES).</li>';
+  html += '<li>Va na campanha <strong>EARN PRECIOSIDADES</strong> (ou EARN COMBO, dependendo do produto).</li>';
+  html += '<li>No nivel Anuncio, clique no <strong>"+"</strong> pra adicionar um novo anuncio.</li>';
+  html += '<li>Escolha "Publicacao existente", cole o Post ID.</li>';
+  html += '<li>Pronto. O criativo vencedor agora esta na campanha de escala, com todo o engajamento preservado.</li>';
+  html += '</ul>';
+
+  html += '<p><strong>Criativo perdedor?</strong></p>';
+  html += '<ul>';
+  html += '<li>Pause o conjunto inteiro (clique no toggle verde pra desligar).</li>';
+  html += '<li>Crie um NOVO conjunto na LEARN com um criativo novo no lugar.</li>';
+  html += '<li>Ciclo infinito: testar > promover vencedores > matar perdedores > testar novos.</li>';
+  html += '</ul>';
+  html += '</div>';
+
+  // ===================================================================
+  // RESUMO VISUAL
+  // ===================================================================
+  html += '<div class="camp-header"><h2>RESUMO: O QUE VOCE DEVE TER NO FINAL</h2><div class="camp-desc">4 campanhas, conta limpa, estrutura Andromeda</div></div>';
+
+  html += '<div class="step-block">';
+  html += '<table class="budget-table"><thead><tr><th>Campanha</th><th>Tipo</th><th>Orcamento</th><th>Ad Sets</th><th>Criativos</th><th>Quando Criar</th></tr></thead><tbody>';
+  html += '<tr class="budget-row-hot"><td><strong>EARN PRECIOSIDADES</strong></td><td>CBO</td><td>R$ 1.500/dia</td><td>1 (broad)</td><td>10-12</td><td>Dia 1</td></tr>';
+  html += '<tr class="budget-row-hot"><td><strong>EARN COMBO</strong></td><td>CBO</td><td>R$ 600/dia</td><td>1 (broad)</td><td>8-10</td><td>Dia 1</td></tr>';
+  html += '<tr class="budget-row-new"><td><strong>RETARGETING</strong></td><td>CBO</td><td>R$ 300/dia</td><td>3 (quente/morno/frio)</td><td>6-8</td><td>Dia 1</td></tr>';
+  html += '<tr style="background:rgba(192,132,252,0.06);"><td><strong>LEARN</strong></td><td>ABO</td><td>R$ 300/dia</td><td>5 (R$ 60 cada)</td><td>5 novos</td><td>Dia 6</td></tr>';
+  html += '<tr style="font-weight:700;border-top:2px solid #4ade80;"><td>TOTAL</td><td></td><td>R$ 2.700/dia</td><td>10</td><td>29-35</td><td></td></tr>';
+  html += '</tbody></table>';
+  html += '</div>';
+
+  // PAUSAR ANTIGAS
+  html += '<div class="step-block">';
+  html += '<div class="step-header"><span class="step-num">!</span><span class="step-title">NAO ESQUECER: Pausar as campanhas antigas</span></div>';
+  html += '<p>Depois de criar as 3 campanhas novas (EARN + RETARGETING), voce precisa pausar as antigas gradualmente:</p>';
+  html += '<ul>';
+  html += '<li><strong>Dia 1:</strong> Pausar IMEDIATAMENTE: ESCALA 1 Original (ROAS ruim), Guadalupe, Videos Novos LP2/LP3.</li>';
+  html += '<li><strong>Dia 3-4:</strong> Reduzir orcamento das outras antigas (PREC 1-3, ESCALA 1 Copia, COMBO Copia) pra 50%.</li>';
+  html += '<li><strong>Dia 5:</strong> Se as EARN novas estiverem com ROAS acima de 2,0x, pausar TODAS as antigas. Conta fica limpa.</li>';
+  html += '</ul>';
+  html += '<div class="warn-tip"><strong>Por que nao pausar tudo de uma vez?</strong> Se voce pausar tudo no dia 1 e as campanhas novas demorarem pra sair da fase de aprendizado, voce fica sem vendas. A transicao gradual garante que voce nunca fica sem faturamento.</div>';
+  html += '</div>';
+
+  // DICAS FINAIS
+  html += '<div class="step-block">';
+  html += '<div class="step-header"><span class="step-num">?</span><span class="step-title">Duvidas frequentes</span></div>';
+
+  html += '<p><strong>"Posso duplicar a campanha antiga em vez de criar do zero?"</strong></p>';
+  html += '<p>Pode, mas NAO e recomendado. Quando voce duplica, a Meta herda configuracoes antigas (interesses, orcamento ABO, etc). E mais seguro criar do zero seguindo esse passo a passo pra garantir que esta tudo limpo.</p>';
+
+  html += '<p><strong>"E se o CPA subir muito nos primeiros dias?"</strong></p>';
+  html += '<p>Normal. Toda campanha nova passa pela "fase de aprendizado" (3-7 dias). Nao mexa em nada nesse periodo. Nao pause, nao mude orcamento, nao adicione criativos. Deixe o algoritmo aprender. Se depois de 7 dias o CPA ainda estiver acima de R$ 160, reduza orcamento em 20% e adicione 2-3 criativos novos.</p>';
+
+  html += '<p><strong>"Quando devo aumentar o orcamento?"</strong></p>';
+  html += '<p>So aumente quando: a campanha tiver 7+ dias rodando, ROAS acima de 2,0x nos ultimos 3 dias, e voce tiver criativos novos pra adicionar junto. Aumente no maximo 20% por vez. Espere 48-72h entre cada aumento.</p>';
+
+  html += '<p><strong>"Preciso mexer todo dia?"</strong></p>';
+  html += '<p>Nao. Cheque os numeros 1 vez por dia (de preferencia a noite, quando o dia ja fechou). So faca ajustes 2-3 vezes por semana. O maior erro e mexer demais e nao deixar o algoritmo trabalhar.</p>';
+  html += '</div>';
+
+  document.getElementById('tutorial-content').innerHTML=html;
 })();
 
 </script>
